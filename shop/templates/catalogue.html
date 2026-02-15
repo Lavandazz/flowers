@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Каталог цветов{% endblock %}
+
+{% block content_catalog %}
+    {# Поиск по сайту #}
+    {% block search %} {% include "nav_primary.html" %} {% endblock %}
+
+    <div class="catalog-container">
+        <div class="catalog-row">
+            <!-- Боковая панель с категориями -->
+            {% block catalogue_aside %} {% include "catalogue_aside.html" %} {% endblock %}
+
+            <!-- Основная часть — товары -->
+            <section class="catalog-main">
+                <h3>
+                    {% if current_category %}
+                        {{ current_category.name }}
+                    {% else %}
+                        Все букеты
+                    {% endif %}
+                </h3>
+                <!-- Карточка товара -->
+                <div class="products-grid">
+                    <!-- Пагинация через page_obj -->
+                    {% for product in page_obj %}  {# используем page_obj для перебора товаров текущей страницы #}
+                        <div class="product-card" onclick="location.href='{% url 'shop:product_detail' product.slug %}'" style="cursor: pointer;">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            <div class="product-info">
+                                <h4>{{ product.name }}</h4>
+                                <p class="product-price">{{ product.price }} руб.</p>
+                                <a href="#" class="btn" onclick="event.stopPropagation();">
+                                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if page_obj.has_other_pages %}
+                    <div class="pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}{% if category_slug %}&category={{ category_slug }}{% endif %}">
+                                « Предыдущая</a>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <span class="current">{{ num }}</span>
+                            {% else %}
+                                <a href="?page={{ num }}{% if category_slug %}&category={{ category_slug }}{% endif %}">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}{% if category_slug %}&category={{ category_slug }}{% endif %}">
+                                Следующая »</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+            </section>
+        </div>
+    </div>
+{% endblock %}

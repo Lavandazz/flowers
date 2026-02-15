@@ -1,0 +1,26 @@
+
+
+{# Кнопка-триггер: лупа + слово "Найти" #}
+<button type="button" class="search-trigger" aria-label="Поиск" title="Найти">
+    <i class="fas fa-search"></i>
+    <span class="search-trigger-text">"Найти"</span>
+</button>
+
+{# Оверлей с формой поиска (изначально скрыт) #}
+<div class="search-overlay">
+    <div class="search-overlay-content">
+        <form method="get" action="{% url 'shop:search' %}" class="search-overlay-form">
+            <input type="text" 
+                   name="q" 
+                   class="search-overlay-input" 
+                   placeholder="Что ищем? Название букета, подарка..." 
+                   autocomplete="off">
+            <button type="submit" class="search-overlay-submit" aria-label="Найти">
+                <i class="fas fa-search"></i>
+            </button>
+            <button type="button" class="search-overlay-close" aria-label="Закрыть">
+                <i class="fas fa-times"></i>
+            </button>
+        </form>
+    </div>
+</div>

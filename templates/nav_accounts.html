@@ -1,0 +1,16 @@
+{% load static %}
+
+{% block header %}
+{# Единая навигационная панель:  меню + аккаунт  #}
+<nav class="navbar">
+    <div class="nav-container">
+        {# ---  МЕНЮ (Каталог, О компании, Контакты) --- #}
+        <ul class="nav-menu">
+            <li><a href="/catalogue">Каталог</a></li>
+            <li><a href="/">О компании</a></li>
+            <li><a href="/contacts/">Контакты</a></li>
+            <li><a href="/lk/">Личный кабинет</a></li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}

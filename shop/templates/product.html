@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content_product %}
+<div class="product-detail-container">
+    <div class="product-detail-grid">
+        <!-- Левая колонка: изображение товара -->
+        <div class="product-detail-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+
+        <!-- Правая колонка: информация о товаре -->
+        <div class="product-detail-info">
+            <h1>{{ product.name }}</h1>
+
+            <div class="product-detail-price">
+                {{ product.price }}
+                <a class="rub">
+                    <i class="fa fa-ruble"></i>
+                </a>
+            </div>
+
+            <h3> Состав </h3>
+            <div class="product-detail-description">
+                {{ product.description|linebreaks }}
+            </div>
+
+            <div class="product-detail-actions">
+                <a href="#" class="btn-shop">
+                    <i class="fa fa-shopping-basket" aria-hidden="true"></i> Купить
+                </a>
+                <a href="{% url 'shop:catalogue' %}" class="btn-back">
+                    ← Назад
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

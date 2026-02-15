@@ -1,0 +1,16 @@
+{% load static %}
+
+{% block footer %}
+    <footer class="footer-on-top">
+        <div class="footer-on-top-links">
+            <a href="{% url 'page:delivery' %}">Доставка</a>
+            <a href="/our_contacts">Карта проезда</a>
+            <a href="/privacy-policy">Политика конфиденциальности</a>
+        </div>
+    </footer>
+
+    <footer class="footer">
+            <p>© 2026 Флористика. Все права защищены.</p>
+            <p>Дизайн и разработка: <a href="https://t.me/itLavandazz" target="_blank" class="telegram-link">Lavandazz</a></p>
+    </footer>
+{% endblock %}

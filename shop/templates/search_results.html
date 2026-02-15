@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Поиск: {{ query }}{% endblock %}
+
+{% block content_catalog %}
+    {# Поисковая строка (как в каталоге) #}
+    {% block search %} {% include "nav_primary.html" %} {% endblock %}
+
+    <div class="catalog-container">
+        <div class="catalog-row">
+            <!-- Боковая панель с категориями (оставлена для навигации) -->
+
+            {% block catalogue_aside %} {% include "catalogue_aside.html" %} {% endblock %}
+
+            <!-- Основная часть — результаты поиска -->
+            <section class="catalog-main">
+                <h3>Результаты поиска по запросу «{{ query }}»</h3>
+
+                {% if results %}
+                    <div class="products-grid">
+                        {% for product in results %}
+                            <div class="product-card" onclick="location.href='{% url 'shop:product_detail' product.slug %}'" style="cursor: pointer;">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                <div class="product-info">
+                                    <h4>{{ product.name }}</h4>
+                                    <p>{{ product.description|truncatewords:15 }}</p>
+                                    <p class="product-price">{{ product.price }} руб.</p>
+                                    <a href="#" class="btn" onclick="event.stopPropagation();">
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {# Красивое сообщение, если ничего не найдено #}
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 4rem; opacity: 0.5; margin-bottom: 1rem;"></i>
+                        <p>По вашему запросу ничего не найдено.</p>
+                        <p>Попробуйте изменить формулировку или посмотрите другие букеты в <a href="{% url 'shop:catalogue' %}">каталоге</a>.</p>
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}
