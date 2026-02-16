@@ -8,7 +8,5 @@ urlpatterns = [
     path("", views.catalogue, name="catalogue"),
     path('search/', views.catalogue, name='search'),
     path('<slug:category_slug>/', views.catalogue, name='catalogue_by_category'),
-    # path('search/', views.catalogue, name='search'),
-
     path('product/<slug:slug>/', views.product_detail, name='product_detail'),
 ]

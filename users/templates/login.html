@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block modal_cart %}
+{#{% include "includes/cart_button.html" %}#}
+{% endblock  %}
+
+{% block content %}
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Авторизация</h2>
+
+            <form method="post" action="{% url 'user:login' %}" class="login-form">
+                {% csrf_token %}
+
+                {% if request.GET.next %}
+                    <input type="hidden" name="next" value="{{ request.GET.next }}">
+                {% endif %}
+
+                {# Вывод общих ошибок формы (например, неверный логин/пароль) #}
+                {% if form.non_field_errors %}
+                    <div class="form-error">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <label for="id_username">Имя пользователя</label>
+                <input type="text" name="username" id="id_username"
+                       value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                       placeholder="Введите ваше имя пользователя"
+                       required>
+
+                <label for="id_password">Пароль</label>
+                <input type="password" name="password" id="id_password"
+                       placeholder="Введите ваш пароль"
+                       required>
+
+                <button type="submit" class="login-btn">Войти</button>
+            </form>
+
+            <div class="login-links">
+                <a href="#">Забыли пароль?</a> |
+                <a href="{% url 'user:registration' %}">Создать аккаунт</a>
+            </div>
+
+            <div class="login-divider">
+                <span>или</span>
+            </div>
+
+            <div class="social-buttons">
+                <a href="#" class="social-btn">
+                    <i class="fa fa-google" aria-hidden="true"></i> Google
+                </a>
+                <a href="#" class="social-btn">
+                    <i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook
+                </a>
+                <a href="#" class="social-btn">
+                    <i class="fa fa-github-square" aria-hidden="true"></i> GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

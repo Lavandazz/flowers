@@ -12,6 +12,7 @@
 {#        <meta name="viewport" content="{% block viewport %}width=device-width{% endblock %}" />#}
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'css/users.css' %}">
     
         {% block favicon %}
             <link rel="shortcut icon" href="{% static "favicons/1.jpg" %}" />
@@ -34,6 +35,9 @@
             {% block content_catalog %}{% endblock %}
 {#        Продукт#}
             {% block content_product %}{% endblock %}
+{#            Регистрация, логин, профиль #}
+            {% block content %}{% endblock %}
+        
         </div>
         
         <div class="footer-block">

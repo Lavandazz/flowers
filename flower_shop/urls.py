@@ -27,6 +27,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("catalogue/", include("shop.urls")),
     path("page/", include("page.urls")),
+    path("user/", include("users.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Для работы debug_toolbar

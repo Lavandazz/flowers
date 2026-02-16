@@ -1,0 +1,113 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% load cache %}
+{#{% load carts_tags %}#}
+
+{% block content %}
+    <div class="profile-container">
+        <!-- Первая строка: профиль + корзина -->
+        <div class="profile-row">
+            <!-- Левая колонка: профиль -->
+            <div class="profile-col-left">
+                <div class="profile-card">
+                    <h3>Профиль пользователя</h3>
+                    <form action="{% url 'user:profile' %}" method="post" enctype="multipart/form-data" class="profile-form">
+                        {% csrf_token %}
+                        <div class="avatar-container">
+                            {% if user.image %}
+                                <img src="{{ user.image.url }}" alt="Аватар" class="avatar-img">
+                            {% else %}
+                                <img src="{% static 'img/ava_not_found.jpg' %}" alt="Аватар" class="avatar-img">
+                            {% endif %}
+                            <input type="file" name="image" accept="image/*" id="id_image">
+                            {% if form.image.errors %}
+                                <div class="form-error">{{ form.image.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <label for="id_first_name">Имя*</label>
+                        <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value }}" placeholder="Введите ваше имя" required>
+                        {% if form.first_name.errors %}
+                            <div class="form-error">{{ form.first_name.errors }}</div>
+                        {% endif %}
+
+                        <label for="id_last_name">Фамилия*</label>
+                        <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value }}" placeholder="Введите вашу фамилию" required>
+                        {% if form.last_name.errors %}
+                            <div class="form-error">{{ form.last_name.errors }}</div>
+                        {% endif %}
+
+                        <label for="id_username">Имя пользователя*</label>
+                        <input type="text" name="username" id="id_username" value="{{ form.username.value }}" placeholder="Введите имя пользователя" required>
+                        {% if form.username.errors %}
+                            <div class="form-error">{{ form.username.errors }}</div>
+                        {% endif %}
+
+                        <label for="id_email">Email*</label>
+                        <input type="email" name="email" id="id_email" value="{{ form.email.value }}" placeholder="your@email.com" required>
+                        {% if form.email.errors %}
+                            <div class="form-error">{{ form.email.errors }}</div>
+                        {% endif %}
+
+                        <button type="submit" class="profile-btn">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Правая колонка: корзина -->
+            <div class="profile-col-right">
+                <div class="profile-card">
+                    <h3>Корзина</h3>
+                    <div id="cart-items-container">
+                        <!-- Сюда будет подгружаться корзина -->
+                        {# {% include "carts/includes/included_cart.html" %} #}
+                        <p style="opacity: 0.7; text-align: center;">Ваша корзина пуста</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вторая строка: заказы -->
+        <div class="profile-row">
+            <div class="profile-col-full">
+                <div class="profile-card">
+                    <h3>Мои заказы</h3>
+                    {% if orders %}
+                        {% for order in orders %}
+                            <details class="order-item" {% if forloop.first %}open{% endif %}>
+                                <summary class="order-summary">
+                                    Заказ № {{ order.id }} — {{ order.created_timestamp|date:"d.m.Y" }} | Статус: <strong>{{ order.status }}</strong>
+                                </summary>
+                                <div class="order-content">
+                                    <table class="profile-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Товар</th>
+                                                <th>Количество</th>
+                                                <th>Цена</th>
+                                                <th>Сумма</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in order.orderitem_set.all %}
+                                            <tr>
+                                                <td><a href="{% url 'goods:product' item.product.slug %}">{{ item.product.name }}</a></td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>{{ item.price }} руб.</td>
+                                                <td>{{ item.products_price }} руб.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </details>
+                        {% endfor %}
+                    {% else %}
+                        <p style="opacity: 0.7; text-align: center;">У вас пока нет заказов</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

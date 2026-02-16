@@ -10,10 +10,8 @@ body {
 .main-content {
     max-width: 1200px;   /* ограничиваем ширину */
     margin: 0 auto;      /* центрируем */
-    padding-top: 120px;  /* отступ под фиксированную шапку */
-    padding-left: 20px;
-    padding-right: 20px;
-    box-sizing: border-box;
+    padding: 120px 20px 120px 20px;
+    /*box-sizing: border-box;*/
     width: 100%;
 }
 /* Первый слой: фон с пионами */
@@ -115,7 +113,6 @@ body {
 
 /* === ФУТЕР - ПОДВАЛ === */
 .footer-block {
-    margin-top: 3rem;
     width: 100%;
     backdrop-filter: blur(5rem);
     border-top: 1px solid;

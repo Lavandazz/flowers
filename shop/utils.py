@@ -5,6 +5,11 @@ from shop.models import Product, Category
 
 
 def q_search(query) -> BaseManager | None:
+    """
+    Поиск по сайту в названиях и описании. Не учитывает регистр.
+    :param query:
+    :return:
+    """
     return Product.objects.filter(
         Q(name__icontains=query) | Q(description__icontains=query)
     )

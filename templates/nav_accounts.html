@@ -9,7 +9,8 @@
             <li><a href="/catalogue">Каталог</a></li>
             <li><a href="/">О компании</a></li>
             <li><a href="/contacts/">Контакты</a></li>
-            <li><a href="/lk/">Личный кабинет</a></li>
+            <li><a href="{% url 'user:login' %}">Войти</a></li>
+            <li><a href="{% url 'user:profile' %}">Личный кабинет</a></li>
         </ul>
     </div>
 </nav>

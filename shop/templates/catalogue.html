@@ -27,6 +27,7 @@
                     {%  if products or current_category %}
                     <!-- Пагинация через page_obj -->
                         {% for product in page_obj %}  {# используем page_obj для перебора товаров текущей страницы #}
+
                             <div class="product-card"
                                  onclick="location.href='{% url 'shop:product_detail' product.slug %}'"
                                  style="cursor: pointer;">
@@ -51,9 +52,9 @@
 
                              </div>
                         {% endfor %}
-
                     {% else %}
-                        <img src="/static/img/not_found1.png" style="height: 30rem; width: 30rem" alt="not_found">
+                        <img src="/static/img/not_found1.jpg" style="height: 30rem; width: 30rem" alt="not_found">
+
                     {% endif %}
 
                 </div>
