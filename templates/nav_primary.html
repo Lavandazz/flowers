@@ -16,7 +16,8 @@
 {# Оверлей с формой поиска (изначально скрыт) #}
 <div class="search-overlay">
     <div class="search-overlay-content">
-        <form method="get" action="{% url 'shop:search' %}" class="search-overlay-form">
+        {#  Передаем shop:catalogue, т.к. обработка запроса идет через функцию catalogue      #}
+        <form method="get" action="{% url 'shop:catalogue' %}" class="search-overlay-form">
             <input type="text" 
                    name="q" 
                    class="search-overlay-input" 

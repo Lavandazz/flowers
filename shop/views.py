@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
 from shop.models import Product, Category
+from shop.utils import q_search
 
 
 # Create your views here.
@@ -15,14 +16,18 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
     :return:
     """
     # Получаем категории и продукты для страницы
+    query = request.GET.get('q')  # получаем запрос для поиска search, если есть
     products = Product.objects.all()
     categories = Category.objects.all()
     current_category = None
+
     print("вызываю функцию catalogue ")
     # Фильтр по категории (если передан slug в URL)
     if category_slug:
         current_category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=current_category)
+    if query:
+        products = q_search(query)
 
     # Фильтр по цене из GET
     price_min = request.GET.get('price_min')
