@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
+import re
 
 import environ
 from pathlib import Path
@@ -43,6 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    "debug_toolbar",
+
     'main',
     'shop',
     'page',
@@ -56,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'flower_shop.urls'
@@ -123,13 +129,29 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Перенаправления на 404
+IGNORABLE_404_URLS = [
+    re.compile(r"\.(php|cgi)$"),
+    re.compile(r"^/phpmyadmin/"),
+    re.compile(r"^/apple-touch-icon.*\.png$"),
+    re.compile(r"^/favicon\.ico$"),
+    re.compile(r"^/robots\.txt$"),
+]
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+# для работы debug_toolbar
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
+
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static/",
     # "/var/www/static/",
 ]
 MEDIA_URL = 'media/'

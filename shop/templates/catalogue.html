@@ -23,41 +23,48 @@
                 </h3>
                 <!-- Карточка товара -->
                 <div class="products-grid">
+
+                    {%  if products or current_category %}
                     <!-- Пагинация через page_obj -->
-                    {% for product in page_obj %}  {# используем page_obj для перебора товаров текущей страницы #}
-                        <div class="product-card" onclick="location.href='{% url 'shop:product_detail' product.slug %}'" style="cursor: pointer;">
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                            <div class="product-info">
-                                <h4>{{ product.name }}</h4>
-                                <p class="product-price">{{ product.price }} руб.</p>
-                                <a href="#" class="btn" onclick="event.stopPropagation();">
-                                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                        {% for product in page_obj %}  {# используем page_obj для перебора товаров текущей страницы #}
+                            <div class="product-card"
+                                 onclick="location.href='{% url 'shop:product_detail' product.slug %}'"
+                                 style="cursor: pointer;">
 
-                {% if page_obj.has_other_pages %}
-                    <div class="pagination">
-                        {% if page_obj.has_previous %}
-                            <a href="?page={{ page_obj.previous_page_number }}{% if category_slug %}&category={{ category_slug }}{% endif %}">
-                                « Предыдущая</a>
-                        {% endif %}
+                                {%  if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                {% else %}
+                                    <img src="/img/not_found.png" alt="not_found">
+                                {% endif %}
 
-                        {% for num in page_obj.paginator.page_range %}
-                            {% if page_obj.number == num %}
-                                <span class="current">{{ num }}</span>
-                            {% else %}
-                                <a href="?page={{ num }}{% if category_slug %}&category={{ category_slug }}{% endif %}">{{ num }}</a>
-                            {% endif %}
+                                <div class="product-info">
+                                    <h4>{{ product.name }}</h4>
+                                    <p class="product-price">{{ product.price }}
+                                        <a class="rub">
+                                            <i class="fa fa-ruble"></i>
+                                        </a>
+                                    </p>
+                                    <a href="#" class="btn" onclick="event.stopPropagation();">
+                                        <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+
+                             </div>
                         {% endfor %}
 
-                        {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}{% if category_slug %}&category={{ category_slug }}{% endif %}">
-                                Следующая »</a>
-                        {% endif %}
-                    </div>
+                    {% else %}
+                        <img src="/static/img/not_found1.png" style="height: 30rem; width: 30rem" alt="not_found">
+                    {% endif %}
+
+                </div>
+
+{#                Пагинация#}
+                {% if page_obj.has_other_pages %}
+
+                    {% block pagination_block %}
+                        {% include "pagination.html" %}
+                    {% endblock %}
+
                 {% endif %}
 
             </section>

@@ -1,10 +1,17 @@
 
 
 {# Кнопка-триггер: лупа + слово "Найти" #}
-<button type="button" class="search-trigger" aria-label="Поиск" title="Найти">
-    <i class="fas fa-search"></i>
-    <span class="search-trigger-text">"Найти"</span>
-</button>
+
+<div class="search-filter-bts" >
+    <button type="button" class="filter-trigger" aria-label="Фильтр" title="Фильтры">
+        <i class="fa fa-filter" aria-hidden="true"></i>
+        <span class="search-trigger-text">Фильтры</span>
+    </button>   
+    <button type="button" class="search-trigger" aria-label="Поиск" title="Найти">
+        <i class="fas fa-search"></i>
+        <span class="search-trigger-text">Найти</span>
+    </button>
+</div>
 
 {# Оверлей с формой поиска (изначально скрыт) #}
 <div class="search-overlay">
@@ -22,5 +29,38 @@
                 <i class="fas fa-times"></i>
             </button>
         </form>
+    </div>
+</div>
+
+{# Оверлей с фильтрами #}
+<div class="filter-dropdown-container">
+    
+    <div class="filter-dropdown">
+    
+        <form method="get" action="" class="filter-form">
+            {# Сохраняем поисковый запрос, если есть #}
+            {% if request.GET.q %}<input type="hidden" name="q" value="{{ request.GET.q }}">{% endif %}
+            
+            <div class="filter-group">
+                <label>Сортировка:</label>
+                <select name="sort" class="filter-select">
+                    <option value="">по умолчанию</option>
+                    <option value="price_asc" {% if request.GET.sort == 'price_asc' %}selected{% endif %}>сначала дешёвые</option>
+                    <option value="price_desc" {% if request.GET.sort == 'price_desc' %}selected{% endif %}>сначала дорогие</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Цена, ₽:</label>
+                <div class="range-inputs">
+                    <input type="number" name="price_min" placeholder="от" value="{{ request.GET.price_min }}" class="filter-input" min="0">
+                    <span>—</span>
+                    <input type="number" name="price_max" placeholder="до" value="{{ request.GET.price_max }}" class="filter-input" min="0">
+                </div>
+            </div>
+            
+            <button type="submit" class="filter-apply-btn">Применить</button>
+        </form>
+    
     </div>
 </div>

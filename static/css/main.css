@@ -3,8 +3,9 @@ body {
     margin: 0;
     min-height: 100vh;
     position: relative; /* для позиционирования псевдоэлемента */
-    font-family: "Gill Sans Extrabold", sans-serif;
+    /*font-family: "Gill Sans Extrabold", sans-serif;*/
     color: white;
+    font-family: "Irish Grover", sans-serif ;
 }
 .main-content {
     max-width: 1200px;   /* ограничиваем ширину */
@@ -49,7 +50,7 @@ body {
     background: rgba(196, 196, 196, 0.29);
     border: 1px solid rgba(255, 255, 255, 0.66);
     border-radius: 12px;
-    z-index: 1000;
+    z-index: 1005;
 }
 
 .nav-container {
@@ -120,6 +121,7 @@ body {
     border-top: 1px solid;
     border-top-color: rgba(255,255,255,0.5);
   }
+
 /* Верхний футер */
 .footer-on-top {
     /*width: 100%;*/
@@ -354,30 +356,117 @@ body {
 }
 
 /* ---------- ТРИГГЕР ПОИСКА (ЛУПА + НАДПИСЬ) ---------- */
-.search-trigger {
+.search-filter-bts {
     display: flex;
-    margin-left: auto;
-    align-items: center;
-    gap: 1rem;               /* расстояние между лупой и словом */
+    justify-content: space-between;
+    width: auto;           /* ширина по содержимому */
+    color: white;          /* цвет текста и иконки (можно настроить) */
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.search-trigger,
+.filter-trigger {
+    gap: 10rem;               /* расстояние между лупой и словом */
     background: transparent; /* полностью прозрачный фон */
-    /*backdrop-filter: none;   !* убираем размытие *!*/
     border: none;           /* убираем рамку */
     padding: 1rem;             /* убираем внутренние отступы */
     width: auto;           /* ширина по содержимому */
     color: white;          /* цвет текста и иконки (можно настроить) */
     font-family: 'Noto Sans', sans-serif;
     font-size: 16px;
-    letter-spacing: 1px;
     cursor: pointer;
     transition: color 0.5s;
-
+}
+.filter-trigger {
+    margin-left: 25.2%;
 }
 
-.search-trigger:hover,
-.search-trigger i:hover {
+.search-trigger-text:hover,
+.search-trigger i:hover,
+.filter-trigger i:hover {
     color: rgb(250, 167, 224); /* ваш розовый */
+}
+
+/* Контейнер для позиционирования */
+.filter-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Выпадающий блок */
+.filter-dropdown {
+    display: none;
+    position: absolute;
+    /*top:100%;  !* сразу под кнопкой с отступом *!*/
+    left: 19rem;                 /* можно left: 0; если нужно выравнивание по левому краю */
+    width: 15rem;
+    backdrop-filter: blur(1rem);
+    background: rgba(196, 196, 196, 0.29);
+    border: 1px solid rgba(255, 255, 255, 0.66);
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 1000;
+    color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 
 }
+
+/* Класс для отображения */
+.filter-dropdown.active {
+    display: block;
+}
+/* Стили элементов формы */
+.filter-group {
+    margin-bottom: 15px;
+}
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+.filter-select,
+.filter-input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.47);
+    color: white;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+.filter-select option {
+    background: #333;
+    color: white;
+}
+.range-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.range-inputs input {
+    flex: 1;
+    min-width: 0;  /* для корректного сжатия */
+}
+.filter-apply-btn {
+    display: block;
+    margin-left: auto;     /* автоматический отступ слева */
+    margin-right: auto;    /* автоматический отступ справа */
+    width: 60%;
+    padding: 10px;
+    background: rgba(108, 107, 107, 0.74);
+    border: 1px solid white;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.5s;
+}
+.filter-apply-btn:hover {
+    background: rgba(229, 229, 229, 0.5);
+}
+
 
 /* ---------- ОВЕРЛЕЙ ПОИСКА (ЗАТЕМНЕНИЕ) ---------- */
 .search-overlay {
@@ -676,6 +765,10 @@ body {
     margin-top: auto;    /* прижимает цену к низу, но оставляет место для кнопки */
     margin-bottom: 10px;
 }
+.product-price a{
+    font-size: 1.2rem;
+}
+
 /*Кнопка корзины*/
 .btn {
     color: whitesmoke;
@@ -685,8 +778,24 @@ body {
     transition: background 0.3s;
     text-decoration: none;
 }
-.btn:hover {
+
+.btn i:hover {
     color: rgba(199, 142, 181, 0.63);
+}
+
+.pagination {
+    display: flex;
+    margin-top: 3rem;
+    padding: 1rem;
+}
+.pagination a {
+    letter-spacing: 0.2rem;
+    padding-right: 1rem;
+    color: #fff3d6;
+    text-decoration: none;
+}
+.pagination a:hover {
+    color: #fdd16c;
 }
 
 /*Карточка товара*/

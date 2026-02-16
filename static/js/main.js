@@ -35,3 +35,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // При отправке формы оверлей автоматически закроется (стандартное поведение браузера)
 });
+
+// Открытие фильтра
+document.addEventListener('DOMContentLoaded', function() {
+    const filterTrigger = document.querySelector('.filter-trigger');
+    const filterDropdown = document.querySelector('.filter-dropdown');
+
+    if (filterTrigger && filterDropdown) {
+        // Клик по кнопке переключает дропдаун
+        filterTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();  // чтобы не сработал обработчик на document
+            filterDropdown.classList.toggle('active');
+        });
+
+        // Закрытие при клике вне дропдауна
+        document.addEventListener('click', function(e) {
+            if (!filterTrigger.contains(e.target) && !filterDropdown.contains(e.target)) {
+                filterDropdown.classList.remove('active');
+            }
+        });
+    }
+});

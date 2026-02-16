@@ -24,7 +24,15 @@ from main import views
 
 urlpatterns = [
     path("", include("main.urls")),
-    path("catalogue/", include("shop.urls")),
     path("admin/", admin.site.urls),
+    path("catalogue/", include("shop.urls")),
     path("page/", include("page.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Для работы debug_toolbar
+if settings.DEBUG:
+    from debug_toolbar.toolbar import debug_toolbar_urls
+
+    urlpatterns = [
+                      *urlpatterns,
+                  ] + debug_toolbar_urls()
