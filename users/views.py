@@ -1,10 +1,11 @@
 from django.contrib import auth
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate
 
-from users.forms import UserLoginForm
+from users.forms import UserLoginForm, UserRegisterForm
+
 
 # Create your views here.
 
@@ -26,7 +27,6 @@ def login(request):
     else:
         form = UserLoginForm()
 
-
     context = {
         'title': 'Авторизация',
         'form': form
@@ -35,8 +35,21 @@ def login(request):
 
 
 def registration(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(data=request.POST)
+        if form.is_valid():
+            form.save()  # сохраняем в бд
+            # Перенаправляем в профиль
+            user = form.instance
+            auth.login(request, user)
+            return HttpResponseRedirect(reverse("user:profile"))
+    else:
+        form = UserRegisterForm()
+        print('Возвращаю обратно')
+
     context = {'title': 'Регистрация',
-    }
+               'form': form}
+
     return render(request, 'registration.html', context)
 
 
@@ -47,6 +60,5 @@ def profile(request):
 
 
 def logout(request):
-    context = {'title': 'Выход',
-    }
-    # return render(request, 'logout.html', context)
+    auth.logout(request)
+    return redirect(reverse("shop:catalogue"))

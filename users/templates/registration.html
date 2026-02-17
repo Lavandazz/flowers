@@ -12,7 +12,12 @@
 
             <form method="post" action="{% url 'user:registration' %}" class="registration-form">
                 {% csrf_token %}
-
+                {% if form.errors %}
+                    <div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        <strong>Ошибки формы:</strong>
+                        {{ form.errors }}
+                    </div>
+                {% endif %}
                 {# Вывод общих ошибок формы (если есть) #}
                 {% if form.non_field_errors %}
                     <div class="form-error">
