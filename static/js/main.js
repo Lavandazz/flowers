@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // При отправке формы оверлей автоматически закроется (стандартное поведение браузера)
 });
 
-// Открытие фильтра
+// Открытие фильтра для фильтрации каталога цен
 document.addEventListener('DOMContentLoaded', function() {
     const filterTrigger = document.querySelector('.filter-trigger');
     const filterDropdown = document.querySelector('.filter-dropdown');
@@ -56,3 +56,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Появление глазика для просмотра пароля в поле входа
+function PasswordVisibility(fieldId, iconId) {
+    const field = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+
+    // Определяем текущий тип поля
+    const isPassword = field.getAttribute('type') === 'password';
+
+    if (isPassword) {
+        // Если пароль скрыт type="password", меняем на text и картинку
+        field.setAttribute('type', 'text');
+        // Меняем иконку: убираем закрытый глаз, добавляем открытый
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    } else {
+        // Пароль виден, удаляем картинку и меняем
+        field.setAttribute('type', 'password');
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    }
+}

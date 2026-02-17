@@ -230,11 +230,15 @@ details[open] .order-summary::before {
     font-size: 2rem;
     text-align: center;
 }
-
+/* Обёртка для поля с иконкой */
+.form-label {
+    position: relative;
+}
 /* Поля формы (как в профиле) */
-.login-form input[type="text"],
-.login-form input[type="password"],
+.form-label input[type="text"],
+.form-label input[type="password"],
 .login-form input[type="email"] {
+
     width: 100%;
     padding: 12px 15px;
     border-radius: 8px;
