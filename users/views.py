@@ -22,6 +22,10 @@ def login(request):
                 # Возвращаем пользователя
                 auth.login(request, user)
                 messages.success(request, f"Добро пожаловать! {username}")
+
+                redirect_page = request.POST.get('next', None)
+                if redirect_page and redirect_page != reverse('user:logout'):
+                    return HttpResponseRedirect(request.POST.get('next'))
                 # Перенаправляем в профиль
                 return HttpResponseRedirect(reverse("user:profile"))
     else:
@@ -53,14 +57,13 @@ def registration(request):
     return render(request, 'registration.html', context)
 
 
-@login_required(redirect_field_name='login')
+@login_required
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(data=request.POST, instance=request.user, files=request.FILES)
         if form.is_valid():
-
             form.save()  # сохраняем в бд
-            # Перенаправляем в профиль
+            # Перенаправляем
             return HttpResponseRedirect(reverse("shop:catalogue"))
     else:
         # instance=request.user берем и передаем юзера в форму профиля
