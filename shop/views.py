@@ -21,11 +21,10 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
     categories = Category.objects.all()
     current_category = None
 
-    print("вызываю функцию catalogue ")
     # Фильтр по категории (если передан slug в URL)
     if category_slug:
         current_category = get_object_or_404(Category, slug=category_slug)
-        products = products.filter(category=current_category)
+        products = products.filter(categories=current_category)
     if query:
         products = q_search(query)
 
@@ -48,7 +47,7 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
     paginator = Paginator(products, 9)  # подключаем пагинацию товаров
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)  # Получаем объект, количество страниц Page <Page 1 of 2>
-    print('current_category', current_category)
+
     context = {
         'page_obj': page_obj,  # для пагинации и списка товаров
         'categories': categories,

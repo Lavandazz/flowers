@@ -5,9 +5,30 @@ from django.utils.text import slugify
 # Create your models here.
 
 
+class Type(models.Model):
+    name = models.CharField("Тип категории", max_length=100)
+    slug = models.SlugField('URL', unique=True)
+
+    class Meta:
+        verbose_name = "Тип категории"
+        verbose_name_plural = "Типы категорий"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
 class Category(models.Model):
     name = models.CharField("Название", max_length=100)
     slug = models.SlugField('URL', unique=True)
+    # models.PROTECT не позволяет удалить тип, пока есть связанные категории
+    type = models.ForeignKey(Type, models.PROTECT,
+                             related_name='categories',
+                             verbose_name='Тип категории')
 
     class Meta:
         verbose_name = "Категория"
@@ -28,9 +49,9 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField('URL', unique=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,
-                                 related_name='products',
-                                 verbose_name='Категория')
+    categories = models.ManyToManyField(Category,
+                                        related_name='products',
+                                        verbose_name='Категории')
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='products/')
@@ -46,4 +67,3 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-

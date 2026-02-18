@@ -481,3 +481,96 @@ details[open] .order-summary::before {
         margin: 0 0 15px;
     }
 }
+
+/* Контейнер для всех уведомлений */
+.notifications-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    max-width: 90%;
+    pointer-events: none; /* чтобы клики проходили сквозь контейнер, но не сквозь сами уведомления */
+}
+
+/* Само уведомление */
+.notification {
+    pointer-events: auto; /* возвращаем возможность взаимодействия */
+    padding: 15px 40px 15px 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    animation: slideIn 0.3s ease-out forwards;
+    min-width: 300px;
+    text-align: center;
+    border-left: 4px solid transparent;
+}
+
+/* Типы уведомлений */
+.notification-success {
+    border-left-color: #28a745;
+    background-color: #f0fff4;
+    color: #155724;
+}
+
+.notification-error {
+    border-left-color: #dc3545;
+    background-color: #fff5f5;
+    color: #721c24;
+}
+
+/* Кнопка закрытия */
+.notification-close {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.notification-close:hover {
+    opacity: 1;
+}
+
+/* Анимация появления */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация исчезновения (будет добавлена через JS) */
+.notification.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}

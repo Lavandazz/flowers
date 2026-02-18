@@ -78,3 +78,34 @@ function PasswordVisibility(fieldId, iconId) {
         icon.classList.add('fa-eye-slash');
     }
 }
+
+
+// Закрытие уведомлений
+document.addEventListener('DOMContentLoaded', function() {
+    const notifications = document.querySelectorAll('.notification');
+
+    notifications.forEach(function(notification) {
+        // Функция скрытия уведомления
+        const hideNotification = function() {
+            // Добавляем класс для анимации исчезновения
+            notification.classList.add('fade-out');
+            // После окончания анимации удаляем элемент из DOM
+            notification.addEventListener('animationend', function() {
+                notification.remove();
+                // Если контейнер стал пустым, можно его тоже скрыть или оставить
+            }, { once: true });
+        };
+
+        // Автоматическое скрытие через 5 секунд
+        const timer = setTimeout(hideNotification, 3000);
+
+        // Кнопка закрытия
+        const closeBtn = notification.querySelector('.notification-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                clearTimeout(timer); // отменяем таймер, чтобы не было конфликта
+                hideNotification();
+            });
+        }
+    });
+});

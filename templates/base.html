@@ -29,6 +29,8 @@
         {% block header %} {% include "nav_accounts.html" %} {% endblock %}
       
         <div class="main-content">
+            {% include "notifications.html" %}
+      
 {#            Страница index#}
             {% block content_index %}{% endblock %}
 {#            Каталог#}
