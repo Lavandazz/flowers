@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeBtn = document.querySelector('.search-overlay-close');
     const searchInput = document.querySelector('.search-overlay-input');
 
+    const cartTrigger = document.querySelector('.cart-trigger');
+    const cartOverlay = document.querySelector('.cart-overlay');
+    const closeButton = document.querySelector('.cart-panel-close');
+
     if (!trigger || !overlay || !closeBtn) return;
 
     // Открыть оверлей
@@ -26,6 +30,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+        // Открыть корзину
+    cartTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        cartOverlay.classList.add('active');
+    });
+
+    // Закрыть по крестику
+    closeButton.addEventListener('click', function() {
+        cartOverlay.classList.remove('active');
+    });
+
+    // Закрыть по клику на затемнённый фон
+    cartOverlay.addEventListener('click', function(e) {
+        if (e.target === cartOverlay) {
+            cartOverlay.classList.remove('active');
+        }
+    });
+        // Закрыть по Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && cartOverlay.classList.contains('active')) {
+            cartOverlay.classList.remove('active');
+        }
+    });
+
+
     // Закрыть по Escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && overlay.classList.contains('active')) {
@@ -35,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // При отправке формы оверлей автоматически закроется (стандартное поведение браузера)
 });
+
 
 // Открытие фильтра для фильтрации каталога цен
 document.addEventListener('DOMContentLoaded', function() {

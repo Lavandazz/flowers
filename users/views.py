@@ -74,6 +74,10 @@ def profile(request):
     return render(request, 'profile.html', context)
 
 
+def user_basket(request):
+    return render(request, 'user_basket.html')
+
+
 @login_required
 def logout(request):
     messages.success(request, f"{request.user.username} Пока-Пока!")

@@ -1,5 +1,5 @@
 
-{# Кнопка-триггер: лупа + слово "Найти" #}
+{# Кнопка-триггер: лупа + слово "Найти" и корзина #}
 
 <div class="search-filter-bts" >
     <button type="button" class="filter-trigger" aria-label="Фильтр" title="Фильтры">
@@ -10,6 +10,13 @@
         <i class="fas fa-search"></i>
         <span class="search-trigger-text">Найти</span>
     </button>
+    
+    <div class="cart-trigger">
+        <i class="fa fa-shopping-cart" aria-hidden="true" style="width: 24px; height: 24px; color: whitesmoke"></i>
+        <!-- Можно добавить счётчик товаров -->
+        <span class="cart-count" id="cart-count">{{ carts.total_quantity|default:0 }}</span>
+    </div>
+
 </div>
 
 {# Оверлей с формой поиска (изначально скрыт) #}
@@ -31,6 +38,7 @@
         </form>
     </div>
 </div>
+
 
 {# Оверлей с фильтрами #}
 <div class="filter-dropdown-container">
@@ -62,5 +70,18 @@
             <button type="submit" class="filter-apply-btn">Применить</button>
         </form>
     
+    </div>
+</div>
+
+
+<!-- Оверлей корзины (затемнение) -->
+<div class="cart-overlay">
+    <div class="cart-panel">
+        <!-- Кнопка закрытия -->
+        <button class="cart-panel-close">&times;</button>
+        <!-- Сюда будем подгружать содержимое корзины -->
+        <div class="cart-panel-content" id="cart-panel-content">
+            {% include "included_basket.html" %}
+        </div>
     </div>
 </div>

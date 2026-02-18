@@ -11,7 +11,7 @@
             <!-- Левая колонка: профиль -->
             <div class="profile-col-left">
                 <div class="profile-card">
-                    <h3>Профиль пользователя</h3>
+                    <h3>Профиль {{ user.username }}</h3>
                     <form action="{% url 'user:profile' %}" method="post" enctype="multipart/form-data" class="profile-form">
                         {% csrf_token %}
                         <div class="avatar-container">
@@ -63,7 +63,7 @@
                     <h3>Корзина</h3>
                     <div id="cart-items-container">
                         <!-- Сюда будет подгружаться корзина -->
-                        {# {% include "carts/includes/included_cart.html" %} #}
+                        {% block modal_basket %}{% include "included_basket.html" %}{% endblock  %}
                         <p style="opacity: 0.7; text-align: center;">Ваша корзина пуста</p>
                     </div>
                 </div>

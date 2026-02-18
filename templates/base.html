@@ -27,21 +27,21 @@
         </div>
         {# Меню навигации#}
         {% block header %} {% include "nav_accounts.html" %} {% endblock %}
+        
       
         <div class="main-content">
             {% include "notifications.html" %}
-      
+
 {#            Страница index#}
             {% block content_index %}{% endblock %}
 {#            Каталог#}
             {% block content_catalog %}{% endblock %}
-{#        Продукт#}
+{#           Продукт#}
             {% block content_product %}{% endblock %}
 {#            Регистрация, логин, профиль #}
             {% block content %}{% endblock %}
         
-            
-        
+
         </div>
         
         <div class="footer-block">
