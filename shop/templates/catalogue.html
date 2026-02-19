@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layout.html" %}
 {% load static %}
 
 {% block title %}Каталог цветов{% endblock %}
@@ -45,7 +45,8 @@
                                             <i class="fa fa-ruble"></i>
                                         </a>
                                     </p>
-                                    <a href="#" class="btn" onclick="event.stopPropagation();">
+{#                                    Добавить в корзину#}
+                                    <a href="{% url "basket:basket_add" product.slug %}" class="btn" onclick="event.stopPropagation();">
                                         <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                                     </a>
                                 </div>

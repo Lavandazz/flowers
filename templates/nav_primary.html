@@ -1,4 +1,6 @@
-
+{% load basket_tags %}
+{# Загрузка корзины для отображения количества на главной странце  #}
+{% user_baskets request as baskets  %}
 {# Кнопка-триггер: лупа + слово "Найти" и корзина #}
 
 <div class="search-filter-bts" >
@@ -14,7 +16,7 @@
     <div class="cart-trigger">
         <i class="fa fa-shopping-cart" aria-hidden="true" style="width: 24px; height: 24px; color: whitesmoke"></i>
         <!-- Можно добавить счётчик товаров -->
-        <span class="cart-count" id="cart-count">{{ carts.total_quantity|default:0 }}</span>
+        <span class="cart-count" id="cart-count">{{ baskets.total_quantity|default:0 }}</span>
     </div>
 
 </div>

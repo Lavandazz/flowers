@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layout.html" %}
 {% load static %}
 
 {% block title %}{{ product.name }}{% endblock %}
@@ -26,9 +26,9 @@
             <div class="product-detail-description">
                 {{ product.description|linebreaks }}
             </div>
-
+            {# Добавить в корзину#}
             <div class="product-detail-actions">
-                <a href="#" class="btn-shop">
+                <a href="{% url "basket:basket_add" product.slug %}" class="btn-shop">
                     <i class="fa fa-shopping-basket" aria-hidden="true"></i> Купить
                 </a>
                 <a href="{% url 'shop:catalogue' %}" class="btn-back">

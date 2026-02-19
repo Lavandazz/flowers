@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block layout_block %}
+
+        <div class="main-content">
+            {% include "notifications.html" %}
+
+{#            Каталог#}
+            {% block content_catalog %}{% endblock %}
+{#           Продукт#}
+            {% block content_product %}{% endblock %}
+{#            Регистрация, логин, профиль #}
+            {% block content %}{% endblock %}
+
+        </div>
+
+        <div class="footer-block">
+            {% block footer %} {% include "footer.html" %} {% endblock %}
+        </div>
+        
+{% endblock %}

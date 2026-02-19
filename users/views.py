@@ -24,6 +24,7 @@ def login(request):
                 messages.success(request, f"Добро пожаловать! {username}")
 
                 redirect_page = request.POST.get('next', None)
+                # если пользователь вышел, перенаправляем на logout
                 if redirect_page and redirect_page != reverse('user:logout'):
                     return HttpResponseRedirect(request.POST.get('next'))
                 # Перенаправляем в профиль

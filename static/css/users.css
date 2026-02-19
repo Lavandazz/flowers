@@ -516,9 +516,9 @@ details[open] .order-summary::before {
 
 /* Типы уведомлений */
 .notification-success {
-    border-left-color: #28a745;
-    background-color: #f0fff4;
-    color: #155724;
+    border-left-color: rgba(110, 40, 167, 0.7);
+    background-color: #faf0ff;
+    color: #1c0046;
 }
 
 .notification-error {
@@ -718,10 +718,11 @@ details[open] .order-summary::before {
 /* Кнопка оформления заказа */
 .checkout-btn {
     display: block;
-    width: 100%;
+    width: 50%;
     padding: 15px;
-    background: #007bff;
-    color: white;
+    background: #555;
+    border: #131313;
+    color: whitesmoke;
     text-align: center;
     text-decoration: none;
     border-radius: 8px;
@@ -734,7 +735,7 @@ details[open] .order-summary::before {
 }
 
 .checkout-btn:hover {
-    background: #0056b3;
+    background: rgba(0, 44, 91, 0.51);
 }
 
 /*Корзина на главной (выезжает)*/
