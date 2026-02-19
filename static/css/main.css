@@ -1,11 +1,18 @@
 
 body {
+    display: flex;
+    flex-direction: column;
     margin: 0;
     min-height: 100vh;
     position: relative; /* для позиционирования псевдоэлемента */
     /*font-family: "Gill Sans Extrabold", sans-serif;*/
     color: white;
     font-family: "Irish Grover", sans-serif ;
+}
+/* Контейнер контента занимает всё свободное место */
+.content-area {
+    flex: 1 0 auto;   /* растягивается, но не сжимается меньше содержимого */
+    width: 100%;      /* на всякий случай */
 }
 .main-content {
     max-width: 1200px;   /* ограничиваем ширину */
@@ -113,6 +120,8 @@ body {
 
 /* === ФУТЕР - ПОДВАЛ === */
 .footer-block {
+    flex-shrink: 0;
+
     width: 100%;
     backdrop-filter: blur(5rem);
     border-top: 1px solid;

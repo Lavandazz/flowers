@@ -14,9 +14,11 @@
             {% block content %}{% endblock %}
 
         </div>
-
-        <div class="footer-block">
-            {% block footer %} {% include "footer.html" %} {% endblock %}
-        </div>
         
+{% endblock %}
+
+{% block footer_area %}
+    <div class="footer-block">
+        {% block footer %} {% include "footer.html" %} {% endblock %}
+    </div>
 {% endblock %}

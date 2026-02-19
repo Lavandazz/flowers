@@ -28,13 +28,20 @@
         <!-- Меню навигации -->
         {% block header %} {% include "nav_accounts.html" %} {% endblock %}
         
-        <!-- Все страницы -->
-        {% block layout_block %}{% endblock %}
-        <!-- Index -->
-        {% block content_index %}{% endblock %}
+        <div class="content-area">
+            <!-- Все страницы -->
+            {% block layout_block %}{% endblock %}
+            <!-- Index -->
+            {% block content_index %}{% endblock %}
+        </div>
 
-
-
+         {# Блок для футера – по умолчанию пуст #}
+        {% block footer_area %}
+            <!-- Футер не выводится, если блок не переопределён -->
+        {% endblock %}
+{#        <div class="footer-block">#}
+{#            {% block footer %} {% include "footer.html" %} {% endblock %}#}
+{#        </div>#}
             
         <!-- Scripts loaded from a CDN. -->
         {% block cdn_scripts %}
