@@ -1,0 +1,70 @@
+{% load static %}
+{# Загружаем basket_tags.py из templatetags для отображения корзины пользователя #}
+{% load basket_tags %}
+{# Вызов функции user_baskets #}
+{% user_baskets request as baskets  %}
+
+<div class="basket-container">
+    {% for item in baskets %}
+        <div class="basket-item">
+            <div class="basket-item-header">
+                <h5 class="basket-item-title">{{ item.product.name }}</h5>
+            </div>
+            <div class="basket-item-body">
+                <div class="basket-item-row">
+                    <!-- Блок управления количеством -->
+                    <div class="basket-quantity">
+                        <button type="button" class="quantity-btn decrement"
+                                data-cart-id="{{ item.id }}"
+                                data-cart-change-url="#">
+                            {% csrf_token %}
+                            −
+                        </button>
+                        <input type="text" class="quantity-input" value="{{ item.quantity }}" readonly>
+                        <button type="button" class="quantity-btn increment"
+                                data-cart-id="{{ item.id }}"
+                                data-cart-change-url="#">
+                            {% csrf_token %}
+                            +
+                        </button>
+                    </div>
+
+                    <!-- Цена за единицу и общая стоимость -->
+                    <div class="basket-price-info">
+                        <span class="price-per-item">x {{ item.product.sell_price }} =</span>
+                        <strong class="item-total">{{ item.products_price }}
+                            <i class="fa fa-ruble"></i>
+                        </strong>
+                    </div>
+
+                    <!-- Кнопка удаления -->
+                    <div class="basket-remove">
+                        <a href="{% url "basket:basket_remove" item.id %}" class="remove-link"
+                           data-cart-id="{{ item.id }}">
+                            {% csrf_token %}
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            <img src="" alt="Удалить" width="16" height="16">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="basket-empty">Корзина кажется пуста!</p>
+    {% endfor %}
+
+    <!-- Итоговая информация -->
+    <div class="basket-footer">
+        <p class="total-info">Итого <strong>{{ baskets.total_quantity }}</strong> товар(а) на сумму</p>
+        <h4 class="total-price">
+            <strong>{{ baskets.total_price }}
+                <i class="fa fa-ruble"></i>
+            </strong>
+        </h4>
+    </div>
+
+    <!-- Кнопка оформления заказа (только если есть товары и не в процессе заказа) -->
+    {% if baskets and not order %}
+        <a class="checkout-btn" href="#">Оформить заказ</a>
+    {% endif %}
+</div>
