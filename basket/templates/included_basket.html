@@ -15,15 +15,15 @@
                     <!-- Блок управления количеством -->
                     <div class="basket-quantity">
                         <button type="button" class="quantity-btn decrement"
-                                data-cart-id="{{ item.id }}"
-                                data-cart-change-url="#">
+                                data-product-id="{{ item.id }}"
+                                data-cart-change-url="{% url "basket:basket_change" %}">
                             {% csrf_token %}
                             −
                         </button>
                         <input type="text" class="quantity-input" value="{{ item.quantity }}" readonly>
                         <button type="button" class="quantity-btn increment"
-                                data-cart-id="{{ item.id }}"
-                                data-cart-change-url="#">
+                                data-product-id="{{ item.id }}"
+                                data-cart-change-url="{% url "basket:basket_change" %}">
                             {% csrf_token %}
                             +
                         </button>
@@ -39,8 +39,8 @@
 
                     <!-- Кнопка удаления -->
                     <div class="basket-remove">
-                        <a href="{% url "basket:basket_remove" item.id %}" class="remove-link"
-                           data-cart-id="{{ item.id }}">
+                        <a href="{% url  "basket:basket_remove" %}" class="remove-link"
+                           data-product-id="{{ item.id }}">
                             {% csrf_token %}
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                             <img src="" alt="Удалить" width="16" height="16">

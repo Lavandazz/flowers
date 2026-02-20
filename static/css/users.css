@@ -823,3 +823,18 @@ details[open] .order-summary::before {
     align-items: center;
     justify-content: center;
 }
+
+/*ДЛЯ УЛЕТАЮЩЕЙ КОРЗИНЫ*/
+.flying-item {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;  /* чтобы не мешал кликам */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 1s cubic-bezier(0.2, 1, 0.3, 1); /* плавная анимация */
+    opacity: 0.9;
+    background: transparent; /* фон прозрачный, чтобы была видна иконка */
+    color: inherit;
+    font-size: inherit;
+}

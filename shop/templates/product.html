@@ -4,6 +4,7 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content_product %}
+{% block search %} {% include "nav_primary.html" %} {% endblock %}
 <div class="product-detail-container">
     <div class="product-detail-grid">
         <!-- Левая колонка: изображение товара -->
@@ -28,7 +29,9 @@
             </div>
             {# Добавить в корзину#}
             <div class="product-detail-actions">
-                <a href="{% url "basket:basket_add" product.slug %}" class="btn-shop">
+                <a href="{% url "basket:basket_add" %}"
+                   class="btn-shop add-to-cart" data-product-id="{{ product.id }}">
+                    {% csrf_token %}
                     <i class="fa fa-shopping-basket" aria-hidden="true"></i> Купить
                 </a>
                 <a href="{% url 'shop:catalogue' %}" class="btn-back">

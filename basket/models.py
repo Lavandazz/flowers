@@ -36,4 +36,5 @@ class Basket(models.Model):
         return round(self.product.price * self.quantity, 2)
 
     def __str__(self):
-        return f'Корзина {self.user.username} | Товар {self.product.name} | Количество {self.quantity}'
+        user_info = self.user.username if self.user else f"Аноним (сессия: {self.session_key})"
+        return f'Корзина {user_info} | Товар {self.product.name} | Количество {self.quantity}'

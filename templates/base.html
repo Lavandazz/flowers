@@ -39,10 +39,7 @@
         {% block footer_area %}
             <!-- Футер не выводится, если блок не переопределён -->
         {% endblock %}
-{#        <div class="footer-block">#}
-{#            {% block footer %} {% include "footer.html" %} {% endblock %}#}
-{#        </div>#}
-            
+
         <!-- Scripts loaded from a CDN. -->
         {% block cdn_scripts %}
             <!-- jQuery -->
@@ -53,7 +50,13 @@
         {% block scripts %}
         {% endblock %}
         
+{#        <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>#}
+{#        <script src="{% static 'js/jq.js' %}"></script>#}
+        
         <script src="{% static 'js/main.js' %}"></script>
+        <script src="{% static 'js/basket.js' %}"></script>
+
+        
 
     </body>
 </html>

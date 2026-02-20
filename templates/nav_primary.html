@@ -13,8 +13,8 @@
         <span class="search-trigger-text">Найти</span>
     </button>
     
-    <div class="cart-trigger">
-        <i class="fa fa-shopping-cart" aria-hidden="true" style="width: 24px; height: 24px; color: whitesmoke"></i>
+    <div class="cart-trigger ">
+        <i id="cart-icon" class="fa fa-shopping-cart" aria-hidden="true" style="width: 24px; height: 24px; color: whitesmoke"></i>
         <!-- Можно добавить счётчик товаров -->
         <span class="cart-count" id="cart-count">{{ baskets.total_quantity|default:0 }}</span>
     </div>
