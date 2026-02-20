@@ -36,6 +36,7 @@ def basket_add(request):
         else:
             # Для анонима используем session_key
             session_key = request.session.session_key
+            # Привязываем корзину к анонимному ключу
             Basket.objects.create(session_key=session_key, product=product, quantity=1)
 
     # Получаем обновлённую корзину для ответа

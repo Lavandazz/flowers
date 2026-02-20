@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate
 
+from basket.models import Basket
 from users.forms import UserLoginForm, UserRegisterForm, ProfileForm
 
 
@@ -18,10 +19,17 @@ def login(request):
             username = request.POST['username']
             password = request.POST['password']
             user = auth.authenticate(username=username, password=password)
+
+            # Берем сессионный ключ для того, чтоб при логине, корзина не пропала.
+            session_key = request.session.session_key
             if user:
                 # Возвращаем пользователя
                 auth.login(request, user)
                 messages.success(request, f"Добро пожаловать! {username}")
+
+                if session_key:
+                    # Передаем корзине пользователя
+                    Basket.objects.filter(session_key=session_key).update(user=user)
 
                 redirect_page = request.POST.get('next', None)
                 # если пользователь вышел, перенаправляем на logout
@@ -43,11 +51,18 @@ def registration(request):
     if request.method == 'POST':
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
+
+            session_key = request.session.session_key
+
             form.save()  # сохраняем в бд
             # Перенаправляем в профиль
             user = form.instance
             auth.login(request, user)
             messages.success(request, "Регистрация прошла успешно.")
+
+            if session_key:
+                Basket.objects.filter(session_key=session_key).update(user=user)
+
             return HttpResponseRedirect(reverse("user:profile"))
     else:
         form = UserRegisterForm()
