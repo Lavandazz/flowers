@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 
-from shop.models import Product, Category
+from shop.models import Product, Category, Type
 from shop.utils import q_search
 
 
@@ -19,14 +19,33 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
     query = request.GET.get('q')  # получаем запрос для поиска search, если есть
     products = Product.objects.all()
     categories = Category.objects.all()
-    current_category = None
 
+    # типы категорий (букеты, шары, подарки)
+    types = Type.objects.prefetch_related('categories').all()
+
+    current_category = None
+    print("types", types)
     # Фильтр по категории (если передан slug в URL)
     if category_slug:
         current_category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(categories=current_category)
     if query:
         products = q_search(query)
+
+    # Фильтр по типу из GET-параметра
+    type_slug = request.GET.get('type')
+    if type_slug:
+        print("type_slug",type_slug)
+
+        current_type = get_object_or_404(Type, slug=type_slug)
+        # Получаем все категории этого типа
+        categories_of_type = current_type.categories.all()
+        # Фильтруем товары, которые связаны с любой из этих категорий
+        # Используем distinct(), чтобы избежать дублей, если товар в нескольких категориях одного типа
+        products = products.filter(categories__in=categories_of_type).distinct()
+
+    else:
+        current_type = None
 
     # Фильтр по цене из GET
     price_min = request.GET.get('price_min')
@@ -48,13 +67,18 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)  # Получаем объект, количество страниц Page <Page 1 of 2>
 
+
     context = {
         'page_obj': page_obj,  # для пагинации и списка товаров
+        'types': types,
         'categories': categories,
         'current_category': current_category,
+        'current_type': current_type,
+
     }
     if not current_category:
         context['products'] = products
+        print('попал в блок if not current_category:')
     else:
         pass
 

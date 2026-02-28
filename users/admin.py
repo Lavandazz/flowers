@@ -1,7 +1,16 @@
 from django.contrib import admin
 
+from basket.admin import BasketAdminTab
 from users.models import User
 
 # Register your models here.
 
-admin.site.register(User)
+# admin.site.register(User)
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name')
+
+    # привязыываем корзину к пользователю в админке
+    inlines = [BasketAdminTab]

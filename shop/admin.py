@@ -15,6 +15,7 @@ class TypeAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}  # slug заполняется из name
+    list_filter = ('type',)
 
 
 @admin.register(Product)
@@ -22,4 +23,6 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     filter_horizontal = ('categories',)
     list_display = ('name', 'price')
+    search_fields = ('name', 'description',)
+    list_filter = ('categories',)
 

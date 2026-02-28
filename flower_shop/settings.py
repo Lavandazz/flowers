@@ -123,6 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
+USE_THOUSAND_SEPARATOR = True  # включает разделители тысяч
 
 LANGUAGE_CODE = 'ru-ru'
 

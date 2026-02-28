@@ -10,7 +10,7 @@
     <div class="catalog-container">
         <div class="catalog-row">
             <!-- Боковая панель с категориями -->
-            {% block catalogue_aside %} {% include "catalogue_aside.html" %} {% endblock %}
+            {% block catalogue_aside %} {% include "catalogue_aside1.html" %} {% endblock %}
 
             <!-- Основная часть — товары -->
             <section class="catalog-main">
@@ -21,6 +21,15 @@
                         Все букеты
                     {% endif %}
                 </h3>
+{#                <h3>#}
+{#                    {% if current_category %}#}
+{#                        {{ current_category.name }}#}
+{#                    {% elif current_type %}#}
+{#                        {{ current_type.name }}#}
+{#                    {% else %}#}
+{#                        Все товары#}
+{#                    {% endif %}#}
+{#                </h3>#}
                 <!-- Карточка товара -->
                 <div class="products-grid">
 
