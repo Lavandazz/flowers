@@ -8,7 +8,6 @@ from shop.models import Category, Product, Type
 
 @admin.register(Type)
 class TypeAdmin(admin.ModelAdmin):
-
     prepopulated_fields = {'slug': ('name',)}  # slug заполняется из name
 
 

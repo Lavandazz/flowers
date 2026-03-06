@@ -24,7 +24,6 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
     types = Type.objects.prefetch_related('categories').all()
 
     current_category = None
-    print("types", types)
     # Фильтр по категории (если передан slug в URL)
     if category_slug:
         current_category = get_object_or_404(Category, slug=category_slug)
@@ -35,7 +34,6 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
     # Фильтр по типу из GET-параметра
     type_slug = request.GET.get('type')
     if type_slug:
-        print("type_slug",type_slug)
 
         current_type = get_object_or_404(Type, slug=type_slug)
         # Получаем все категории этого типа
@@ -78,7 +76,6 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
     }
     if not current_category:
         context['products'] = products
-        print('попал в блок if not current_category:')
     else:
         pass
 
@@ -87,12 +84,10 @@ def catalogue(request, category_slug=None):  # category_slug для фильтр
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
-    print("product", product)
     return render(request, 'product.html', {'product': product})
 
 
 def search_product(request):
     query = request.GET.get('q', '')
     results = Product.objects.filter(name__icontains=query)
-    print("поиск по сайту, получил резы", results)
     return render(request, 'search_results.html', {'results': results, 'query': query})

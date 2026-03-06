@@ -1,11 +1,14 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Prefetch
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import authenticate
 
 from basket.models import Basket
+from basket.utils import get_user_baskets
+from orders.models import Order, OrderItem
 from users.forms import UserLoginForm, UserRegisterForm, ProfileForm
 
 
@@ -85,11 +88,27 @@ def profile(request):
         # instance=request.user берем и передаем юзера в форму профиля
         form = ProfileForm(instance=request.user)
 
+    # Получаем заказы юзера через его ID
+    # В запросе к бд user=request.user через ORM передается именно ID
+
+    # 1. Фильтруем по юзеру
+    # 2. Используем обратный порядок фильтрации Prefetch
+    # 3. Выбираем все OrderItem через связанный 'product'
+    # 4. Сортируем в обратном порядке по id
+    orders = Order.objects.filter(user=request.user).prefetch_related(Prefetch(
+        'orderitem_set',
+        queryset=OrderItem.objects.select_related('product')
+    )).order_by('-id')
+
+    print('request.user', request.user.id)
+    print('orders', orders)
     context = {'title': 'Регистрация',
-               'form': form}
+               'form': form,
+               'orders': orders}
     return render(request, 'profile.html', context)
 
 
+@login_required
 def user_basket(request):
     return render(request, 'user_basket.html')
 

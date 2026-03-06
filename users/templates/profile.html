@@ -60,7 +60,7 @@
             <!-- Правая колонка: корзина -->
             <div class="profile-col-right">
                 <div class="profile-card">
-                    <h3>Корзина</h3>
+                    <h3>Корзинка</h3>
                     <div id="cart-items-container">
                         <!-- Сюда будет подгружаться корзина -->
                         {% block modal_basket %}{% include "included_basket.html" %}{% endblock  %}
@@ -94,7 +94,7 @@
                                         <tbody>
                                             {% for item in order.orderitem_set.all %}
                                             <tr>
-                                                <td><a href="{% url 'goods:product' item.product.slug %}">{{ item.product.name }}</a></td>
+                                                <td><a href="{% url 'shop:product_detail' item.product.slug %}">{{ item.product.name }}</a></td>
                                                 <td>{{ item.quantity }}</td>
                                                 <td>{{ item.price }} руб.</td>
                                                 <td>{{ item.products_price }} руб.</td>

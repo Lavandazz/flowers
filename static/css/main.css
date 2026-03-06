@@ -121,6 +121,18 @@ body {
 .nav-account .nav-link i {
     font-size: 14px; /* Иконки Font Awesome */
 }
+.nav-menu li a.icon-link {
+    color: #fff7dc;
+    transition: color 0.5s ease;
+}
+
+.nav-menu li a.icon-link:hover {
+    color: rgb(250, 167, 224);
+}
+/*Отмена плавного подчеркивания для  иконок телеграмма и телефона*/
+.nav-menu li a.icon-link::after {
+    content: none;  /* или display: none; – убирает подчеркивание */
+}
 
 /* === ФУТЕР - ПОДВАЛ === */
 .footer-block {
@@ -391,9 +403,8 @@ body {
     margin-left: 25.2%;
 }
 
-.search-trigger-text:hover,
-.search-trigger i:hover,
-.filter-trigger i:hover {
+.search-trigger:hover,
+.filter-trigger:hover {
     color: rgb(250, 167, 224); /* ваш розовый */
 }
 
@@ -666,7 +677,7 @@ body {
     padding: 0;
     margin: 0;
     /*background: rgba(255, 255, 255, 0.1); !* полупрозрачный фон, как у шапки *!*/
-    backdrop-filter: blur(5px);
+    /*backdrop-filter: blur(5px);*/
     overflow: hidden;
 }
 

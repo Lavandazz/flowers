@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from basket.admin import BasketAdminTab
+from orders.admin import OrdersTab
 from users.models import User
 
 # Register your models here.
@@ -13,4 +14,4 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name')
 
     # привязыываем корзину к пользователю в админке
-    inlines = [BasketAdminTab]
+    inlines = [BasketAdminTab, OrdersTab]

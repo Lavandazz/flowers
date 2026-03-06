@@ -29,6 +29,8 @@ urlpatterns = [
     path("page/", include("page.urls")),
     path("user/", include("users.urls")),
     path("basket/", include("basket.urls")),
+    path("orders/", include("orders.urls")),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Для работы debug_toolbar
