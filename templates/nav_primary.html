@@ -24,8 +24,8 @@
 {# Оверлей с формой поиска (изначально скрыт) #}
 <div class="search-overlay">
     <div class="search-overlay-content">
-        {#  Передаем shop:catalogue, т.к. обработка запроса идет через функцию catalogue      #}
-        <form method="get" action="{% url 'shop:catalogue' %}" class="search-overlay-form">
+        {#  Передаем shop:search, т.к. обработка запроса идет через ProductSearchView      #}
+        <form method="get" action="{% url 'shop:search' %}" class="search-overlay-form">
             <input type="text" 
                    name="q" 
                    class="search-overlay-input" 
@@ -50,7 +50,8 @@
         <form method="get" action="" class="filter-form">
             {# Сохраняем поисковый запрос, если есть #}
             {% if request.GET.q %}<input type="hidden" name="q" value="{{ request.GET.q }}">{% endif %}
-            
+            {# Сохраняем тип, если он выбран #}
+            {% if request.GET.type %}<input type="hidden" name="type" value="{{ request.GET.type }}">{% endif %}
             <div class="filter-group">
                 <label>Сортировка:</label>
                 <select name="sort" class="filter-select">
