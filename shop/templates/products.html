@@ -1,0 +1,36 @@
+<!-- Отображение товаров в 3-4 колонки -->
+{% block content_products %}
+
+    <!-- Карточка товара занимает 4 колонки на больших экранах (3 в ряд) -->
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <div class="product-card h-80">  <!-- h-100 для одинаковой высоты карточек в строке -->
+            <a href="{% url 'shop:product_detail' product.slug %}">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                {% else %}
+                    <img src="/static/img/not_found.png" class="img-fluid" alt="not_found">
+                {% endif %}
+            </a>
+            <div class="product-info">
+                <h4>{{ product.name|capfirst  }}</h4>
+                <div class="row align-items-center">   <!-- ряд для цены и кнопки -->
+                    <div class="col-8">                 <!-- левая колонка: цена (можно подобрать ширину) -->
+                        <p class="product-price mb-0">
+                            {{ product.price|floatformat:0  }}
+                            <a class="rub"><i class="fa fa-ruble"></i></a>
+                        </p>
+                    </div>
+                    <div class="col-4 text-end">        <!-- правая колонка: кнопка, выровнена по правому краю -->
+                        {% csrf_token %}
+                        <a href="{% url "basket:basket_add" %}"
+                           data-product-id="{{ product.id }}"
+                           class="btn add-to-cart p-0">   <!-- убираем лишние отступы, если нужна только иконка -->
+                            <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

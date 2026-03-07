@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content_catalog %}
+    {# Поиск по сайту #}
+    {% block search %} {% include "nav_primary.html" %} {% endblock %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Боковая панель категорий (4 колонки) -->
+            <div class="col-3">
+                {% block catalogue_aside %} {% include "catalogue_aside.html" %} {% endblock %}
+            </div>
+
+            <!-- Основная область с товарами (8 колонок) -->
+            <div class="col-8">
+                {% if products or current_category %}
+                    <div class="row">
+                        {% for product in page_obj %}
+                             {% block content_products %} {% include 'products.html' %} {% endblock %}
+                        {% endfor %}
+                    </div>
+
+                <ul class="pagination justify-content-center" style="margin:20px 0">
+                    {% block pagination_block %}
+                        {% include "pagination.html" %}
+                    {% endblock %}
+                </ul>
+
+                {% else %}
+                    <img src="/static/img/not_found1.jpg" class="img-fluid" style="max-height: 30rem;" alt="not_found">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

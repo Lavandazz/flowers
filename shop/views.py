@@ -26,13 +26,7 @@ class CatalogueListView(ListView):
         else:
             self.current_category = None
 
-        # 2. Поиск по query-параметру ?q=...
-        # query = self.request.GET.get("q")
-        # if query:
-        #     queryset = q_search(query)
-        #     print('queryset', queryset)
-
-        # 3. Фильтр по типу товара (например, ?type=flowers)
+        # 2. Фильтр по типу товара (например, ?type=flowers)
         type_slug = self.request.GET.get('type')
         if type_slug:
             current_type = get_object_or_404(Type, slug=type_slug)
@@ -42,7 +36,7 @@ class CatalogueListView(ListView):
         else:
             self.current_type = None
 
-        # 4. Фильтр по цене (price_min, price_max)
+        # 3. Фильтр по цене (price_min, price_max)
         price_min = self.request.GET.get('price_min')
         price_max = self.request.GET.get('price_max')
         if price_min:
@@ -50,14 +44,13 @@ class CatalogueListView(ListView):
         if price_max:
             queryset = queryset.filter(price__lte=price_max)
 
-        # 5. Сортировка (sort=price_asc или price_desc)
+        # 4. Сортировка (sort=price_asc или price_desc)
         sort = self.request.GET.get('sort')
         if sort == 'price_asc':
             queryset = queryset.order_by('price')
         elif sort == 'price_desc':
             queryset = queryset.order_by('-price')
-        # Если сортировка не указана, можно оставить порядок по умолчанию (например, по id)
-        # print('queryset Стал', queryset)
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -68,7 +61,6 @@ class CatalogueListView(ListView):
 
         # Текущие выбранные фильтры (чтобы подсветить активные пункты)
         context['current_category'] = getattr(self, 'current_category', None)
-        context['current_type'] = getattr(self, 'current_type', None)
 
         # Сохраняем значения GET-параметров для подстановки в формы
         context['price_min'] = self.request.GET.get('price_min', '')
@@ -89,6 +81,7 @@ class ProductSearchView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
+
             return q_search(query)
         # Если запрос пустой, возвращаем пустой QuerySet
         return Product.objects.none()
@@ -97,9 +90,9 @@ class ProductSearchView(ListView):
         context = super().get_context_data(**kwargs)
         context['query'] = self.request.GET.get('q', '')
         context['title'] = 'Результаты поиска'
-        # Если в шаблоне используются типы и категории (например, для бокового меню), добавьте их
         context['types'] = Type.objects.all()
         context['categories'] = Category.objects.all()
+
         return context
 
 

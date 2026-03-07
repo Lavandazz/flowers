@@ -1,0 +1,23 @@
+{#  Боковая панель   Категории товаров  #}
+
+{% block catalogue_aside %}
+    <div class="container">
+        {% for type in types %}
+            <h3 class="category-type">
+                <a href="{% url 'shop:catalogue' %}?type={{ type.slug }}"
+                   class="{% if current_type and current_type.id == type.id %}active{% endif %}">
+                    {{ type.name|capfirst }}
+                </a>
+            </h3>
+            <ul class="category-list">
+                {% for category in type.categories.all %}
+                    <li class="category-item {% if category == current_category %}active{% endif %}">
+                        <a href="{{ category.get_absolute_url }}">
+                            {{ category.name|capfirst }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+{% endblock %}

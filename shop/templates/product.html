@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content_product %}
+{% block search %} {% include "nav_primary.html" %} {% endblock %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="product-detail-image">
+                    <a href="{{ product.image.url }}" data-lightbox="gallery" data-title="{{ product.name }}">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="float-start">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="container-fluid pt-5 text-white">
+                    <h3>{{ product.name|capfirst }}</h3>
+
+                    <div class="product-detail-price">
+                        {{ product.price|floatformat:0 }}
+                        <a class="rub">
+                            <i class="fa fa-ruble"></i>
+                        </a>
+                    </div>
+
+                    <h4> Состав </h4>
+                    <div class="product-detail-description">
+                        {{ product.description|linebreaks }}
+                    </div>
+
+                    {# Добавить в корзину#}
+                    <div class="row pt-5">
+                        <div class="col text-start">
+                            <a href="{% url "basket:basket_add" %}"
+                                class="btn-shop add-to-cart" data-product-id="{{ product.id }}">
+                                {% csrf_token %}
+                                <i class="fa fa-shopping-basket fa-shake" aria-hidden="true"></i> Купить
+                            </a>
+                        </div>
+                        <div class="col text-center">
+                            <a href="{% url 'shop:catalogue' %}" class="btn-back">
+                            ← Назад
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
