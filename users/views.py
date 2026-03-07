@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate
+from django.views.generic import CreateView
 
 from basket.models import Basket
 from basket.utils import get_user_baskets
@@ -28,6 +29,7 @@ class UserLoginView(LoginView):
         return reverse_lazy('shop:catalogue')
 
     def form_valid(self, form):
+        # Сессионный ключ для перенесения корзины неавторизованного пользователя, авторизованному
         session_key = self.request.session.session_key
         # Получаем пользователя из формы
         user = form.get_user()
@@ -47,30 +49,30 @@ class UserLoginView(LoginView):
         return context
 
 
-def registration(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(data=request.POST)
-        if form.is_valid():
+class RegisterView(CreateView):
+    form_class = UserRegisterForm
+    template_name = 'registration.html'
+    success_url = reverse_lazy('user:profile')
 
-            session_key = request.session.session_key
+    def form_valid(self, form):
+        session_key = self.request.session.session_key
+        user = form.instance  # Получаем юзера из формы
 
+        if user:
             form.save()  # сохраняем в бд
-            # Перенаправляем в профиль
-            user = form.instance
-            auth.login(request, user)
-            messages.success(request, "Регистрация прошла успешно.")
+            auth.login(self.request, user)
+            messages.success(self.request, "Регистрация прошла успешно.")
 
-            if session_key:
-                Basket.objects.filter(session_key=session_key).update(user=user)
+        if session_key:
+            Basket.objects.filter(session_key=session_key).update(user=user)
 
-            return HttpResponseRedirect(reverse("user:profile"))
-    else:
-        form = UserRegisterForm()
+        messages.success(self.request, f"Добро пожаловать! {user.username}")
+        return HttpResponseRedirect(self.success_url)
 
-    context = {'title': 'Регистрация',
-               'form': form}
-
-    return render(request, 'registration.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Home - Регистрация'
+        return context
 
 
 @login_required
@@ -97,7 +99,7 @@ def profile(request):
         queryset=OrderItem.objects.select_related('product')
     )).order_by('-id')
 
-    context = {'title': 'Регистрация',
+    context = {'title': 'Профиль',
                'form': form,
                'orders': orders}
     return render(request, 'profile.html', context)
