@@ -1,37 +1,37 @@
 /* Кастомные стили для личного кабинета */
-.profile-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-}
+/*.profile-container {*/
+/*    max-width: 1200px;*/
+/*    margin: 0 auto;*/
+/*    padding: 20px;*/
+/*    box-sizing: border-box;*/
+/*}*/
 
-.profile-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
+/*.profile-row {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    gap: 2rem;*/
+/*    margin-bottom: 2rem;*/
+/*}*/
 
-.profile-col-left {
-    flex: 1 1 40%;
-    min-width: 300px;
-}
+/*.profile-col-left {*/
+/*    flex: 1 1 40%;*/
+/*    min-width: 300px;*/
+/*}*/
 
-.profile-col-right {
-    flex: 1 1 55%;
-    min-width: 300px;
-}
+/*.profile-col-right {*/
+/*    flex: 1 1 55%;*/
+/*    min-width: 300px;*/
+/*}*/
 
-.profile-col-full {
-    flex: 1 1 100%;
-}
+/*.profile-col-full {*/
+/*    flex: 1 1 100%;*/
+/*}*/
 
 /* Карточка профиля / корзины / заказов */
 .profile-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(117, 117, 117, 0.1);
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    /*border: 1px solid rgba(255, 255, 255, 0.3);*/
     border-radius: 12px;
     padding: 25px;
     color: white;
@@ -127,6 +127,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     overflow: hidden;
+    transition: background 0.5s;
 }
 
 .order-summary {
@@ -134,12 +135,12 @@
     padding: 15px 20px;
     cursor: pointer;
     font-size: 1.1rem;
-    transition: background 0.3s;
     list-style: none; /* убирает стандартный маркер */
 }
 
-.order-summary:hover {
-    background: rgba(255, 255, 255, 0.1);
+.order-item:hover {
+    backdrop-filter: blur(20px);
+    box-shadow:  2px 2px 20px rgba(245, 245, 245, 0.61);
 }
 
 .order-summary::-webkit-details-marker {

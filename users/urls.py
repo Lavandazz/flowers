@@ -10,8 +10,7 @@ app_name = 'user'
 urlpatterns = [
     path("login/", views.UserLoginView.as_view(), name='login'),
     path('registration/', views.RegisterView.as_view(), name='registration'),
-    path('profile/', views.profile, name='profile'),
-    path('user-basket/', views.user_basket, name='user_basket'),
+    path('profile/', views.UserProfileView.as_view(), name='profile'),
     path('logout/', views.logout, name='logout'),
 
 ]

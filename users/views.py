@@ -1,12 +1,13 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Prefetch
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, TemplateView
 
 from basket.models import Basket
 from basket.utils import get_user_baskets
@@ -75,39 +76,26 @@ class RegisterView(CreateView):
         return context
 
 
-@login_required
-def profile(request):
-    if request.method == 'POST':
-        form = ProfileForm(data=request.POST, instance=request.user, files=request.FILES)
-        if form.is_valid():
-            form.save()  # сохраняем в бд
-            # Перенаправляем
-            return HttpResponseRedirect(reverse("shop:catalogue"))
-    else:
-        # instance=request.user берем и передаем юзера в форму профиля
-        form = ProfileForm(instance=request.user)
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'profile.html'
+    success_url = reverse_lazy('user:profile')
 
-    # Получаем заказы юзера через его ID
-    # В запросе к бд user=request.user через ORM передается именно ID
+    def get_object(self, queryset=None):
+        """
+        Получаем объект пользователя
+        """
+        return self.request.user
 
-    # 1. Фильтруем по юзеру
-    # 2. Используем обратный порядок фильтрации Prefetch
-    # 3. Выбираем все OrderItem через связанный 'product'
-    # 4. Сортируем в обратном порядке по id
-    orders = Order.objects.filter(user=request.user).prefetch_related(Prefetch(
-        'orderitem_set',
-        queryset=OrderItem.objects.select_related('product')
-    )).order_by('-id')
-
-    context = {'title': 'Профиль',
-               'form': form,
-               'orders': orders}
-    return render(request, 'profile.html', context)
-
-
-@login_required
-def user_basket(request):
-    return render(request, 'user_basket.html')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        orders = Order.objects.filter(user=self.request.user).prefetch_related(Prefetch(
+                    'orderitem_set',
+                    queryset=OrderItem.objects.select_related('product')
+                )).order_by('-id')
+        context['title'] = 'Личный кабинет'
+        context['orders'] = orders
+        return context
 
 
 @login_required
