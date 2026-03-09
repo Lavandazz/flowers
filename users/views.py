@@ -1,10 +1,9 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Prefetch
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import authenticate
 from django.views.generic import CreateView, FormView, UpdateView, DetailView, TemplateView
@@ -97,9 +96,11 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         context['orders'] = orders
         return context
 
+# class UserLogoutView(LogoutView):
 
-@login_required
-def logout(request):
-    messages.success(request, f"{request.user.username} Пока-Пока!")
-    auth.logout(request)
-    return redirect(reverse("shop:catalogue"))
+
+# @login_required
+# def logout(request):
+#     messages.success(request, f"{request.user.username} Пока-Пока!")
+#     auth.logout(request)
+#     return redirect(reverse("shop:catalogue"))

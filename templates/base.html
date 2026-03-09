@@ -5,7 +5,7 @@
 <html lang="{{ LANGUAGE_CODE|default:"en-gb" }}" class="{% block html_class %}no-js{% endblock %}">
     <head>
         <title>{% block title %}{{ title }} {% endblock %}</title>
-
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 {#        <meta name="created" content="{% now "jS M Y h:i" %}" />#}
 {#        <meta name="description" content="{% block description %}{% endblock %}" />#}
@@ -46,6 +46,7 @@
         <!-- Scripts loaded from a CDN. -->
         {% block cdn_scripts %}
             <!-- jQuery -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         {% endblock %}
 
@@ -53,15 +54,12 @@
         {% block scripts %}
         {% endblock %}
         
-{#        <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>#}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {#        Подключение lightbox2 для отображения полноэкранного фото по клику#}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
         <script src="{% static 'js/main.js' %}"></script>
         <script src="{% static 'js/basket.js' %}"></script>
 
-
-        
 
     </body>
 </html>
