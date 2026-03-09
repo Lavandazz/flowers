@@ -31,17 +31,18 @@ class UserLoginView(LoginView):
     def form_valid(self, form):
         # Сессионный ключ для перенесения корзины неавторизованного пользователя, авторизованному
         session_key = self.request.session.session_key
-        # Получаем пользователя из формы
-        user = form.get_user()
-        if user:
-            # Возвращаем пользователя
-            auth.login(self.request, user)
-            if session_key:
+        # Вызываем родительский метод, который выполняет вход и возвращает редирект
+        response = super().form_valid(form)
+
+        # user = form.get_user()  # Получаем пользователя из формы
+        # Вместо получения пользователя из формы, получаем из запроса
+        user = self.request.user
+        if session_key and user.is_authenticated:
                 # Передаем корзины с товарами неавторизованного пользователя в его аккаунт
                 Basket.objects.filter(session_key=session_key).update(user=user)
                 messages.success(self.request, f"Добро пожаловать! {user.username}")
 
-                return HttpResponseRedirect(self.get_success_url())
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -95,8 +96,6 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         context['title'] = 'Личный кабинет'
         context['orders'] = orders
         return context
-
-# class UserLogoutView(LogoutView):
 
 
 # @login_required
