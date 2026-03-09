@@ -84,9 +84,10 @@ class BasketRemoveView(BasketMixin, View):
         basket_item_id = request.POST.get('basket_item_id')
         basket_item = self.get_basket(request, basket_id=basket_item_id)
         try:
-            logger.info('Удаляю товар в корзине: %s', basket_item)
+            logger.debug('Удаляю товар в корзине: %s', basket_item)
             basket_item.delete()
-        except ObjectDoesNotExist:
+        except ObjectDoesNotExist as e:
+            logger.error('Ошибка удаления товара: %s', e)
             return JsonResponse({'error': 'Товар не найден'}, status=404)
 
         rendered = self.render_basket(request)
