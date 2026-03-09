@@ -33,6 +33,33 @@ DJANGO_SUPERUSER = settings.DJANGO_SUPERUSER
 
 DEBUG = True
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    "formatters": {
+            "verbose": {
+                "format": "{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}",
+                'style': '{'
+            },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'basket': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'user': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
 ALLOWED_HOSTS = []
 
 # Application definition
