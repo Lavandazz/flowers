@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% load static %}
+{% load cache %}
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -8,6 +9,7 @@
     {% block search %} {% include "nav_primary.html" %} {% endblock %}
 
     <div class="container-fluid">
+{#    {% cache 60 sidebar %}#}
         <div class="row">
             <!-- Боковая панель категорий (4 колонки) -->
             <div class="col-3">
@@ -16,6 +18,7 @@
 
             <!-- Основная область с товарами (8 колонок) -->
             <div class="col-8">
+
                 {% if products or current_category %}
                     <div class="row">
                         {% for product in page_obj %}
@@ -32,7 +35,9 @@
                 {% else %}
                     <img src="/static/img/not_found1.jpg" class="img-fluid" style="max-height: 30rem;" alt="not_found">
                 {% endif %}
+
             </div>
         </div>
+{#    {% endcache %}#}
     </div>
 {% endblock %}

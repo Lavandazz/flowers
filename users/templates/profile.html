@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% load static %}
-{% load cache %}
+{#{% load cache %}#}
 
 {% block content %}
     <div class="container-fluid pt-3">
@@ -12,7 +12,7 @@
                     <p><strong>Имя:</strong> {{ user.first_name }}</p>
                     <p><strong>Фамилия:</strong> {{ user.last_name }}</p>
                     <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Телефон:</strong> {{ user.phone }}</p>
+                    <p><strong>Телефон:</strong> {{ user.phone_number }}</p>
                 </div>
             </div>
 
@@ -27,7 +27,8 @@
                 </div>
             </div>
         </div>
-
+        {#    Кэшируем заказы пользователя    #}
+{#        {% cache 60 user_orders user.id %}#}
         <div class="col pt-5">
             <div class="profile-card">
                 <h3>Мои заказы</h3>
@@ -66,6 +67,7 @@
                 {% endif %}
             </div>
         </div>
+{#        {% endcache %}#}
     </div>
 
 

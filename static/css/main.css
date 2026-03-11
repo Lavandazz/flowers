@@ -25,7 +25,10 @@ body {
 /* Первый слой: фон с пионами */
 .background-overlay {
     position: fixed;
-    background-image: url('../back_images/111.jpg');
+    /*background-image: url('../back_images/111.jpg');*/
+
+    background-color: black;
+
     background-size: cover;
     background-position: center;
     width: 100%; /* Ширина из Figma */
@@ -641,9 +644,11 @@ body {
 
 }
 .category-item.active a {
+    color: #94252f;
+    font-size: 1.1rem;
     font-weight: 700;        /* жирный */
-    border-left: 1px solid rgba(255, 255, 255, 0.79); /* например, полоска слева */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.77);
+    /*border-left: 1px solid rgba(255, 255, 255, 0.79); !* например, полоска слева *!*/
+    /*border-bottom: 1px solid rgba(255, 255, 255, 0.77);*/
 }
 
 /* Плавное подчеркивание меню */

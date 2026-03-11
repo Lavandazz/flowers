@@ -4,8 +4,10 @@
 .idea/
 
 .env
+.env_cloud
 venv/
 .venv/
 __pycache__
+cache/
 
 db.sqlite3

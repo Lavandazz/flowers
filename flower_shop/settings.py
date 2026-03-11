@@ -60,7 +60,10 @@ LOGGING = {
     },
 }
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'factually-radiant-leopardess.cloudpub.ru',
+    '127.0.0.1',
+    'localhost']
 
 # Application definition
 
@@ -83,15 +86,21 @@ INSTALLED_APPS = [
     'orders',
 ]
 
+if DEBUG:
+    INSTALLED_APPS += ['whitenoise.runserver_nostatic']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    "django.middleware.gzip.GZipMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
@@ -116,6 +125,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'flower_shop.wsgi.application'
 
 
+# Настройка для работы CSRF в режиме zrok
+CSRF_TRUSTED_ORIGINS = [
+    'https://defplus.share.zrok.io',
+]
+# Если zrok присылает заголовок X-Forwarded-Proto (обычно так и есть)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Чтобы Django понимал, что мы в HTTPS-режиме, даже если сам сервер на HTTP
+USE_X_FORWARDED_HOST = True
+SECURE_SSL_REDIRECT = False  # Не перенаправлять на HTTPS внутри Django, это делает zrok
+SESSION_COOKIE_SECURE = True  # Куки сессии только по HTTPS
+CSRF_COOKIE_SECURE = True     # CSRF-куки только по HTTPS
+
+
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
@@ -130,6 +153,12 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": BASE_DIR / "cache",
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
@@ -189,8 +218,8 @@ STATICFILES_DIRS = [
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/user/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/catalogue'
+LOGOUT_REDIRECT_URL = '/catalogue'
+

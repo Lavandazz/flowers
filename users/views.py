@@ -1,17 +1,17 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView
 from django.db.models import Prefetch
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth import authenticate
-from django.views.generic import CreateView, FormView, UpdateView, DetailView, TemplateView
+from django.views.generic import CreateView, DetailView
 
 from basket.models import Basket
-from basket.utils import get_user_baskets
+from common.mixins import CacheMixin
 from orders.models import Order, OrderItem
-from users.forms import UserLoginForm, UserRegisterForm, ProfileForm
+from users.forms import UserLoginForm, UserRegisterForm
 from users.models import User
 
 
@@ -38,10 +38,10 @@ class UserLoginView(LoginView):
         # Вместо получения пользователя из формы, получаем из запроса
         user = self.request.user
         if session_key and user.is_authenticated:
-                # Передаем корзины с товарами неавторизованного пользователя в его аккаунт
-                Basket.objects.filter(session_key=session_key).update(user=user)
-                messages.success(self.request, f"Добро пожаловать! {user.username}")
-
+            # Передаем корзины с товарами неавторизованного пользователя в его аккаунт
+            Basket.objects.filter(session_key=session_key).update(user=user)
+            messages.success(self.request, f"Добро пожаловать! {user.username}")
+        print("next:", self.request.POST.get('next'))
         return response
 
     def get_context_data(self, **kwargs):
@@ -76,7 +76,7 @@ class RegisterView(CreateView):
         return context
 
 
-class UserProfileView(LoginRequiredMixin, DetailView):
+class UserProfileView(LoginRequiredMixin, CacheMixin, DetailView):
     model = User
     template_name = 'profile.html'
     success_url = reverse_lazy('user:profile')
@@ -89,17 +89,23 @@ class UserProfileView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         orders = Order.objects.filter(user=self.request.user).prefetch_related(Prefetch(
-                    'orderitem_set',
-                    queryset=OrderItem.objects.select_related('product')
-                )).order_by('-id')
+            'orderitem_set',
+            queryset=OrderItem.objects.select_related('product')
+        )).order_by('-id')
+
         context['title'] = 'Личный кабинет'
-        context['orders'] = orders
+        context['orders'] = self.set_get_cache(
+            query=orders,
+            cache_name=f'user_{self.request.user.id}_orders',
+            cache_time=60*10
+        )
         return context
 
 
-# @login_required
-# def logout(request):
-#     messages.success(request, f"{request.user.username} Пока-Пока!")
-#     auth.logout(request)
-#     return redirect(reverse("shop:catalogue"))
+@login_required
+def logout(request):
+    messages.success(request, f"{request.user.username} Пока-Пока!")
+    auth.logout(request)
+    return redirect(reverse("shop:catalogue"))

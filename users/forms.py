@@ -20,6 +20,7 @@ class UserRegisterForm(UserCreationForm):
         fields = ('username',
                   'first_name',
                   'last_name',
+                  'phone_number',
                   'email',
                   'password1',
                   'password2')
@@ -27,6 +28,7 @@ class UserRegisterForm(UserCreationForm):
     username = forms.CharField()
     first_name = forms.CharField()
     last_name = forms.CharField()
+    phone_number = forms.CharField(max_length=10)
     email = forms.EmailField()
     password1 = forms.CharField()
     password2 = forms.CharField()

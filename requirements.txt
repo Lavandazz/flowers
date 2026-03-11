@@ -4,6 +4,7 @@ asttokens==3.0.1
 babel==2.18.0
 certifi==2026.1.4
 charset-normalizer==3.4.4
+cloudpub_python_sdk==3.0.0
 colorama==0.4.6
 decorator==5.2.1
 Django==6.0
@@ -43,3 +44,4 @@ typing_extensions==4.15.0
 tzdata==2025.3
 urllib3==2.6.3
 wcwidth==0.6.0
+whitenoise==6.12.0

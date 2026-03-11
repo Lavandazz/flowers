@@ -44,3 +44,15 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'Товар {self.name} | Заказ № {self.order.pk}'
+
+
+class PaymentOrder(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ', related_name='payments')
+    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Цена')
+    payment_id = models.CharField(max_length=150, verbose_name='ID платежа в ЮKassa', unique=True)
+    status = models.CharField(max_length=50, verbose_name='Статус платежа',
+                              default='pending')  # pending, succeeded, canceled
+    payment_method = models.CharField(max_length=50, verbose_name='Способ оплаты', blank=True)  # card, cash и т.д.
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    confirmed_at = models.DateTimeField(null=True, blank=True, verbose_name='Дата подтверждения')
+    description = models.CharField(max_length=150, verbose_name='Описание')
