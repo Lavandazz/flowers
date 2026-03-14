@@ -1,13 +1,14 @@
 import os
 from pathlib import Path
 
+from django.http import HttpResponse
 from django.utils import timezone
 from dotenv import load_dotenv
 
 from yookassa import Payment, Configuration
 
 from basket.models import Basket
-from orders.models import Order
+from orders.models import Order, PaymentOrder
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 env_path = PROJECT_ROOT / '.env_pay'
@@ -39,8 +40,39 @@ def pay_yookassa(order_id, total_price: int, return_url):
                 },
             },
         )
-        print('payment', payment)
+        # payment возвращается объект платежа с номером и статусом pending
         return payment
     except Exception as e:
         print('Ошибка платежа', e)
+
+
+def check_payment(payment_id):
+    """
+    Проверка статуса платежа
+    :param payment_id:  payment.id
+    """
+    # payment = Payment.find_one(payment_id)
+    # if payment.status == 'succeeded' and payment.paid:
+
+    # Сохраняем статус платежа после подтверждения оплаты
+    try:
+        payment_obj = PaymentOrder.objects.get(payment_id=payment_id)
+    except PaymentOrder.DoesNotExist:
+        return HttpResponse(status=404)
+
+    order = payment_obj.order
+    print('получил объект платежа', payment_obj)
+    print('получил объект order', order)
+    payment_obj.status = 'succeeded'
+    # Сохраняем статус заказа после подтверждения оплаты
+    payment_obj.order.status = 'Оплачен'
+    payment_obj.order.is_paid = True
+
+    payment_obj.order.save()
+
+    # Удаляем корзину пользователя после сохранения статусов оплаты
+    payment_obj.order.user.basket.all().delete()
+    print('КОРЗИНЫ УДАЛЕНЫ', order)
+
+    payment_obj.save()
 

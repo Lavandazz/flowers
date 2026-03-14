@@ -61,7 +61,7 @@ LOGGING = {
 }
 
 ALLOWED_HOSTS = [
-    'factually-radiant-leopardess.cloudpub.ru',
+    'outspokenly-needed-junco.cloudpub.ru',
     '127.0.0.1',
     'localhost']
 

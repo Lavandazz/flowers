@@ -10,6 +10,7 @@ from django.views.generic import CreateView, DetailView
 
 from basket.models import Basket
 from common.mixins import CacheMixin
+from common.payment import check_payment
 from orders.models import Order, OrderItem
 from users.forms import UserLoginForm, UserRegisterForm
 from users.models import User
@@ -99,8 +100,13 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, DetailView):
         context['orders'] = self.set_get_cache(
             query=orders,
             cache_name=f'user_{self.request.user.id}_orders',
-            cache_time=60*10
+            cache_time=20
         )
+
+        # payment_id = self.request.session.pop('last_payment_id', None)
+        # if payment_id:
+        #     check_payment(payment_id)
+
         return context
 
 

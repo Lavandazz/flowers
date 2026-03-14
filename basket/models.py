@@ -19,7 +19,7 @@ class BasketQuerySet(models.QuerySet):
 
 
 class Basket(models.Model):
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name='Пользователь')
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name='basket')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='Товар')
     quantity = models.IntegerField(default=0, verbose_name='Количество')
     session_key = models.CharField(max_length=32, null=True, blank=True)  # сессия, если пользователь не зареген
