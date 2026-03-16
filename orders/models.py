@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+from django.utils.html import format_html
 
 from shop.models import Product
 from users.models import User
@@ -23,7 +25,7 @@ class Order(models.Model):
         verbose_name_plural = 'Управление заказами'
 
     def __str__(self):
-        return f'Заказ № {self.pk} | Покупатель {self.user.first_name} | {self.user.last_name}'
+        return f'Заказ № {self.pk}'
 
 
 class OrderItem(models.Model):

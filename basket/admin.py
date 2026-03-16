@@ -9,8 +9,15 @@ from shop.models import Category
 class BasketAdminTab(admin.TabularInline):
     # Для привязки корзины к пользователю в админке
     model = Basket
-    fields = ('user', 'product', 'quantity')
-    extra = 1
+    fields = ('explanation', 'user', 'product', 'quantity')
+    readonly_fields = ('explanation',)
+    extra = 0
+
+    def explanation(self, obj):
+        # obj — это конкретный объект Basket, но пояснение одинаково для всех строк
+        return "Эти товары ещё не заказаны"
+
+    explanation.short_description = 'Примечание'
 
 
 @admin.register(Basket)

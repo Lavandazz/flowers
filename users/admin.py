@@ -12,6 +12,6 @@ from users.models import User
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name')
-
+    fields = [('username', 'first_name', 'last_name'), ('email', 'phone_number')]
     # привязываем корзину к пользователю в админке
     inlines = [BasketAdminTab, OrdersTab]

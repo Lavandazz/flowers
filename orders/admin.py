@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+
 from orders.models import Order, OrderItem, PaymentOrder
 
 
@@ -32,8 +33,15 @@ class PaymentOrderAdmin(admin.ModelAdmin):
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ("order", "product", "name", "price", "quantity", 'created')
+    """
+    Купленные товары
+    """
+    list_display = ("order", "display_user", "product", "price", "quantity", 'created')
     search_fields = ('name',)
+
+    def display_user(self, obj):
+        """Отображение пользователя"""
+        return f'{obj.order.user.first_name} {obj.order.user.last_name}'
 
 
 class OrdersTab(admin.TabularInline):
@@ -42,12 +50,15 @@ class OrdersTab(admin.TabularInline):
     А так же используется в админке к пользователю
     """
     model = Order
-    fields = ('id', 'user', 'status', )
+    fields = ('user', 'status', )
     extra = 0
 
 
 @admin.register(Order)
 class OrdersAdmin(admin.ModelAdmin):
+    """
+    Управление заказами
+    """
     list_display = ('title_order', 'status', 'user', 'is_paid', 'created', 'request_delivery')
     search_fields = ('user', 'created', 'id')
     list_filter = ('status', 'request_delivery', 'created')

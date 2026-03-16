@@ -27,7 +27,7 @@ class Basket(models.Model):
 
     class Meta:
         verbose_name = 'Корзину'
-        verbose_name_plural = 'Управление корзинами пользователей'
+        verbose_name_plural = 'Товары в корзине (не оформлены)'
 
     objects = BasketQuerySet.as_manager()  # переопределяем
 

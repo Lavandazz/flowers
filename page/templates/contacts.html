@@ -3,13 +3,29 @@
 
 {% block content %}
 <div class="container mt-3">
-    <p class="h2 text-center">{{ title }}</p>
+    <p class="h2 text-left p-3">{{ title }}</p>
     {% if requisites %}
-        <p>Адрес: {{ requisites.address }}</p>
-        <p>Email: {{ requisites.email }}</p>
-        <p>Телефон: +7 {{ requisites.telephone }}</p>
-
-        <p class="h2 text-center pt-5">Реквизиты</p>
+        <div class="row">
+            <div class="col-5">
+                <p>Адрес: {{ requisites.address }}</p>
+                <p>Email: {{ requisites.email }}</p>
+                <p>Телефон: +7 {{ requisites.telephone }}</p>
+            </div>
+            <div class="col-7">
+                <div class="card" style="height: 350px;">
+                    <div class="card-body p-0 d-flex flex-column">
+                        <a href="https://yandex.ru/maps/?text={{ requisites.address|urlencode }}" target="_blank"
+                           class="btn btn-dark mb-2">Открыть на карте</a>
+                        <iframe
+                            src="https://yandex.ru/map-widget/v1/?text={{ requisites.address|urlencode }}"
+                            style="width: 100%; height: 100%; border: 0;"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="h2 text-left p-3">Реквизиты</p>
         <p>ИНН: {{ requisites.inn }}</p>
         <p>ОГРН: {{ requisites.ogrn }}</p>
     {% else %}
