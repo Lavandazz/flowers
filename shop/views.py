@@ -108,12 +108,6 @@ class ProductDetailView(DetailView):
         return context
 
 
-# class BannerMixin:
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['banners'] = Banner.objects.filter(is_active=True)
-#         return context
-
 
 
 # def catalogue(request, category_slug=None):  # category_slug для фильтрации

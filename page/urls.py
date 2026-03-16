@@ -6,6 +6,6 @@ from . import views
 app_name = 'page'
 
 urlpatterns = [
-    path('delivery/', cache_page(60)(views.DeliveryView.as_view()), name='delivery'),
-    path('contacts/', cache_page(60)(views.ContactsView.as_view()), name='contacts'),
+    path('delivery/', cache_page(60*10)(views.DeliveryView.as_view()), name='delivery'),
+    path('contacts/', cache_page(60*10)(views.ContactsView.as_view()), name='contacts'),
 ]

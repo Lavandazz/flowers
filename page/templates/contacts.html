@@ -3,13 +3,17 @@
 
 {% block content %}
 <div class="container mt-3">
-    <p class="h2 text-center"> {{ title }} </p>
-    <p>- Метро Дмитровская....</p>
-    ИНН 772608763726
+    <p class="h2 text-center">{{ title }}</p>
+    {% if requisites %}
+        <p>Адрес: {{ requisites.address }}</p>
+        <p>Email: {{ requisites.email }}</p>
+        <p>Телефон: +7 {{ requisites.telephone }}</p>
 
-
-
-
-
+        <p class="h2 text-center pt-5">Реквизиты</p>
+        <p>ИНН: {{ requisites.inn }}</p>
+        <p>ОГРН: {{ requisites.ogrn }}</p>
+    {% else %}
+        <p>Реквизиты не заполнены.</p>
+    {% endif %}
 </div>
 {% endblock %}
