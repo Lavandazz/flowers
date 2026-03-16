@@ -9,11 +9,5 @@ urlpatterns = [
     path('', views.CatalogueListView.as_view(), name='catalogue'),
     path('search/', views.ProductSearchView.as_view(), name='search'),
     path('<slug:category_slug>/', views.CatalogueListView.as_view(), name='catalogue_by_category'),
-
     path('product/<slug:slug>/', views.ProductDetailView.as_view(), name='product_detail'),
-
-    # path("", views.catalogue, name="catalogue"),
-    # path('search/', views.catalogue, name='search'),
-    # path('<slug:category_slug>/', views.catalogue, name='catalogue_by_category'),
-    # path('product/<slug:slug>/', views.product_detail, name='product_detail'),
 ]

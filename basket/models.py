@@ -20,14 +20,14 @@ class BasketQuerySet(models.QuerySet):
 
 class Basket(models.Model):
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name='basket')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='Товар')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
     quantity = models.IntegerField(default=0, verbose_name='Количество')
     session_key = models.CharField(max_length=32, null=True, blank=True)  # сессия, если пользователь не зареген
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
 
     class Meta:
-        verbose_name = 'Корзина'
-        verbose_name_plural = verbose_name
+        verbose_name = 'Корзину'
+        verbose_name_plural = 'Управление корзинами пользователей'
 
     objects = BasketQuerySet.as_manager()  # переопределяем
 

@@ -5,18 +5,30 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content_catalog %}
-    {# Поиск по сайту #}
+
+    {% block banner %} {% include "banner.html" %} {% endblock %}
     {% block search %} {% include "nav_primary.html" %} {% endblock %}
 
     <div class="container-fluid">
 {#    {% cache 60 sidebar %}#}
         <div class="row">
+
+            {# Кнопка для открытия offcanvas (только на мобильных) #}
+            <div class="col-12 d-md-none mb-3">
+                <button class="btn btn-dark" type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#categoryOffcanvas"
+                        aria-controls="categoryOffcanvas">
+                    📋 Категории товаров
+                </button>
+            </div>
+
             <!-- Боковая панель категорий (4 колонки) -->
-            <div class="col-3">
+            <div class="col-3 d-none d-md-block">
                 {% block catalogue_aside %} {% include "catalogue_aside.html" %} {% endblock %}
             </div>
 
-            <!-- Основная область с товарами (8 колонок) -->
+            <!-- Боковая панель для десктопов (скрыта на мобильных) -->
             <div class="col-8">
 
                 {% if products or current_category %}
@@ -38,6 +50,18 @@
 
             </div>
         </div>
+
+     {# Offcanvas-панель для мобильных #}
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="categoryOffcanvas" aria-labelledby="categoryOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="categoryOffcanvasLabel">Категории</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            {% include "catalogue_aside.html" %}
+        </div>
+    </div>
+
 {#    {% endcache %}#}
     </div>
 {% endblock %}

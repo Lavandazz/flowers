@@ -11,7 +11,7 @@ class Type(models.Model):
 
     class Meta:
         verbose_name = "Тип категории"
-        verbose_name_plural = "Типы категорий"
+        verbose_name_plural = "I Управление типами товаров"
 
     def __str__(self):
         return self.name
@@ -32,7 +32,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name = "Категория"
-        verbose_name_plural = "Категории"
+        verbose_name_plural = "II Управление категориями товаров"
 
     def __str__(self):
         return self.name
@@ -47,7 +47,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name='Наименование товара')
     slug = models.SlugField('URL', unique=True)
     categories = models.ManyToManyField(Category,
                                         related_name='products',
@@ -57,8 +57,9 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/')
 
     class Meta:
+        db_table = 'products'
         verbose_name = 'Товар'
-        verbose_name_plural = 'Товары'
+        verbose_name_plural = 'III Добавление товаров'
 
     def __str__(self):
         return self.name
@@ -71,3 +72,21 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+class SaleBanner(models.Model):
+    title = models.CharField(max_length=100, verbose_name='Наименование акции')
+    description = models.CharField(max_length=400, verbose_name='Наименование акции')
+    image = models.ImageField(verbose_name='Изображение', upload_to='sale/')
+    order = models.PositiveIntegerField('Порядок', default=0)
+    is_active = models.BooleanField('Активен', default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order']
+        db_table = 'banner'
+        verbose_name = 'Баннер'
+        verbose_name_plural = 'IV Управление баннерами'
+
+    def __str__(self):
+        return self.title

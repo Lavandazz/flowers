@@ -18,18 +18,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
-from main import views
+admin.site.site_header = 'Административная панель Flower Shop'
+admin.site.index_title = 'Добро пожаловать в панель управления'
 
 
 urlpatterns = [
-    path("", include("main.urls")),
     path("admin/", admin.site.urls),
-    path("catalogue/", include("shop.urls")),
     path("page/", include("page.urls")),
     path("user/", include("users.urls")),
     path("basket/", include("basket.urls")),
     path("orders/", include("orders.urls")),
+    # Перенаправление catalogue на главную /, тк удалена страница index
+    path('catalogue/', RedirectView.as_view(url='/', permanent=True)),
+    path('', include('shop.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

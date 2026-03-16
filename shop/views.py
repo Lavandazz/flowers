@@ -2,13 +2,14 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView, ListView
 
-from shop.models import Product, Category, Type
+from shop.mixins import BannerMixin
+from shop.models import Product, Category, Type, SaleBanner
 from shop.utils import q_search
 
 
 # Create your views here.
 
-class CatalogueListView(ListView):
+class CatalogueListView(BannerMixin, ListView):
     model = Product
     paginate_by = 9
     context_object_name = 'products'
@@ -105,6 +106,15 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.name
         return context
+
+
+# class BannerMixin:
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['banners'] = Banner.objects.filter(is_active=True)
+#         return context
+
+
 
 # def catalogue(request, category_slug=None):  # category_slug для фильтрации
 #     """

@@ -24,4 +24,7 @@ class BasketAdmin(admin.ModelAdmin):
             return obj.user.username
         return 'Аноним'
 
+    user_display.short_description = 'Пользователь'
+
+
 

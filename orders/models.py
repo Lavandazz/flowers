@@ -19,8 +19,8 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'orders'
-        verbose_name = 'Заказ'
-        verbose_name_plural = 'Заказы'
+        verbose_name = 'Заказ | Пользователь'
+        verbose_name_plural = 'Управление заказами'
 
     def __str__(self):
         return f'Заказ № {self.pk} | Покупатель {self.user.first_name} | {self.user.last_name}'
@@ -37,7 +37,7 @@ class OrderItem(models.Model):
     class Meta:
         db_table = 'order_item'
         verbose_name = 'Товар'
-        verbose_name_plural = 'Товары'
+        verbose_name_plural = 'Купленные товары'
 
     def products_price(self):
         return round(self.product.price * self.quantity, 2)
@@ -48,7 +48,7 @@ class OrderItem(models.Model):
 
 class PaymentOrder(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ', related_name='payments')
-    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Цена')
+    price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Сумма заказа')
     payment_id = models.CharField(max_length=150, verbose_name='ID платежа в ЮKassa', unique=True)
     status = models.CharField(max_length=50, verbose_name='Статус платежа',
                               default='pending')  # pending, succeeded, canceled
@@ -56,3 +56,8 @@ class PaymentOrder(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     confirmed_at = models.DateTimeField(null=True, blank=True, verbose_name='Дата подтверждения')
     description = models.CharField(max_length=150, verbose_name='Описание')
+
+    class Meta:
+        db_table = 'payment'
+        verbose_name = 'Оплачено'
+        verbose_name_plural = 'Статусы оплат'

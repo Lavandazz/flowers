@@ -68,6 +68,9 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    "admin_interface",
+    "colorfield",
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,13 +81,15 @@ INSTALLED_APPS = [
 
     "debug_toolbar",
 
-    'main',
     'shop',
     'page',
     'users',
     'basket',
     'orders',
 ]
+# Настройки для django-admin-interface
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 if DEBUG:
     INSTALLED_APPS += ['whitenoise.runserver_nostatic']

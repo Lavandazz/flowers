@@ -25,7 +25,7 @@ body {
 /* Первый слой: фон с пионами */
 .background-overlay {
     position: fixed;
-    /*background-image: url('../back_images/111.jpg');*/
+    background-image: url('../back_images/111.jpg');
 
     background-color: black;
 
@@ -198,7 +198,28 @@ body {
     margin-left: 8px;
     cursor: pointer;
 }
+/* === Баннер === */
+.banner-carousel {
+    height: 200px; /* фиксированная высота */
+    overflow: hidden; /* чтобы ничего не вылезало */
+}
 
+.banner-carousel .carousel-inner,
+.banner-carousel .carousel-item {
+    height: 100%; /* занимают всю высоту родителя */
+}
+
+.banner-carousel .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* изображение покрывает всю область, обрезаясь по краям */
+    /* Если хотите, чтобы изображение целиком помещалось с полосами, используйте object-fit: contain */
+}
+@media (max-width: 768px) {
+    .banner-carousel {
+        height: 150px;
+    }
+}
 /* === Страница index === */
 .hello-container {
     position: fixed;
@@ -624,16 +645,15 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    /*background: rgba(255, 255, 255, 0.1); !* полупрозрачный фон, как у шапки *!*/
-    /*backdrop-filter: blur(5px);*/
     overflow: hidden;
 }
 
-.catalog-sidebar h3,
-.catalog-main h3{
-    color: white;
-    padding: 1rem;
-}
+/*.catalog-sidebar h3,*/
+/*.catalog-main h3{*/
+/*    color: white;*/
+/*    padding: 1rem;*/
+/*}*/
+
 .category-type a{
     text-decoration:  none;
     color: rgba(255, 255, 255, 0.76);
@@ -647,8 +667,6 @@ body {
     color: #94252f;
     font-size: 1.1rem;
     font-weight: 700;        /* жирный */
-    /*border-left: 1px solid rgba(255, 255, 255, 0.79); !* например, полоска слева *!*/
-    /*border-bottom: 1px solid rgba(255, 255, 255, 0.77);*/
 }
 
 /* Плавное подчеркивание меню */
@@ -656,7 +674,6 @@ body {
     margin-bottom: 15px; /* нужное вам значение */
 }
 .category-item a {
-    /*display: block;*/
     padding: 5px 15px;
     color: white;
     text-decoration: none;
@@ -763,7 +780,8 @@ body {
 }
 
 .btn i:hover {
-    color: rgba(199, 142, 181, 0.63);
+    /*color: rgba(199, 142, 181, 0.63);*/
+    color: rgb(250, 167, 224);
 }
 
 /*Пагинация*/
@@ -907,11 +925,12 @@ body {
 }
 
 .btn-shop:hover {
-    color: rgba(199, 142, 181, 0.79);
+    /*color: rgba(199, 142, 181, 0.79);*/
+    color: rgb(250, 167, 224);
 }
-.btn-shop i:hover {
-    color: rgba(199, 142, 181, 0.63);
-}
+/*.btn-shop i:hover {*/
+/*    color: rgba(199, 142, 181, 0.63);*/
+/*}*/
 
 .btn-back {
     color: whitesmoke;

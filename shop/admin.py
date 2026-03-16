@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 
-from shop.models import Category, Product, Type
+from shop.models import Category, Product, Type, SaleBanner
 
 
 # Register your models here.
@@ -25,3 +25,9 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description',)
     list_filter = ('categories',)
 
+
+@admin.register(SaleBanner)
+class SaleBannerAdmin(admin.ModelAdmin):
+    # list_display = ('title', 'description', 'is_active')
+    search_fields = ('title',)
+    # list_editable = ('order', 'is_active')
