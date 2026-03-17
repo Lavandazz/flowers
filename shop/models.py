@@ -74,6 +74,21 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
 
+class ImageProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', verbose_name='Фото товара')
+    image = models.ImageField(upload_to='products/', verbose_name='Изображение')
+    order = models.PositiveIntegerField(default=0, verbose_name='Порядок отображения')
+
+    class Meta:
+        # db_table = 'images'
+        ordering = ['order']
+        verbose_name = 'Изображение товара'
+        verbose_name_plural = 'Изображения товаров'
+
+    def __str__(self):
+        return f'Изображение для {self.product.name}'
+
+
 class SaleBanner(models.Model):
     title = models.CharField(max_length=100, verbose_name='Наименование акции')
     description = models.CharField(max_length=400, verbose_name='Наименование акции')

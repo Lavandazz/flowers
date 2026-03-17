@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     "debug_toolbar",
+    'image_uploader_widget',
 
     'shop',
     'page',

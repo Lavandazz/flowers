@@ -1,7 +1,7 @@
 from django.contrib import admin
+from image_uploader_widget.admin import ImageUploaderInline
 
-
-from shop.models import Category, Product, Type, SaleBanner
+from shop.models import Category, Product, Type, SaleBanner, ImageProduct
 
 
 # Register your models here.
@@ -17,14 +17,19 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ('type',)
 
 
+class ProductImageAdmin(ImageUploaderInline):
+    model = ImageProduct
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     filter_horizontal = ('categories',)
     list_display = ('display_category', 'name', 'price')
-    fields = [('name', 'slug'), 'description', 'price', 'image', 'categories']
+    fields = [('name', 'slug'), 'description', 'price', 'categories']
     search_fields = ('name', 'description',)
     list_filter = ('categories',)
+    inlines = [ProductImageAdmin]
 
     def display_category(self, obj):
         """Отображение категории товара"""
