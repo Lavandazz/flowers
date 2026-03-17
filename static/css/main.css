@@ -720,12 +720,9 @@ body {
     }
 }
 
-/* Карточка товара */
+/* КАРТОЧКИ ТОВАРОВ НА ГЛАВНОЙ */
 .product-card {
-    /*background: rgba(255, 255, 255, 0.1);*/
-    /*background: rgba(10, 10, 10, 0.11);*/
     backdrop-filter: blur(10px);
-    /*border: 1px solid rgba(255,255,255,0.3);*/
     border-radius: 5px;
     overflow: hidden;
     display: flex;
@@ -734,9 +731,7 @@ body {
 }
 
 .product-card:hover {
-    /*background: rgba(110, 109, 109, 0.11);*/
     backdrop-filter: blur(20px);
-    /*box-shadow:  2px 2px 20px rgba(250, 167, 224, 0.2);*/
     box-shadow:  2px 2px 20px rgba(245, 245, 245, 0.61);
 }
 .product-card img {
@@ -767,7 +762,6 @@ body {
     font-size: 20px;
     font-weight: bold;
     margin-top: auto;    /* прижимает цену к низу, но оставляет место для кнопки */
-    /*margin-bottom: 10px;*/
 }
 /*Кнопка корзины*/
 .btn {
@@ -778,7 +772,6 @@ body {
     transition: background 0.3s;
     text-decoration: none;
 }
-
 .btn i:hover {
     /*color: rgba(199, 142, 181, 0.63);*/
     color: rgb(250, 167, 224);
@@ -804,98 +797,24 @@ body {
     border-color: white;
     color: #333;
 }
-
 /* Фокус (клавиатурная навигация) */
 .pagination .page-link:focus {
     box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5); /* белое свечение */
     outline: none;
 }
-/*.pagination {*/
-/*    display: flex;*/
-/*    margin-top: 3rem;*/
-/*    padding: 1rem;*/
-/*}*/
-/*.page-item a{*/
-/*    color: black;*/
-/*}*/
-/*.pagination a {*/
-/*    letter-spacing: 0.2rem;*/
-/*    padding-right: 1rem;*/
-/*    color: #fff3d6;*/
-/*    text-decoration: none;*/
-/*}*/
-/*.pagination a:hover {*/
-/*    color: #fdd16c;*/
-/*}*/
 
-/*Карточка товара*/
+/* СТРАНИЦА ТОВАРА */
 /* Контейнер детальной страницы товара */
 .product-detail-container {
     flex: 1;
     padding: 80px 20px;
     box-sizing: border-box;
 }
-
-/* Сетка из двух колонок */
-.product-detail-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem; /* можно уменьшить/увеличить */
-    flex: 1; /* занимает всю доступную высоту родителя */
-    align-items: stretch; /* чтобы колонки были одинаковой высоты */
-}
-
-/* Левая колонка (изображение) */
-.product-detail-image {
-    flex: 3 1 calc(60% - 2rem); /* 3 части из 5 (60%) с учётом gap */
-    min-width: 200px;
-    display: flex;
-    align-items: center;     /* центрируем фото по вертикали */
-    justify-content: center; /* центрируем по горизонтали */
-    background: rgba(0,0,0,0.05); /* фон на случай пустоты */
-    /*border-radius: 12px;*/
-}
-
-.product-detail-image img {
-    padding-top: 30px;
-    width: 100%;
-    max-height: 500px;
-    /*max-width: 100%;*/
-    /*max-height: 100%;*/
-    /*width: auto;*/
-    /*height: auto;*/
-    object-fit: contain;    /* фото целиком помещается в область */
-    /*border-radius: 12px;*/
-
-
-}
-/*!* Правая колонка (информация) — 40% *!*/
-/*.product-detail-info {*/
-/*    color: white;*/
-/*    flex: 2 1 calc(40% - 2rem); !* 2 части из 5 (40%) *!*/
-/*    background: rgba(63, 62, 62, 0.5);*/
-/*    !*backdrop-filter: blur(5px);*!*/
-/*    !*border: 1px solid rgba(255,255,255,0.3);*!*/
-/*    !*border-radius: 12px;*!*/
-/*    padding-top: 30px;*/
-/*    !*box-sizing: border-box;*!*/
-
-/*    !*display: flex;           !* включаем flex-контекст *!*!*/
-/*    !*flex-direction: column;  !* располагаем дочерние элементы вертикально *!*!*/
-
-/*}*/
-
-.product-detail-info h1 {
-    margin: 0 0 20px;
-    font-size: 2.2rem;
-}
-
 .product-detail-description {
     margin-bottom: 25px;
     line-height: 1.6;
     opacity: 0.9;
 }
-
 .product-detail-price,
 .rub {
     font-size: 2rem;
@@ -904,13 +823,13 @@ body {
     color: whitesmoke; /* акцентный цвет, как у подчёркивания */
 }
 
-/* Кнопки действий */
-.product-detail-actions {
-    display: flex;
-    gap: 6rem;
-    flex-wrap: wrap;
-    margin-top: auto;
-}
+/*!* Кнопки действий *!*/
+/*.product-detail-actions {*/
+/*    display: flex;*/
+/*    gap: 6rem;*/
+/*    flex-wrap: wrap;*/
+/*    margin-top: auto;*/
+/*}*/
 
 .btn-shop {
     font-size: 1.5rem;

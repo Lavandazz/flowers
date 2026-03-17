@@ -7,15 +7,31 @@
 {% block search %} {% include "nav_primary.html" %} {% endblock %}
     <div class="container">
         <div class="row">
-            <div class="col">
-                <div class="product-detail-image">
-                    <a href="{{ product.image.url }}" data-lightbox="gallery" data-title="{{ product.name }}">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="float-start">
-                    </a>
+            <div class="col-6">
+                <div class="slider-for">
+                    {% for slide in product.images.all %}
+                        <div>
+                            <a href="{{ slide.image.url }}" data-lightbox="gallery" data-title="{{ product.name }}">
+                                <img src="{{ slide.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                            </a>
+                        </div>
+                    {% empty %}
+                        <p>Нет изображений</p>
+                    {% endfor %}
                 </div>
+                {% if product.images.all|length > 1 %}
+                <div class="slider-nav mt-3">
+                    {% for slide in product.images.all %}
+                        <div>
+                            <img src="{{ slide.image.url }}" class="img-fluid" alt="Фото">
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
 
-            <div class="col">
+
+            <div class="col-6">
                 <div class="container-fluid pt-5 text-white">
                     <h3>{{ product.name|capfirst }}</h3>
 
@@ -48,6 +64,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+         </div>
     </div>
 {% endblock %}
