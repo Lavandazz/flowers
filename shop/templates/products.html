@@ -2,29 +2,29 @@
 {% block content_products %}
 
     <!-- Карточка товара занимает 4 колонки на больших экранах (3 в ряд) -->
-    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-        <div class="product-card h-80">  <!-- h-100 для одинаковой высоты карточек в строке -->
+    <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xxl-3 mb-4">
+        <div class="text-white rounded product-card h-100">
             <a href="{% url 'shop:product_detail' product.slug %}">
                 {% if product.image %}
-                    <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                    <img src="{{ product.image.url }}" class="img-fluid p-3" alt="{{ product.name }}">
                 {% else %}
-                    <img src="/static/img/not_found.png" class="img-fluid" alt="not_found">
+                    <img src="/static/img/not_found.png" class="img-fluid p-3" alt="not_found">
                 {% endif %}
             </a>
-            <div class="product-info">
-                <h4>{{ product.name|capfirst  }}</h4>
-                <div class="row align-items-center">   <!-- ряд для цены и кнопки -->
-                    <div class="col-8">                 <!-- левая колонка: цена (можно подобрать ширину) -->
-                        <p class="product-price mb-0">
+            <div class="product-info px-2 px-sm-3">
+                <h4 class="fs-6 fs-sm-5 fs-md-4 fs-lg-3">{{ product.name|capfirst }}</h4>
+                <div class="row align-items-center pb-2">   <!-- ряд для цены и кнопки -->
+                    <div class="col-7">                 <!-- левая колонка: цена  -->
+                        <span class="product-price fs-6 fs-sm-6 fs-md-5">
                             {{ product.price|floatformat:0  }}
                             <a class="rub"><i class="fa fa-ruble"></i></a>
-                        </p>
+                        </span>
                     </div>
-                    <div class="col-4 text-end">        <!-- правая колонка: кнопка, выровнена по правому краю -->
+                    <div class="col-5 text-end">        <!-- правая колонка: кнопка, выровнена по правому краю -->
                         {% csrf_token %}
                         <a href="{% url "basket:basket_add" %}"
                            data-product-id="{{ product.id }}"
-                           class="btn add-to-cart p-0">   <!-- убираем лишние отступы, если нужна только иконка -->
+                           class="btn add-to-cart p-1">   <!-- убираем лишние отступы, если нужна только иконка -->
                             <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                         </a>
                     </div>

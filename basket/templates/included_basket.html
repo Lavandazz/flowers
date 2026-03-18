@@ -42,8 +42,8 @@
                         <a href="{% url  "basket:basket_remove" %}" class="remove-link"
                            data-product-id="{{ item.id }}">
                             {% csrf_token %}
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            <img src="" alt="Удалить" width="16" height="16">
+                            <i class="fa fa-trash" aria-hidden="true"> Удалить</i>
+{#
                         </a>
                     </div>
                 </div>

@@ -12,7 +12,6 @@
     <div class="container-fluid">
 {#    {% cache 60 sidebar %}#}
         <div class="row">
-
             {# Кнопка для открытия offcanvas (только на мобильных) #}
             <div class="col-12 d-md-none mb-3">
                 <button class="btn btn-dark" type="button"
@@ -29,7 +28,7 @@
             </div>
 
             <!-- Боковая панель для десктопов (скрыта на мобильных) -->
-            <div class="col-8">
+            <div class="col-12 col-md-9 col-lg-9">
 
                 {% if products or current_category %}
                     <div class="row">
