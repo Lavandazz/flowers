@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.html import format_html
 
+from orders.utils import STATUS_CHOICES
 from shop.models import Product
 from users.models import User
 
@@ -15,9 +16,9 @@ class Order(models.Model):
     phone_number = models.CharField(max_length=20, verbose_name='Номер телефона')
     request_delivery = models.BooleanField(default=False, verbose_name='Требуется доставка')
     delivery_address = models.TextField(null=True, blank=True, verbose_name='Адрес доставки')
-    payment_on_get = models.BooleanField(default=False, verbose_name='Оплата при получении')
     is_paid = models.BooleanField(default=False, verbose_name='Оплачено')
-    status = models.CharField(max_length=50, default='В обработке', verbose_name='Статус заказа')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='Статус заказа')
+    comment = models.CharField(max_length=400, null=True, blank=True, verbose_name='Комментарий')
 
     class Meta:
         db_table = 'orders'

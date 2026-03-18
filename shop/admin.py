@@ -25,10 +25,11 @@ class ProductImageAdmin(ImageUploaderInline):
 class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     filter_horizontal = ('categories',)
-    list_display = ('display_category', 'name', 'price')
+    list_display = ('name', 'display_category', 'price')
     fields = [('name', 'slug'), 'description', 'price', 'categories']
     search_fields = ('name', 'description',)
-    list_filter = ('categories',)
+    list_filter = ('categories', )
+    list_display_links = ('name','display_category')
     inlines = [ProductImageAdmin]
 
     def display_category(self, obj):

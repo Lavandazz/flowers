@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 
@@ -17,11 +18,19 @@ load_dotenv(dotenv_path=env_path)
 
 Configuration.configure(account_id=os.getenv('account_id'), secret_key=os.getenv('secret_key'))
 
+logger = logging.getLogger('pay')
+
 
 def pay_yookassa(order_id, total_price: int, return_url):
+    """
+    Создание платежа
+    :param order_id: Номер заказа
+    :param total_price: Общая сумма платежа
+    :param return_url: Возврат после оплаты (страница профиля)
+    :return:
+    """
     order_name = f'Заказ № {order_id}_{total_price}'
 
-    print('Принимаю заказ ', order_name)
     try:
         payment = Payment.create(
             {
@@ -40,10 +49,11 @@ def pay_yookassa(order_id, total_price: int, return_url):
                 },
             },
         )
+        logger.debug('Оплата заказа %s прошла успешно', order_name)
         # payment возвращается объект платежа с номером и статусом pending
         return payment
     except Exception as e:
-        print('Ошибка платежа', e)
+        logger.debug('Ошибка при оплате заказа %s: %s', order_name, e)
 
 
 def check_payment(payment_id):
@@ -51,6 +61,7 @@ def check_payment(payment_id):
     Проверка статуса платежа
     :param payment_id:  payment.id
     """
+    # Ниже код проверки без туннелирования сайта, для проверки статуса платежа
     # payment = Payment.find_one(payment_id)
     # if payment.status == 'succeeded' and payment.paid:
 

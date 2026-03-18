@@ -25,3 +25,12 @@ class ContactsView(TemplateView):
         context['title'] = 'Контакты'
         context['requisites'] = CompanyInfo.objects.first()
         return context
+
+
+class PolicyView(TemplateView):
+    template_name = 'policy.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Политика'
+        return context

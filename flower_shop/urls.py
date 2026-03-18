@@ -43,3 +43,8 @@ if settings.DEBUG:
     urlpatterns = [
                       *urlpatterns,
                   ] + debug_toolbar_urls()
+
+# Обслуживание медиа из корня при Debug=False
+# Закомментировать при деплое
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

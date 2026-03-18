@@ -1,4 +1,6 @@
 import json
+import logging
+
 from django.core.cache import cache
 
 from django.contrib import messages
@@ -23,6 +25,7 @@ from users.models import User
 
 
 # Create your views here.
+logger = logging.getLogger('order')
 
 
 class CreateOrderView(LoginRequiredMixin, FormView):
@@ -52,7 +55,7 @@ class CreateOrderView(LoginRequiredMixin, FormView):
             with transaction.atomic():
                 user = self.request.user
                 basket_items = Basket.objects.filter(user=user)
-                print('basket_items', basket_items)
+                logger.debug('Создается заказ к корзине: %s', basket_items)
                 if basket_items.exists():
                     # Создание заказа (адрес, телефон...) со статусом "ожидает оплаты"
                     order = Order.objects.create(
@@ -60,8 +63,7 @@ class CreateOrderView(LoginRequiredMixin, FormView):
                         phone_number=form.cleaned_data['phone_number'],
                         request_delivery=form.cleaned_data['requires_delivery'],
                         delivery_address=form.cleaned_data['delivery_address'],
-                        payment_on_get=form.cleaned_data['payment_on_get'],
-                        # status='pending'
+                        comment=form.cleaned_data['comment'],
                     )
 
                     # Создаём позиции заказа (продукт, доставка...)
@@ -73,62 +75,48 @@ class CreateOrderView(LoginRequiredMixin, FormView):
                             quantity=basket_item.quantity,
                             price=basket_item.product.price,
                         )
-                        print('basket_item', basket_item.id)
 
-                    # 2. Если выбран способ оплаты "картой" (payment_on_get = False), идём в ЮKassa
-                    if not int(form.cleaned_data['payment_on_get']):  # оплата картой онлайн
-                        total_price = sum(item.product.price * item.quantity for item in basket_items)
+                    # Итоговая сумма корзины
+                    total_price = sum(item.product.price * item.quantity for item in basket_items)
 
-                        print('total_price заказа', total_price)
+                    # Строим абсолютный путь для возврата из оплаты в профиль http://localhost:8000/user/profile/
+                    return_url = self.request.build_absolute_uri(reverse('user:profile'))
+                    try:
+                        payment = pay_yookassa(order.id, total_price,
+                                               return_url=return_url)
+                    except Exception as e:
+                        print('Ошибка вышла', e)
 
-                        self.request.session['last_order_id'] = order.id
-                        print('last_order_id', self.request.session['last_order_id'])
-                        # Строим абсолютный путь для возврата из оплаты в профиль
-                        return_url = self.request.build_absolute_uri(reverse('user:profile'))
-                        print('return_url', return_url)
-                        try:
+                    order_name = f'Заказ № {order.id}_{total_price}'
 
-                            payment = pay_yookassa(order.id, total_price,
-                                                   return_url=return_url)
-                        except Exception as e:
-                            print('Ошибка вышла', e)
+                    PaymentOrder.objects.create(
+                        order=order,
+                        price=total_price,
+                        payment_id=payment.id,
+                        status=payment.status,
+                        description=order_name
 
-                        order_name = f'Заказ № {order.id}_{total_price}'
+                    )
+                    # После создания платежа сохраняем ключи к заказу и платежу для проверки статуса
+                    self.request.session['last_order_id'] = order.id
+                    self.request.session['last_payment_id'] = payment.id
 
-                        PaymentOrder.objects.create(
-                            order=order,
-                            price=total_price,
-                            payment_id=payment.id,
-                            status=payment.status,
-                            description=order_name
+                    logger.info('ОПЛАТА НА СУММУ: %s', total_price)
+                    # Информация о платеже,
+                    # имеет вид https://yoomoney.ru/checkout/payments/v2/contract?orderId=31449a57-000f-5000-b000-18fe245df32b
+                    confirmation_url = payment.confirmation.confirmation_url
 
-                        )
-                        # После создания платежа сохраняем ключи к заказу и платежу для проверки статуса
-                        self.request.session['last_order_id'] = order.id
-                        self.request.session['last_payment_id'] = payment.id
+                    messages.success(self.request, 'Заказ оформлен')
 
-                        print('НАЧИНАЮ ОПЛАТУ ОНЛАЙН НА СУММУ:', total_price)
-                        # Информация о платеже,
-                        # имеет вид https://yoomoney.ru/checkout/payments/v2/contract?orderId=31449a57-000f-5000-b000-18fe245df32b
-                        confirmation_url = payment.confirmation.confirmation_url
-
-                        # basket_items.delete()
-                        messages.success(self.request, 'Заказ оформлен')
-
-                        # После перенаправления в профиль, необходимо обновить кэш, для того, чтобы обновились заказы
-
-                        return redirect(confirmation_url)
-
-                    print('ГОТОВО')
-                    return redirect('user:profile')
+                    # После перенаправления в профиль, необходимо обновить кэш, для того, чтобы обновились заказы
+                    return redirect(confirmation_url)
 
         except ValidationError as e:
             messages.error(self.request, str(e))
             return redirect('orders:create_order')
 
         except Exception as e:
-
-            # Логируем ошибку (например, print(e) или в лог-файл)
+            logger.error('Ошибка при создании платежа. Попробуйте позже., %s', e)
             messages.error(self.request, 'Ошибка при создании платежа. Попробуйте позже.')
             return redirect('orders:create_order')
 
@@ -151,6 +139,7 @@ class CreateOrderView(LoginRequiredMixin, FormView):
 def yookassa_webhook(request):
     """
     Проверка платежа
+    В лк Юкасса необходимо указать полностью путь к вебхуку: домен/orders/payment/yookassa-webhook/
     """
     try:
         data = json.loads(request.body)

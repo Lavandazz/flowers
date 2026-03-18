@@ -14,12 +14,7 @@ class CreateOrderForm(forms.Form):
         ],
     )
     delivery_address = forms.CharField(required=False)
-    payment_on_get = forms.ChoiceField(
-        choices=[
-            ("0", 'False'),
-            ("1", 'True'),
-        ],
-    )
+    comment = forms.CharField(required=False)
 
     def clean_phone_number(self):
         """ Валидация номера телефона """

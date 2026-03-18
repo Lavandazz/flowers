@@ -32,7 +32,6 @@ class Basket(models.Model):
     objects = BasketQuerySet.as_manager()  # переопределяем
 
     def products_price(self):
-        print("в корзине", self.product, self.product.price, self.quantity)
         return round(self.product.price * self.quantity, 2)
 
     def __str__(self):

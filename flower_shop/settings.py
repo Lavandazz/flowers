@@ -15,6 +15,7 @@ import re
 import environ
 from pathlib import Path
 
+from common.loggers import LOGGERS_DICT
 from conf.settings_env import settings
 from conf.settings_proj import PROJECT_ROOT
 
@@ -33,35 +34,10 @@ DJANGO_SUPERUSER = settings.DJANGO_SUPERUSER
 
 DEBUG = True
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    "formatters": {
-            "verbose": {
-                "format": "{name} {levelname} {asctime} {module} {process:d} {thread:d} {message}",
-                'style': '{'
-            },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'basket': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-        'user': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
+LOGGING = LOGGERS_DICT
 
 ALLOWED_HOSTS = [
-    'outspokenly-needed-junco.cloudpub.ru',
+    '.ru.tuna.am',
     '127.0.0.1',
     'localhost']
 
@@ -217,10 +193,13 @@ INTERNAL_IPS = [
 ]
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_DIRS = [
     BASE_DIR / "static/",
     # "/var/www/static/",
 ]
+
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
