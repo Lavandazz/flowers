@@ -1,24 +1,26 @@
 {% load static %}
 
-<!-- Контейнер для уведомлений -->
-<div id="notifications-container" class="notifications-container">
-    <!-- Это блок для AJAX-сообщений – всегда присутствует, но скрыт -->
-    <div id="jq-notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-success fade show custom-shadow" style="display: none;" role="alert">
-    </div>
-
-    {% if form.non_field_errors %}
-        <div class="notification notification-error">
-            {{ form.non_field_errors }}
-            <button class="notification-close">&times;</button>
+{% block messages %}
+    <!-- Контейнер для уведомлений -->
+    <div id="notifications-container" class="notifications-container">
+        <!-- Это блок для AJAX-сообщений – всегда присутствует, но скрыт -->
+        <div id="jq-notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-success fade show custom-shadow" style="display: none;" role="alert">
         </div>
-    {% endif %}
-
-    {% if messages %}
-        {% for message in messages %}
-            <div class="notification {% if message.tags == 'success' %}notification-success{% elif message.tags == 'warning' %}notification-error{% endif %}">
-                {{ message }}
+    
+        {% if form.non_field_errors %}
+            <div class="notification notification-error">
+                {{ form.non_field_errors }}
                 <button class="notification-close">&times;</button>
             </div>
-        {% endfor %}
-    {% endif %}
-</div>
+        {% endif %}
+    
+        {% if messages %}
+            {% for message in messages %}
+                <div class="notification {% if message.tags == 'success' %}notification-success{% elif message.tags == 'warning' %}notification-error{% endif %}">
+                    {{ message }}
+                    <button class="notification-close">&times;</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

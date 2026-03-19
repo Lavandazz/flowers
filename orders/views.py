@@ -119,13 +119,13 @@ class CreateOrderView(LoginRequiredMixin, FormView):
             logger.error('Ошибка при создании платежа. Попробуйте позже., %s', e)
             messages.error(self.request, 'Ошибка при создании платежа. Попробуйте позже.')
             return redirect('orders:create_order')
-
-    def form_invalid(self, form):
-        """
-        Метод вывозит сообщение об ошибке при заполнении формы
-        """
-        messages.error(self.request, 'Заполните все поля')
-        return redirect('orders:create_order')
+    #
+    # def form_invalid(self, form):
+    #     """
+    #     Метод вывозит сообщение об ошибке при заполнении формы
+    #     """
+    #     messages.error(self.request, 'Заполните все поля')
+    #     return redirect('orders:create_order')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

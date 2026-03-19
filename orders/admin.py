@@ -59,7 +59,8 @@ class OrdersAdmin(admin.ModelAdmin):
     """
     Управление заказами
     """
-    list_display = ('title_order', 'status', 'user', 'is_paid', 'created', 'request_delivery')
+    list_display = ('status', 'title_order', 'user', 'is_paid', 'created', 'request_delivery')
+    list_display_links = ('status', 'title_order')
     search_fields = ('user', 'created', 'id')
     list_filter = ('status', 'request_delivery', 'created')
     inlines = (OrdersAdminTab, PaymentOrdersAdminTab)  # привязывает товары к заказу

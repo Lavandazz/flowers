@@ -29,3 +29,13 @@ class CreateOrderForm(forms.Form):
             raise forms.ValidationError("Неверный формат номера")
 
         return data
+
+    def clean(self):
+        cleaned_data = super().clean()
+        requires_delivery = cleaned_data.get('requires_delivery')  # Ловит кнопку доставки строка "0" или "1"
+        delivery_address = cleaned_data.get('delivery_address')  # Ловит комментарий
+        print('Работает clean, requires_delivery', requires_delivery, 'delivery_address', delivery_address)
+        if requires_delivery == "1" and not delivery_address:
+            self.add_error('delivery_address', 'Укажите адрес доставки')
+
+        return cleaned_data
