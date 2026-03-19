@@ -50,6 +50,9 @@ class OrderItem(models.Model):
 
 
 class PaymentOrder(models.Model):
+    """
+    Класс отвечает за оплаты Юкасса
+    """
     order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ', related_name='payments')
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name='Сумма заказа')
     payment_id = models.CharField(max_length=150, verbose_name='ID платежа в ЮKassa', unique=True)

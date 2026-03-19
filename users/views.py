@@ -90,12 +90,12 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        # Получаем заказы с помощью сводной таблицы orderitem_set (orderitem)
         orders = Order.objects.filter(user=self.request.user).prefetch_related(Prefetch(
             'orderitem_set',
             queryset=OrderItem.objects.select_related('product')
         )).order_by('-id')
-
+        print("orders:", orders)
         context['title'] = 'Личный кабинет'
         context['orders'] = self.set_get_cache(
             query=orders,

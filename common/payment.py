@@ -76,7 +76,7 @@ def check_payment(payment_id):
     print('получил объект order', order)
     payment_obj.status = 'succeeded'
     # Сохраняем статус заказа после подтверждения оплаты
-    payment_obj.order.status = 'Оплачен'
+    payment_obj.order.status = 'paid'
     payment_obj.order.is_paid = True
     payment_obj.confirmed_at = timezone.now()
 

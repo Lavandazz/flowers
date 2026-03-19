@@ -36,7 +36,9 @@
                     {% for order in orders %}
                         <details class="order-item" {% if forloop.first %}open{% endif %}>
                             <summary class="order-summary">
-                                Заказ № {{ order.id }} — {{ order.created_timestamp|date:"d.m.Y" }} | Статус: <strong>{{ order.status }}</strong>
+                                Заказ № {{ order.id }} — {{ order.created_timestamp|date:"d.m.Y" }} |
+                                Статус: <strong>{{ order.get_status_display }}</strong>
+{#                                get_status_display - метод#}
                             </summary>
                             <div class="order-content">
                                 <table class="profile-table">
@@ -50,15 +52,25 @@
                                     </thead>
                                     <tbody>
                                         {% for item in order.orderitem_set.all %}
-                                        <tr>
-                                            <td><a href="{% url 'shop:product_detail' item.product.slug %}">{{ item.product.name }}</a></td>
-                                            <td>{{ item.quantity }}</td>
-                                            <td>{{ item.price|floatformat:0 }} руб.</td>
-                                            <td>{{ item.products_price|floatformat:0 }} руб.</td>
-                                        </tr>
+                                            <tr>
+                                                <td><a href="{% url 'shop:product_detail' item.product.slug %}">{{ item.product.name }}</a></td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>{{ item.price|floatformat:0 }} руб.</td>
+                                                <td>{{ item.products_price|floatformat:0 }} руб.</td>
+                                            </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
+                            </div>
+                            <a href="#comment" class="btn btn-secondary" data-bs-toggle="collapse">Комментарий</a>
+                            <div class="collapse mt-3" id="comment">
+                                <div class="p-3">
+                                    {% if order.comment %}
+                                        {{ order.comment }}
+                                    {% else %}
+                                        <em>Нет комментария</em>
+                                    {% endif %}
+                                </div>
                             </div>
                         </details>
                     {% endfor %}
