@@ -143,17 +143,17 @@ def yookassa_webhook(request):
     """
     try:
         data = json.loads(request.body)
-        print('получил data платежа', data)
     except json.JSONDecodeError:
         return HttpResponse(status=400)
 
     # Извлекаем данные
     payment_id = data['object']['id']
     status = data['object']['status']
-    metadata = data['object'].get('metadata', {})
-    order_id = metadata.get('order_id')  # если передавали в metadata
-    print('извлек данные', payment_id,
-          status, order_id)
+    # metadata = data['object'].get('metadata', {})
+    # order_id = metadata.get('order_id')  # если передавали в metadata
+
+    logger.debug('Получение yookassa_webhook payment_id - %s, status - %s', payment_id, status)
+
     if status == 'succeeded':
         check_payment(payment_id=payment_id)
 

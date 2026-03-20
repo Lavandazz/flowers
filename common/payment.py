@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from dotenv import load_dotenv
 
-from yookassa import Payment, Configuration
+from yookassa import Payment, Configuration, Refund
 
 from basket.models import Basket
 from orders.models import Order, PaymentOrder
@@ -87,4 +87,45 @@ def check_payment(payment_id):
     print('КОРЗИНЫ УДАЛЕНЫ', order)
 
     payment_obj.save()
+
+
+def refund_payment(payment_obj, total_sum=None):
+    """
+    Создаёт возврат по платежу.
+    payment_obj - экземпляр PaymentOrder
+    total_sum - сумма возврата. Если None, возвращается полная сумма.
+    """
+    payment = Payment.find_one(payment_obj.payment_id)
+    # Если статус оплаты не succeeded, то есть не 'Оплачен'
+    if payment.status != 'succeeded':
+        raise ValueError(f'Платёж {payment_obj.payment_id} не в статусе succeeded: {payment.status}')
+
+    refund_amount = total_sum if total_sum is not None else payment_obj.price
+
+    logger.debug('Сумма возврата refund_amount %s', refund_amount)
+    refund = Refund.create({
+        "amount": {
+            "value": refund_amount,
+            "currency": "RUB"
+        },
+        "payment_id": payment_obj.payment_id,
+        'description': f'Возврат по заказу №{payment_obj.order.id}'
+    })
+    # Обновляем статус платежа и заказа
+    payment_obj.status = refund.status  # обычно 'succeeded' или 'pending'
+    payment_obj.is_refunded = True  # сохраняем значение возврата
+    payment_obj.refunded_at = refund.created_at
+    payment_obj.refunded_id = refund.id
+    print('created_at', refund)
+    payment_obj.save()
+
+    order = payment_obj.order
+    order.status = 'refunded'
+    order.save()
+    print('Время возврата refund.id', refund.id)
+    logger.info(f'Возврат {refund_amount} по платежу {payment_obj.payment_id} успешно создан')
+    return refund
+
+
+
 

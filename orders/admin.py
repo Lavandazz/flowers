@@ -1,7 +1,12 @@
-from django.contrib import admin
+import logging
 
+from django.contrib import admin, messages
 
+from common.payment import refund_payment
 from orders.models import Order, OrderItem, PaymentOrder
+
+
+logger = logging.getLogger('pay')
 
 
 # Register your models here.
@@ -17,7 +22,10 @@ class PaymentOrdersAdminTab(admin.TabularInline):
 
 @admin.register(PaymentOrder)
 class PaymentOrderAdmin(admin.ModelAdmin):
-    list_display = ("order", "payment_id", 'price', 'payment_status', "created_at", 'confirmed_at')
+    """
+    Статусы оплат
+    """
+    list_display = ("order", "payment_id", 'price', 'payment_status', "created_at", 'confirmed_at', 'is_refunded')
     search_fields = ('order',)
 
     def payment_status(self, rec):
@@ -64,8 +72,63 @@ class OrdersAdmin(admin.ModelAdmin):
     search_fields = ('user', 'created', 'id')
     list_filter = ('status', 'request_delivery', 'created')
     inlines = (OrdersAdminTab, PaymentOrdersAdminTab)  # привязывает товары к заказу
+    actions = ['mark_as_processing', 'mark_as_shipped', 'mark_as_completed', 'cancel_order']
 
     def title_order(self, rec):
         return f'Заказ № {rec.id}'
 
     title_order.short_description = 'Заказ | №'
+
+    def cancel_order(self, request, queryset):
+        """
+        Отмена заказа. Инициация возврата средств и смена статуса заказа
+        """
+        for order in queryset:
+            if order.is_paid:
+                # Ищем платёж статусом succeeded-оплачено, связанный с заказом
+                payment = order.payments.filter(status='succeeded').first()
+                logger.info('Отмена заказа %s', payment)
+                if payment:
+                    try:
+                        refund_payment(payment)
+                    except Exception as e:
+                        print('Ошибка возврата: %s', e)
+                        logger.error("Ошибка возврата по заказу %s, : %s", order.id, e)
+                        self.message_user(
+                            request,
+                            f'Ошибка возврата по заказу №{order.id}: {e}',
+                            level=messages.ERROR
+                        )
+                else:
+                    self.message_user(
+                        request,
+                        f'Заказ №{order.id} оплачен, но нет записи успешного платежа',
+                        level=messages.WARNING
+                    )
+            else:
+                order.status = 'cancelled'
+                order.save()
+                logger.info(f'Заказ №{order.id} отменён без возврата средств')
+                self.message_user(request, f'Заказ №{order.id} отменён без возврата средств')
+
+    cancel_order.short_description = "Отменить заказ (с возвратом если оплачен)"
+
+    def mark_as_processing(self, request, queryset):
+        queryset.update(status='processing')
+        self.message_user(request, "Выбранные заказы отмечены как 'В обработке'")
+
+    mark_as_processing.short_description = "Отметить как 'В обработке'"
+
+    def mark_as_shipped(self, request, queryset):
+        queryset.update(status='shipped')
+        self.message_user(request, "Выбранные заказы отмечены как 'Передан в доставку'")
+
+    mark_as_shipped.short_description = "Отметить как 'Передан в доставку'"
+
+    def mark_as_completed(self, request, queryset):
+        queryset.update(status='completed')
+        self.message_user(request, "Выбранные заказы отмечены как 'Выполнен'")
+
+    mark_as_completed.short_description = "Отметить как 'Выполнен'"
+
+

@@ -22,7 +22,7 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'orders'
-        verbose_name = 'Заказ | Пользователь'
+        verbose_name = 'заказ'
         verbose_name_plural = 'Управление заказами'
 
     def __str__(self):
@@ -61,9 +61,13 @@ class PaymentOrder(models.Model):
     payment_method = models.CharField(max_length=50, verbose_name='Способ оплаты', blank=True)  # card, cash и т.д.
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     confirmed_at = models.DateTimeField(null=True, blank=True, verbose_name='Дата подтверждения')
+    is_refunded = models.BooleanField(default=False, verbose_name='Возврат средств')
+    refunded_at = models.DateTimeField(null=True, blank=True, verbose_name='Дата возврата')
+    refund_id = models.CharField(max_length=150, blank=True, verbose_name='ID возврата в ЮKassa')
+    refund_comment = models.CharField(max_length=300, blank=True, null=True, verbose_name='Комментарий о возврате')
     description = models.CharField(max_length=150, verbose_name='Описание')
 
     class Meta:
         db_table = 'payment'
-        verbose_name = 'Оплачено'
+        verbose_name = 'заказ'
         verbose_name_plural = 'Статусы оплат'
