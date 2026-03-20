@@ -42,7 +42,7 @@ class UserLoginView(LoginView):
             # Передаем корзины с товарами неавторизованного пользователя в его аккаунт
             Basket.objects.filter(session_key=session_key).update(user=user)
             messages.success(self.request, f"Добро пожаловать! {user.username}")
-        print("next:", self.request.POST.get('next'))
+
         return response
 
     def get_context_data(self, **kwargs):
