@@ -1,0 +1,33 @@
+# Проверка подключения redis docker exec -it flowers_ct redis-cli -a пароль ping
+# Проверка логово docker logs flowers_ct
+
+services:
+   redis:
+    image: redis:alpine
+    container_name: flowers_ct
+    env_file:
+      - .env
+    ports:
+      - "6380:6379"
+#    networks:
+#      - flowers_nt
+    restart: always
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+          cpus: '0.2'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  redis_data:

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block policy %}
+    <div class="container mt-4">
+    <h3 class="mb-3">{{ title }}</h3>
+        {% for point in company.main_points.all %}
+            <h4 class="mb-3">{{ point.point }}</h4>
+                {% for desc in point.points.all %}
+                    <p class="ps-4">{{ desc.description }}</p>
+                {% endfor %}
+            {% endfor %}
+    </div>
+    <div class="mt-4 p-5 container">
+        <p>Адрес: г. Москва, {{ company.street }}, {{ company.house }}, {{ company.building }}</p>
+                <p>Email:
+                {% for item in company.emails.all %}
+                    {{ item.email }}
+                {% endfor %}
+                </p>
+                <p>Телефон:
+                {% for item in company.phones.all %}
+                    +7{{ item.telephone }}
+                {% endfor %}</p>
+        <p>ИНН {{ company.inn }}</p>
+        <p>ОГРН {{ company.ogrn }}</p>
+
+    </div>
+
+
+{% endblock %}

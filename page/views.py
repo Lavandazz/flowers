@@ -25,7 +25,6 @@ class ContactsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Контакты'
         context['requisites'] = CompanyInfo.objects.first()
-        print(context['requisites'])
         return context
 
 

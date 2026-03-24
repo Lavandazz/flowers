@@ -11,10 +11,13 @@ class Settings(BaseSettings):
     POSTGRES_HOST: str
     POSTGRES_PASSWORD: str
 
-    # django
+    # Django
     SECRET_KEY: str
     DJANGO_SUPERUSER: str
     DJANGO_SUPERUSER_PASSWORD: str
+
+    # Redis
+    REDIS_PASSWORD: str
 
 
 def get_settings():
