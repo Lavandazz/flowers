@@ -7,6 +7,7 @@
     {% if requisites %}
         <div class="row">
             <div class="col-5">
+
                 <p>Адрес: г. Москва, {{ requisites.street }}, {{ requisites.house }}, {{ requisites.building }}</p>
                 <p>Email:
                 {% for item in requisites.emails.all %}
@@ -34,6 +35,7 @@
             </div>
         </div>
         <p class="h2 text-left p-3">Реквизиты</p>
+        <p>{{ requisites.name }}</p>
         <p>ИНН: {{ requisites.inn }}</p>
         <p>ОГРН: {{ requisites.ogrn }}</p>
     {% else %}

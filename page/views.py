@@ -1,6 +1,7 @@
+from django.db.models import Prefetch
 from django.views.generic.base import TemplateView
 
-from page.models import CompanyInfo
+from page.models import CompanyInfo, PointPolicy, Policy
 
 
 # Create your views here.
@@ -24,6 +25,7 @@ class ContactsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Контакты'
         context['requisites'] = CompanyInfo.objects.first()
+        print(context['requisites'])
         return context
 
 
@@ -33,4 +35,9 @@ class PolicyView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Политика'
+        context['company'] = CompanyInfo.objects.prefetch_related(
+        Prefetch('main_points', queryset=PointPolicy.objects.all()),
+        Prefetch('main_points__points',
+                 queryset=Policy.objects.order_by('order'))
+        ).first()
         return context

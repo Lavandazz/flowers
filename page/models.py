@@ -4,6 +4,7 @@ from django.db import models
 
 
 class CompanyInfo(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Наименование', default='Default')
     inn = models.CharField(max_length=12, verbose_name='ИНН')
     ogrn = models.CharField(max_length=13, verbose_name='ОГРН')
     street = models.CharField(max_length=300, verbose_name='Улица')
@@ -14,6 +15,9 @@ class CompanyInfo(models.Model):
         db_table = 'company_info'
         verbose_name = 'Реквизиты'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Phone(models.Model):
@@ -35,3 +39,33 @@ class Email(models.Model):
         verbose_name = 'Почта'
         verbose_name_plural = verbose_name
 
+
+class PointPolicy(models.Model):
+    """Пункты политики"""
+    company = models.ForeignKey(CompanyInfo, on_delete=models.CASCADE, related_name='main_points')
+    order = models.PositiveIntegerField(default=0, verbose_name='Порядковый индекс')
+    point = models.CharField(max_length=150, verbose_name='Пункт')
+
+    class Meta:
+        ordering = ['order']  # сортировка для adminsortable2
+        db_table = 'main_point'
+        verbose_name = 'пункт политики'
+        verbose_name_plural = 'Главные пункты политики'
+
+    def __str__(self):
+        return self.point
+
+
+class Policy(models.Model):
+    point = models.ForeignKey(PointPolicy, on_delete=models.CASCADE, related_name='points')
+    order = models.PositiveIntegerField(default=0, db_index=True, verbose_name='Индекс отображения пункта')
+    description = models.TextField(verbose_name='Текст')
+
+    class Meta:
+        ordering = ['order']
+        db_table = 'policy'
+        verbose_name = 'пункты'
+        verbose_name_plural = 'Политика'
+
+    def __str__(self):
+        return self.description[:30]

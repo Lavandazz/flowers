@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 
     "debug_toolbar",
     'image_uploader_widget',
+    'adminsortable2',
 
     'shop',
     'page',
