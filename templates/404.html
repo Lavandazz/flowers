@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block title %} Страница не найдена {% endblock %}
+
+{% block content %}
+    <div class="container p-5 my-5 text-white text-center">
+        <img src="{% static 'img/404.png' %}" class="float-start" alt="Not-found">
+        <p class="h1 error-message">Ой! Страница не найдена.</p>
+    </div>
+{% endblock %}

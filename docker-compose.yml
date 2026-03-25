@@ -8,9 +8,9 @@ services:
     env_file:
       - .env
     ports:
-      - "6380:6379"
-#    networks:
-#      - flowers_nt
+      - "6379:6379"
+    networks:
+      - flowers_nt
     restart: always
     command:
       - /bin/sh
@@ -29,5 +29,10 @@ services:
       timeout: 5s
       retries: 5
 
+
 volumes:
   redis_data:
+
+networks:
+  flowers_nt:
+    driver: bridge

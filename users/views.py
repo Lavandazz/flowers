@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Prefetch
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView
 
@@ -108,7 +108,6 @@ class UserProfileView(LoginRequiredMixin, CacheMixin, DetailView):
         #     check_payment(payment_id)
 
         return context
-
 
 @login_required
 def logout(request):

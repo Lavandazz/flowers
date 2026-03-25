@@ -37,7 +37,7 @@ DEBUG = True
 LOGGING = LOGGERS_DICT
 
 ALLOWED_HOSTS = [
-    '.ru.tuna.am',
+    # '.ru.tuna.am',
     '127.0.0.1',
     'localhost']
 
@@ -142,6 +142,10 @@ CACHES = {
         "LOCATION": BASE_DIR / "cache",
     }
 }
+
+#  Django отправляет задачи в Redis по localhost:6379
+
+
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
@@ -194,11 +198,12 @@ INTERNAL_IPS = [
 ]
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# папка для статики nginx
+STATIC_ROOT = BASE_DIR / 'static'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static/",
-    # "/var/www/static/",
 ]
 
 MEDIA_URL = 'media/'

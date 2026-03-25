@@ -1,7 +1,6 @@
-FROM ubuntu:latest
+FROM python:3.13-alpine
 LABEL authors="Марина"
 
-ENTRYPOINT ["top", "-b"]
 
 # Говорим Python не создавать временные файлы (.pyc) - чтобы не захламлять контейнер
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -12,18 +11,13 @@ ENV PYTHONUNBUFFERED 1
 ENV TZ=Europe/Moscow
 
 WORKDIR /app
-# Устанавка зависимостей для mysqlclient
-RUN apk update && apk add --no-cache \
-    gcc \
-    musl-dev \
-    mariadb-dev \
-    pkgconfig
 
-COPY req.pip .
+COPY requirements.txt .
 
 RUN pip install --upgrade pip && \
-    pip install -r req.pip && \
+    pip install -r requirements.txt && \
     pip install gunicorn
 
 COPY . .
-EXPOSE 8000
+
+CMD ["celery", "-A", "flower_shop", "worker", "--loglevel=info"]
