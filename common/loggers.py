@@ -30,5 +30,9 @@ LOGGERS_DICT = {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
+        'main': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
     },
 }

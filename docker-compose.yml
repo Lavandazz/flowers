@@ -2,9 +2,75 @@
 # Проверка логово docker logs flowers_ct
 
 services:
-   redis:
+  db:
+    container_name: db_container
+    image: postgres:15
+    env_file:
+      - .env
+    networks:
+      - flowers_nt
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    # порт хоста:порт внутри контейнера
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dj:
+    container_name: dj_container
+    build: .
+    ports:
+      - "8002:8002"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - flowers_nt
+    env_file:
+      - .env
+    environment:
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+    volumes:
+      # статика вне контейнера, для того, чтобы nginx отдавал ее быстро с хоста
+      # соответствует STATIC_ROOT и MEDIA_ROOT
+      - /var/www/flowershop/staticfiles:/app/staticfiles
+      - /var/www/flowershop/media:/app/media
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    command: >
+      sh -c "
+      python manage.py migrate --noinput &&
+      python manage.py collectstatic --noinput &&
+      python manage.py createsuperuser --noinput 2>/dev/null || true &&
+      gunicorn flower_shop.wsgi:application 
+      --bind 0.0.0.0:8002
+      --workers 1
+      --threads 2
+      --worker-class gthread
+      --timeout 120
+      --max-requests 1000"
+
+  redis:
     image: redis:alpine
-    container_name: flowers_ct
+    container_name: redis_container
     env_file:
       - .env
     ports:
@@ -24,7 +90,7 @@ services:
           memory: 64M
           cpus: '0.2'
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: [ "CMD-SHELL", "redis-cli -a $REDIS_PASSWORD ping | grep PONG" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,6 +98,7 @@ services:
 
 volumes:
   redis_data:
+  db_data:
 
 networks:
   flowers_nt:

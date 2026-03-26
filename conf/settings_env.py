@@ -13,8 +13,9 @@ class Settings(BaseSettings):
 
     # Django
     SECRET_KEY: str
-    DJANGO_SUPERUSER: str
+    DJANGO_SUPERUSER_USERNAME: str
     DJANGO_SUPERUSER_PASSWORD: str
+    DJANGO_SUPERUSER_EMAIL: str
 
     # Redis
     REDIS_PASSWORD: str

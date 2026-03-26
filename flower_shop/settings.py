@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+import logging
 import os
 import re
 
@@ -19,6 +20,8 @@ from common.loggers import LOGGERS_DICT
 from conf.settings_env import settings
 from conf.settings_proj import PROJECT_ROOT
 
+logger = logging.getLogger('main')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = PROJECT_ROOT
 
@@ -28,7 +31,7 @@ BASE_DIR = PROJECT_ROOT
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = settings.SECRET_KEY
 DJANGO_SUPERUSER_PASSWORD = settings.DJANGO_SUPERUSER_PASSWORD
-DJANGO_SUPERUSER = settings.DJANGO_SUPERUSER
+DJANGO_SUPERUSER_USERNAME = settings.DJANGO_SUPERUSER_USERNAME
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -38,8 +41,11 @@ LOGGING = LOGGERS_DICT
 
 ALLOWED_HOSTS = [
     # '.ru.tuna.am',
+    'defplus.ru'
     '127.0.0.1',
-    'localhost']
+    'localhost',
+    '155.212.138.183'
+]
 
 # Application definition
 
@@ -65,6 +71,7 @@ INSTALLED_APPS = [
     'basket',
     'orders',
 ]
+
 # Настройки для django-admin-interface
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
@@ -110,7 +117,7 @@ WSGI_APPLICATION = 'flower_shop.wsgi.application'
 
 # Настройка для работы CSRF в режиме zrok
 CSRF_TRUSTED_ORIGINS = [
-    'https://defplus.share.zrok.io',
+
 ]
 # Если zrok присылает заголовок X-Forwarded-Proto (обычно так и есть)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -131,7 +138,7 @@ DATABASES = {
         'NAME': settings.POSTGRES_DB,
         'USER': settings.POSTGRES_USER,
         'PASSWORD': settings.POSTGRES_PASSWORD,
-        'HOST': settings.POSTGRES_HOST,
+        'HOST': settings.POSTGRES_HOST if not DEBUG else 'localhost',
         'PORT': settings.POSTGRES_PORT,
     }
 }
@@ -200,7 +207,7 @@ INTERNAL_IPS = [
 STATIC_URL = 'static/'
 
 # папка для статики nginx
-STATIC_ROOT = BASE_DIR / 'static'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static/",
