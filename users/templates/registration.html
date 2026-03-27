@@ -70,6 +70,18 @@
                         {% endif %}
                     </div>
 
+                    {# Phone #}
+                    <div class="form-group">
+                        <label for="id_phone_number">Телефон*</label>
+                        <input type="tel" name="phone_number" id="id_phone_number"
+                               title="Введите номер без +7 и других символов, например 9123456789"
+                               value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}"
+                               placeholder="Например, 9123456789 (без +7 и скобок)" required>
+                        {% if form.phone_number.errors %}
+                            <div class="form-error">{{ form.phone_number.errors }}</div>
+                        {% endif %}
+                    </div>
+
                     {# Пароль #}
                     <div class="form-group">
                         <label for="id_password1">Пароль*</label>
