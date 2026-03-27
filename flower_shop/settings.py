@@ -35,7 +35,7 @@ DJANGO_SUPERUSER_USERNAME = settings.DJANGO_SUPERUSER_USERNAME
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = True
+DEBUG = settings.DEBUG
 
 LOGGING = LOGGERS_DICT
 

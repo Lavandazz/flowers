@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
 
     # Django
+    DEBUG: bool
+
     SECRET_KEY: str
     DJANGO_SUPERUSER_USERNAME: str
     DJANGO_SUPERUSER_PASSWORD: str
