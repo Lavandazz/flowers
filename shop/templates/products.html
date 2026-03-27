@@ -6,7 +6,9 @@
         <div class="text-white rounded product-card h-100">
             <a href="{% url 'shop:product_detail' product.slug %}">
                 {% if product.images %}
-                    <img src="{{ product.images.first.image.url }}" class="img-fluid p-3" alt="{{ product.name }}">
+                    <div class="product-image p-3">
+                        <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+                    </div>
                 {% else %}
                     <img src="/static/img/not_found.png" class="img-fluid p-3" alt="not_found">
                 {% endif %}
