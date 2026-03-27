@@ -72,8 +72,8 @@ def check_payment(payment_id):
         return HttpResponse(status=404)
 
     order = payment_obj.order
-    print('получил объект платежа', payment_obj)
-    print('получил объект order', order)
+    logger.info('получил объект платежа, %s', payment_obj)
+    logger.info('получил объект order, %s', order)
     payment_obj.status = 'succeeded'
     # Сохраняем статус заказа после подтверждения оплаты
     payment_obj.order.status = 'paid'
@@ -84,7 +84,7 @@ def check_payment(payment_id):
 
     # Удаляем корзину пользователя после сохранения статусов оплаты
     payment_obj.order.user.basket.all().delete()
-    print('КОРЗИНЫ УДАЛЕНЫ', order)
+    logger.info('КОРЗИНЫ УДАЛЕНЫ , %s', order)
 
     payment_obj.save()
 
@@ -116,13 +116,13 @@ def refund_payment(payment_obj, total_sum=None):
     payment_obj.is_refunded = True  # сохраняем значение возврата
     payment_obj.refunded_at = refund.created_at
     payment_obj.refunded_id = refund.id
-    print('created_at', refund)
+
     payment_obj.save()
 
     order = payment_obj.order
     order.status = 'refunded'
     order.save()
-    print('Время возврата refund.id', refund.id)
+
     logger.info(f'Возврат {refund_amount} по платежу {payment_obj.payment_id} успешно создан')
     return refund
 

@@ -119,13 +119,6 @@ class CreateOrderView(LoginRequiredMixin, FormView):
             logger.error('Ошибка при создании платежа. Попробуйте позже., %s', e)
             messages.error(self.request, 'Ошибка при создании платежа. Попробуйте позже.')
             return redirect('orders:create_order')
-    #
-    # def form_invalid(self, form):
-    #     """
-    #     Метод вывозит сообщение об ошибке при заполнении формы
-    #     """
-    #     messages.error(self.request, 'Заполните все поля')
-    #     return redirect('orders:create_order')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -141,6 +134,7 @@ def yookassa_webhook(request):
     Проверка платежа
     В лк Юкасса необходимо указать полностью путь к вебхуку: домен/orders/payment/yookassa-webhook/
     """
+    logger.info('Получение yookassa_webhook')
     try:
         data = json.loads(request.body)
     except json.JSONDecodeError:
@@ -152,7 +146,7 @@ def yookassa_webhook(request):
     # metadata = data['object'].get('metadata', {})
     # order_id = metadata.get('order_id')  # если передавали в metadata
 
-    logger.debug('Получение yookassa_webhook payment_id - %s, status - %s', payment_id, status)
+    logger.info('Получение yookassa_webhook payment_id - %s, status - %s', payment_id, status)
 
     if status == 'succeeded':
         check_payment(payment_id=payment_id)
