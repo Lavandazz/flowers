@@ -41,7 +41,7 @@ LOGGING = LOGGERS_DICT
 
 ALLOWED_HOSTS = [
     # '.ru.tuna.am',
-    'defplus.ru'
+    'defplus.ru',
     '127.0.0.1',
     'localhost',
     '155.212.138.183'
