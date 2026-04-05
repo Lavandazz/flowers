@@ -102,4 +102,11 @@ class ProductDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.name
         context['description'] = self.object.name
+
+        # Для отображения одной фотки в og
+        first_image = self.object.images.first().image
+        if first_image:
+            # Формируем абсолютный url
+            context['og_image'] = self.request.build_absolute_uri(first_image.url)
+
         return context

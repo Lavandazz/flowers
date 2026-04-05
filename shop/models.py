@@ -67,7 +67,6 @@ class Product(models.Model):
         """ Перенаправление на страницу товара """
         return reverse('shop:product_detail', kwargs={'slug': self.slug})
 
-
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)

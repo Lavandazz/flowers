@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% load static %}
 
-{% block seo %}{%  include seo_product.html %}{% endblock %}
+{% block og_image %}
+    {{ og_image }}
+{% endblock %}
 
 {% block content_product %}
 {% block search %} {% include "nav_primary.html" %} {% endblock %}
