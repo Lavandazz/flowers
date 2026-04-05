@@ -1,14 +1,14 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
 
-from shop.mixins import BannerMixin
+from shop.mixins import BannerMixin, SeoMixin
 from shop.models import Product, Category, Type
 from shop.utils import q_search
 
 
 # Create your views here.
 
-class CatalogueListView(BannerMixin, ListView):
+class CatalogueListView(BannerMixin, SeoMixin, ListView):
     model = Product
     paginate_by = 9
     context_object_name = 'products'
@@ -66,7 +66,6 @@ class CatalogueListView(BannerMixin, ListView):
         context['sort'] = self.request.GET.get('sort', '')
         context['query'] = self.request.GET.get('q', '')
 
-        context['title'] = 'Каталог'
         return context
 
 
@@ -102,4 +101,5 @@ class ProductDetailView(DetailView):
         # Вызываем родительский метод get_context_data для переопределения/дополнения
         context = super().get_context_data(**kwargs)
         context['title'] = self.object.name
+        context['description'] = self.object.name
         return context

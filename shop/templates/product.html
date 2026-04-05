@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% load static %}
 
-{% block title %}{{ product.name }}{% endblock %}
+{% block seo %}{%  include seo_product.html %}{% endblock %}
 
 {% block content_product %}
 {% block search %} {% include "nav_primary.html" %} {% endblock %}
