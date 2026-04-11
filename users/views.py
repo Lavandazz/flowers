@@ -3,14 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Prefetch
-from django.http import HttpResponseRedirect, HttpResponseNotFound
-from django.shortcuts import redirect, render
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView
 
 from basket.models import Basket
 from common.mixins import CacheMixin
-from common.payment import check_payment
+
 from orders.models import Order, OrderItem
 from users.forms import UserLoginForm, UserRegisterForm
 from users.models import User

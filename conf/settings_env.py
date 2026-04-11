@@ -3,6 +3,8 @@ from pydantic_settings import BaseSettings
 from conf.settings_proj import PROJECT_ROOT
 
 
+
+
 class Settings(BaseSettings):
     # POSTGRES
     POSTGRES_USER: str

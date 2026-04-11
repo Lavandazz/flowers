@@ -2,10 +2,14 @@
 *.pyo
 *.pyd
 .idea/
+.vscode/
 
 .env
-.env_pay
+.yookassa
 .env_cloud
+
+.pylintrc
+
 venv/
 .venv/
 __pycache__

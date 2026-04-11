@@ -41,10 +41,11 @@ LOGGING = LOGGERS_DICT
 
 ALLOWED_HOSTS = [
     # '.ru.tuna.am',
-    'defplus.ru',
+    '0.0.0.0',
+    'floristka-msk.ru',
+    '130.49.146.184',
     '127.0.0.1',
     'localhost',
-    '155.212.138.183'
 ]
 
 # Application definition
@@ -138,7 +139,7 @@ DATABASES = {
         'NAME': settings.POSTGRES_DB,
         'USER': settings.POSTGRES_USER,
         'PASSWORD': settings.POSTGRES_PASSWORD,
-        'HOST': settings.POSTGRES_HOST if not DEBUG else 'localhost',
+        'HOST': settings.POSTGRES_HOST if not DEBUG else 'db',
         'PORT': settings.POSTGRES_PORT,
     }
 }

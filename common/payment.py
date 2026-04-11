@@ -9,10 +9,10 @@ from dotenv import load_dotenv
 from yookassa import Payment, Configuration, Refund
 
 from basket.models import Basket
+from conf.settings_proj import ENV_YOOKASSA
 from orders.models import Order, PaymentOrder
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-env_path = PROJECT_ROOT / '.env_pay'
+env_path = ENV_YOOKASSA
 
 load_dotenv(dotenv_path=env_path)
 
@@ -49,11 +49,11 @@ def pay_yookassa(order_id, total_price: int, return_url):
                 },
             },
         )
-        logger.debug('Оплата заказа %s прошла успешно', order_name)
+        logger.info('Оплата заказа %s прошла успешно', order_name)
         # payment возвращается объект платежа с номером и статусом pending
         return payment
     except Exception as e:
-        logger.debug('Ошибка при оплате заказа %s: %s', order_name, e)
+        logger.info('Ошибка при оплате заказа %s: %s', order_name, e)
 
 
 def check_payment(payment_id):

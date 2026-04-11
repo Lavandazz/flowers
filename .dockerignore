@@ -4,7 +4,8 @@
 .idea/
 
 .env
-.env_pay
+.yookassa
+.env_pay_example
 .env_cloud
 venv/
 .venv/
