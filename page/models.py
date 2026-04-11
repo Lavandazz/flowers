@@ -1,5 +1,8 @@
 from django.db import models
 
+from page.utils import PAGE_TYPES, get_page_display
+
+
 # Create your models here.
 
 
@@ -69,3 +72,22 @@ class Policy(models.Model):
 
     def __str__(self):
         return self.description[:30]
+
+
+class SEO(models.Model):
+    page_type = models.CharField(
+        max_length=20,
+        choices=PAGE_TYPES,
+        unique=True,
+        verbose_name='Тип страницы'
+    )
+    title = models.CharField(max_length=80, verbose_name='Заголовок (title)')
+    description = models.CharField(max_length=250, verbose_name='Описание (description)')
+
+    def __str__(self):
+        return f"SEO для {get_page_display(str(self.page_type))}"
+
+    class Meta:
+        db_table = 'seo'
+        verbose_name = 'SEO настройка'
+        verbose_name_plural = 'SEO настройки'

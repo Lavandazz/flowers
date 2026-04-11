@@ -1,7 +1,7 @@
 from adminsortable2.admin import SortableAdminMixin, SortableTabularInline
 from django.contrib import admin
 
-from page.models import Phone, Email, CompanyInfo, Policy, PointPolicy
+from page.models import Phone, Email, CompanyInfo, Policy, PointPolicy, SEO
 
 
 # Register your models here.
@@ -76,3 +76,13 @@ class PolicyAdmin(SortableAdminMixin, admin.ModelAdmin):
         return obj.point
 
     point_name.short_description = 'Пункт'
+
+
+@admin.register(SEO)
+class SEOAdmin(admin.ModelAdmin):
+    """
+    SEO настройки
+    """
+    list_display = ('id', 'page_type', 'title', 'description', )
+    list_display_links = ('id', 'page_type', )
+    list_editable = ('title', 'description', )

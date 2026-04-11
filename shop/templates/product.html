@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% load static %}
 
-{% block title %}{{ product.name }}{% endblock %}
+{% block og_image %}
+    {{ og_image }}
+{% endblock %}
 
 {% block content_product %}
 {% block search %} {% include "nav_primary.html" %} {% endblock %}
