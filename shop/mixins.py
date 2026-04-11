@@ -28,22 +28,38 @@ class SeoMixin:
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        default_title = 'Купить цветы в Москве – свежие букеты с доставкой'
+        default_description = ('Широкий выбор свежих цветов, букетов на заказ, игрушек и сувениров в Москве. '
+                               'Быстрая доставка или самовывоз из магазина на Гостиничном проезде, 4Б.')
         context_keys = [k for k in context.keys()]
         context['title'] = ''
         context['description'] = ''
         if 'products' in context_keys:
             seo = SEO.objects.filter(page_type='products').first()
-            context['title'] = seo.title
-            context['description'] = seo.description
+            if seo:
+                context['title'] = seo.title
+                context['description'] = seo.description
+            else:
+                context['title'] = default_title
+                context['description'] = default_description
+
         elif 'contacts' in context_keys:
             seo = SEO.objects.filter(page_type='contacts').first()
-            context['title'] = seo.title
-            context['description'] = seo.description
+            if seo:
+                context['title'] = seo.title
+                context['description'] = seo.description
+            else:
+                context['title'] = default_title
+                context['description'] = default_description
         elif 'delivery' in context_keys:
             seo = SEO.objects.filter(page_type='delivery').first()
-            context['title'] = seo.title
-            context['description'] = seo.description
+            if seo:
+                context['title'] = seo.title
+                context['description'] = seo.description
+            else:
+                context['title'] = default_title
+                context['description'] = default_description
+
         else:
             context['title'] = 'Купить цветы в Москве – свежие букеты с доставкой'
             context['description'] = ('Широкий выбор свежих цветов, букетов на заказ, игрушек и сувениров в Москве. '

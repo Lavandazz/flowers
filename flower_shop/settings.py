@@ -77,14 +77,14 @@ INSTALLED_APPS = [
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
-if DEBUG:
-    INSTALLED_APPS += ['whitenoise.runserver_nostatic']
+# if DEBUG:
+#     INSTALLED_APPS += ['whitenoise.runserver_nostatic']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     "django.middleware.gzip.GZipMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -139,7 +139,7 @@ DATABASES = {
         'NAME': settings.POSTGRES_DB,
         'USER': settings.POSTGRES_USER,
         'PASSWORD': settings.POSTGRES_PASSWORD,
-        'HOST': settings.POSTGRES_HOST if not DEBUG else 'db',
+        'HOST': settings.POSTGRES_HOST if not DEBUG else 'localhost',
         'PORT': settings.POSTGRES_PORT,
     }
 }
