@@ -25,7 +25,7 @@ admin.site.index_title = 'Добро пожаловать в панель упр
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("flowers-dashboard/", admin.site.urls),
     path("page/", include("page.urls")),
     path("user/", include("users.urls")),
     path("basket/", include("basket.urls")),
