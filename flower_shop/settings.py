@@ -10,11 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import logging
-import os
 import re
-
-import environ
-from pathlib import Path
 
 from common.loggers import LOGGERS_DICT
 from conf.settings_env import settings
@@ -132,9 +128,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Чтобы Django понимал, что мы в HTTPS-режиме, даже если сам сервер на HTTP
 USE_X_FORWARDED_HOST = True
 SECURE_SSL_REDIRECT = False  # Не перенаправлять на HTTPS внутри Django, это делает nginx
-SESSION_COOKIE_SECURE = True  # Куки сессии только по HTTPS
-CSRF_COOKIE_SECURE = True     # CSRF-куки только по HTTPS
-
+# SESSION_COOKIE_SECURE = True  # Куки сессии только по HTTPS
+# CSRF_COOKIE_SECURE = True     # CSRF-куки только по HTTPS
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -145,7 +142,7 @@ DATABASES = {
         'NAME': settings.POSTGRES_DB,
         'USER': settings.POSTGRES_USER,
         'PASSWORD': settings.POSTGRES_PASSWORD,
-        'HOST': settings.POSTGRES_HOST if not DEBUG else 'localhost',
+        'HOST': settings.POSTGRES_HOST,
         'PORT': settings.POSTGRES_PORT,
     }
 }
@@ -164,7 +161,6 @@ CACHES = {
     }
 }
 #  Django отправляет задачи в Redis по localhost:6379
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
