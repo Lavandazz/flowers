@@ -90,7 +90,10 @@ body {
     width: 100%; /* линия растягивается на всю ширину ссылки */
 }
 
+
 .nav-menu li a.icon-link {
+    display: inline-block;     /* чтобы transform работал корректно */
+    transform: translateY(5px); /* смещение иконоу вниз */
     transition: color 0.5s ease;
 }
 
