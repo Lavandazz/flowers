@@ -36,12 +36,12 @@ class BasketAddView(BasketMixin, View):
 
         rendered = self.render_basket(request)
         response_data = {
-            'message': 'Товар добавлен в корзину',
+            'message': 'В корзину',
                 'basket_items_html': rendered['response_html'],
                 'total_quantity': rendered['total_quantity'],
                 'order': rendered['order']
         }
-        logger.debug('response_data: %s', response_data)
+        logger.debug('Товар добавлен в корзину: %s, id: %s', product, product.id)
 
         return JsonResponse(response_data)
 

@@ -77,16 +77,16 @@ INSTALLED_APPS = [
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
-# if DEBUG:
-#     INSTALLED_APPS += ['whitenoise.runserver_nostatic']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     "django.middleware.gzip.GZipMiddleware",
+
     # 'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -94,6 +94,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['whitenoise.runserver_nostatic']
+    MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
 
 ROOT_URLCONF = 'flower_shop.urls'
 
@@ -108,6 +112,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'page.context_processors.company_info',   # отображение контактов на всех страницах
             ],
         },
     },
@@ -125,7 +131,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Чтобы Django понимал, что мы в HTTPS-режиме, даже если сам сервер на HTTP
 USE_X_FORWARDED_HOST = True
-SECURE_SSL_REDIRECT = False  # Не перенаправлять на HTTPS внутри Django, это делает zrok
+SECURE_SSL_REDIRECT = False  # Не перенаправлять на HTTPS внутри Django, это делает nginx
 SESSION_COOKIE_SECURE = True  # Куки сессии только по HTTPS
 CSRF_COOKIE_SECURE = True     # CSRF-куки только по HTTPS
 
@@ -144,13 +150,19 @@ DATABASES = {
     }
 }
 
+# Настройка кэша для Redis
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
+#         "LOCATION": f"redis://:{os.getenv('REDIS_PASSWORD')}@127.0.0.1:6379/0",
+#     }
+# }
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
         "LOCATION": BASE_DIR / "cache",
     }
 }
-
 #  Django отправляет задачи в Redis по localhost:6379
 
 

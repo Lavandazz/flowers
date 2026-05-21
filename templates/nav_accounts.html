@@ -16,14 +16,14 @@
                     <li class="nav-item"><a class="nav-link" href="/catalogue">Каталог</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'page:contacts' %}">Контакты</a></li>
                 </ul>
-    
+
                 <ul class="navbar-nav text-uppercase nav-menu gap-5">
-                    <li><a href="#" class="icon-link">
+                    <li><a href="https://t.me/anastasia_lavander" target="_blank"  class="icon-link">
                         <i class="fa-brands fa-telegram fa-2x fa-beat-fade" 
                            style="--fa-beat-fade-opacity:0.80;--fa-beat-fade-scale:1.075;" 
                            aria-hidden="true"></i></a>
                     </li>
-                    <li><a href="#" class="icon-link">
+                    <li><a href="tel:{{ company_info.phone_number|default:'#' }}" class="icon-link">
                         <span class="fa-stack fa-beat-fade" style="vertical-align: top; 
                         --fa-beat-fade-opacity:0.80;--fa-beat-fade-scale:1.075">
                           <i class="fa-regular fa-circle fa-stack-2x"></i>

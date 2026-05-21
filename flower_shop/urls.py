@@ -45,6 +45,3 @@ if settings.DEBUG:
                   ] + debug_toolbar_urls()
 
 # Обслуживание медиа из корня при Debug=Tr
-# Закомментировать при деплое
-# if settings.DEBUG:
-    # urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
