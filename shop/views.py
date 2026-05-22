@@ -22,7 +22,7 @@ class CatalogueListView(BannerMixin, SeoMixin, ListView):
                 # --- ДЕФОЛТНЫЙ ФИЛЬТР: только категория "букеты" ---
         # Применяется, если нет ни category_slug из URL, ни type из GET-параметров
         if not self.kwargs.get('category_slug') and not self.request.GET.get('type'):
-            flowers_type = Type.objects.filter(slug='cvety').first()
+            flowers_type = Type.objects.filter(slug='bukety').first()
             if flowers_type:
                 categories_of_type = flowers_type.categories.all()
                 queryset = queryset.filter(categories__in=categories_of_type).distinct()
