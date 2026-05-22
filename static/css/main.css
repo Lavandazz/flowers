@@ -509,6 +509,9 @@ body {
     color: rgba(255, 255, 255, 0.76);
     overflow: hidden;
 }
+.category-type a:active{
+    color: #94252f !important;
+}
 .category-type a:hover{
     color: rgb(255, 255, 255);
 

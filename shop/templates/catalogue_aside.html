@@ -5,7 +5,7 @@
         {% for type in types %}
             <h3 class="category-type">
                 <a href="{% url 'shop:catalogue' %}?type={{ type.slug }}"
-                   class="{% if current_type and current_type.id == type.id %}active{% endif %}">
+                class="{% if current_type and current_type.id == type.id %}active{% endif %}">
                     {{ type.name|capfirst }}
                 </a>
             </h3>

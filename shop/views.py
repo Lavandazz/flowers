@@ -19,6 +19,16 @@ class CatalogueListView(BannerMixin, SeoMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()  # все товары
 
+                # --- ДЕФОЛТНЫЙ ФИЛЬТР: только категория "букеты" ---
+        # Применяется, если нет ни category_slug из URL, ни type из GET-параметров
+        if not self.kwargs.get('category_slug') and not self.request.GET.get('type'):
+            flowers_type = Type.objects.filter(slug='cvety').first()
+            if flowers_type:
+                categories_of_type = flowers_type.categories.all()
+                queryset = queryset.filter(categories__in=categories_of_type).distinct()
+                self.current_type = flowers_type
+                # self.current_category = bukety_category  # чтобы подсвечивалось в меню
+
         # 1. Фильтр по категории из URL (например, /catalogue/rozy/)
         category_slug = self.kwargs.get('category_slug')
         if category_slug:
@@ -58,6 +68,7 @@ class CatalogueListView(BannerMixin, SeoMixin, ListView):
         context['types'] = Type.objects.all()
 
         # Текущие выбранные фильтры (чтобы подсветить активные пункты)
+        context['current_type'] = getattr(self, 'current_type', None)
         context['current_category'] = getattr(self, 'current_category', None)
 
         # Сохраняем значения GET-параметров для подстановки в формы

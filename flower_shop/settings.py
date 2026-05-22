@@ -32,7 +32,8 @@ DJANGO_SUPERUSER_USERNAME = settings.DJANGO_SUPERUSER_USERNAME
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = settings.DEBUG
-DB_HOST = settings.POSTGRES_HOST if not DEBUG else "db"
+DB_HOST = settings.POSTGRES_HOST if not DEBUG else "localhost"
+REDIS_HOST = "redis" if not DEBUG else "localhost"
 
 LOGGING = LOGGERS_DICT
 
@@ -149,7 +150,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://:{settings.REDIS_PASSWORD}@redis:6379/0",
+        "LOCATION": f"redis://:{settings.REDIS_PASSWORD}@{REDIS_HOST}:6379/0",
     }
 }
 # CACHES = {
