@@ -32,7 +32,7 @@ DJANGO_SUPERUSER_USERNAME = settings.DJANGO_SUPERUSER_USERNAME
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = settings.DEBUG
-DB_HOST = settings.POSTGRES_HOST if not DEBUG else "localhost"
+DB_HOST = settings.POSTGRES_HOST if not DEBUG else "db"
 
 LOGGING = LOGGERS_DICT
 
@@ -127,8 +127,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Чтобы Django понимал, что мы в HTTPS-режиме, даже если сам сервер на HTTP
 USE_X_FORWARDED_HOST = True
 SECURE_SSL_REDIRECT = False  # Не перенаправлять на HTTPS внутри Django, это делает nginx
-# SESSION_COOKIE_SECURE = True  # Куки сессии только по HTTPS
-# CSRF_COOKIE_SECURE = True     # CSRF-куки только по HTTPS
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
 
@@ -147,18 +145,19 @@ DATABASES = {
 }
 
 # Настройка кэша для Redis
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#         "LOCATION": f"redis://:{settings.REDIS_PASSWORD}@127.0.0.1:6379/0",
-#     }
-# }
+# Обращение к @redis, тк это имя сервиса в docker compose
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": BASE_DIR / "cache",
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://:{settings.REDIS_PASSWORD}@redis:6379/0",
     }
 }
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+#         "LOCATION": BASE_DIR / "cache",
+#     }
+# }
 #  Django отправляет задачи в Redis по localhost:6379
 
 # Password validation
