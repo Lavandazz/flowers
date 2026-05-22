@@ -4,7 +4,6 @@
 {% block content %}
 <div class="container mt-3">
     <p class="h2 text-left p-3">{{ title }}</p>
-    {% comment %} {% if requisites %} {% endcomment %}
     {% if company_info %}
         <div class="row">
             <div class="col-5">
@@ -17,7 +16,6 @@
                 </p>
                 <p>Телефон:
                 {% for item in company_info.phones.all %}
-                    {% comment %} +7{{ item.telephone }} {% endcomment %}
                     <a href="tel:{{ item.telephone|default:'#' }}">
                     {{ item.telephone|default:'#' }}</a>
                     {% if not forloop.last %}, {% endif %}
