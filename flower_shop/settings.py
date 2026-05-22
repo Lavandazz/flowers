@@ -32,6 +32,7 @@ DJANGO_SUPERUSER_USERNAME = settings.DJANGO_SUPERUSER_USERNAME
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = settings.DEBUG
+DB_HOST = settings.POSTGRES_HOST if not DEBUG else "localhost"
 
 LOGGING = LOGGERS_DICT
 
@@ -78,8 +79,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     "django.middleware.gzip.GZipMiddleware",
-
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -142,7 +141,7 @@ DATABASES = {
         'NAME': settings.POSTGRES_DB,
         'USER': settings.POSTGRES_USER,
         'PASSWORD': settings.POSTGRES_PASSWORD,
-        'HOST': settings.POSTGRES_HOST,
+        'HOST': DB_HOST,
         'PORT': settings.POSTGRES_PORT,
     }
 }

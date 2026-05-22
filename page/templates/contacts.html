@@ -4,29 +4,33 @@
 {% block content %}
 <div class="container mt-3">
     <p class="h2 text-left p-3">{{ title }}</p>
-    {% if requisites %}
+    {% comment %} {% if requisites %} {% endcomment %}
+    {% if company_info %}
         <div class="row">
             <div class="col-5">
 
-                <p>Адрес: г. Москва, {{ requisites.street }}, {{ requisites.house }}, {{ requisites.building }}</p>
+                <p>Адрес: г. Москва, {{ company_info.street }}, {{ company_info.house }}, {{ company_info.building }}</p>
                 <p>Email:
-                {% for item in requisites.emails.all %}
+                {% for item in company_info.emails.all %}
                     {{ item.email }}
                 {% endfor %}
                 </p>
                 <p>Телефон:
-                {% for item in requisites.phones.all %}
-                    +7{{ item.telephone }}
+                {% for item in company_info.phones.all %}
+                    {% comment %} +7{{ item.telephone }} {% endcomment %}
+                    <a href="tel:{{ item.telephone|default:'#' }}">
+                    {{ item.telephone|default:'#' }}</a>
+                    {% if not forloop.last %}, {% endif %}
                 {% endfor %}</p>
             </div>
             <div class="col-7">
                 <div class="card" style="height: 350px;">
                     <div class="card-body p-0 d-flex flex-column">
-                        <a href="https://yandex.ru/maps/?ll=Москва/{{ requisites.street }}/{{ requisites.house }}/{{ requisites.building }},pm2rdl&z=17"
+                        <a href="https://yandex.ru/maps/?ll=Москва/{{ company_info.street }}/{{ company_info.house }}/{{ company_info.building }},pm2rdl&z=17"
                         target="_blank"
                         class="btn btn-dark m-2 align-self-start">Открыть на карте</a>
                         <iframe
-                            src="https://yandex.ru/map-widget/v1/?text=Москва/{{ requisites.street }}/{{ requisites.house }}/{{ requisites.building }}"
+                            src="https://yandex.ru/map-widget/v1/?text=Москва/{{ company_info.street }}/{{ company_info.house }}/{{ company_info.building }}"
                             style="width: 100%; height: 100%; border: 0;"
                             allowfullscreen>
                         </iframe>
@@ -35,9 +39,9 @@
             </div>
         </div>
         <p class="h2 text-left p-3">Реквизиты</p>
-        <p>{{ requisites.name }}</p>
-        <p>ИНН: {{ requisites.inn }}</p>
-        <p>ОГРН: {{ requisites.ogrn }}</p>
+        <p>{{ company_info.name }}</p>
+        <p>ИНН: {{ company_info.inn }}</p>
+        <p>ОГРН: {{ company_info.ogrn }}</p>
     {% else %}
         <p>Реквизиты не заполнены.</p>
     {% endif %}

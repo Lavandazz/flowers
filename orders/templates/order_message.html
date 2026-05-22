@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content_order %}
+<div class="container pt-5 mt-5">
+  <div style="text-align: center; padding: 40px;">
+      <h2>🛠️ Онлайн-оформление заказа временно недоступно</h2>
+
+      <p>Вы можете оформить заказ следующими способами:</p>
+      <ul style="list-style: none; padding: 0;">
+          <li>📞 Позвоните нам: <a href="tel:{{ company_info.phones.first.telephone|default:'#' }}" target="_blank">{{ company_info.phones.first.telephone|default:'#' }}</a></li>
+          <li>✍️ Напишите в Telegram: <a href="https://t.me/anastasia_lavander" target="_blank">@anastasia_lavander</a></li>
+          <li>🏪 Посетите наш магазин: <a href="{% url 'page:contacts' %}">Контакты</a></li>
+      </ul>
+  </div>
+</div>
+{% endblock %}

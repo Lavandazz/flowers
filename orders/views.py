@@ -153,3 +153,6 @@ def yookassa_webhook(request):
 
     return HttpResponse(status=200)
 
+
+def redirect_message(request):
+    return render(request, 'order_message.html')

@@ -24,7 +24,7 @@ class ContactsView(TemplateView):
         # Вызываем родительский метод get_context_data для переопределения/дополнения
         context = super().get_context_data(**kwargs)
         context['title'] = 'Контакты'
-        context['requisites'] = CompanyInfo.objects.first()
+        # context['requisites'] = CompanyInfo.objects.first()
         return context
 
 
