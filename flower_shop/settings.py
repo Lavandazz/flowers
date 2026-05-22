@@ -147,18 +147,18 @@ DATABASES = {
 }
 
 # Настройка кэша для Redis
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f"redis://:{settings.REDIS_PASSWORD}@127.0.0.1:6379/0",
-    }
-}
 # CACHES = {
 #     "default": {
-#         "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-#         "LOCATION": BASE_DIR / "cache",
+#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
+#         "LOCATION": f"redis://:{settings.REDIS_PASSWORD}@127.0.0.1:6379/0",
 #     }
 # }
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": BASE_DIR / "cache",
+    }
+}
 #  Django отправляет задачи в Redis по localhost:6379
 
 # Password validation
