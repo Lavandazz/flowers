@@ -64,6 +64,8 @@
         <!-- footer -->
         {% block footer_area %}{% endblock %}
 
+        <button class="back-to-top" title="Наверх">↑</button>
+        
         <!-- Scripts loaded from a CDN. -->
         {% block cdn_scripts %}
             <!-- jQuery -->
@@ -78,12 +80,14 @@
             
         {% endblock %}
 
+        
+
         {# Local scripts #}
         {% block scripts %}
             <script src="{% static 'js/main.js' %}"></script>
             <script src="{% static 'js/slider.js' %}"></script>
             <script src="{% static 'js/basket.js' %}"></script>
-
+            <script src="{% static 'js/back.js' %}"></script>
         {% endblock %}
         
     </body>

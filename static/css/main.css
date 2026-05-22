@@ -637,3 +637,37 @@ body {
     /*color: rgb(250, 167, 224);*/
     color: rgb(245, 228, 172);
 }
+/* Переопределяем стили Bootstrap для кнопки .back-to-top */
+button.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #232e397b;
+    color: rgba(255, 255, 255, 0.778);
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 1px 12px rgb(237, 241, 250);
+    display: flex;          /* центрируем символ ↑ */
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+button.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+button.back-to-top:hover {
+    background: #232e397b;
+    transform: scale(1.1);  /* лучше 1.1, чтобы не расплывалось */
+}
