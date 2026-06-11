@@ -18,8 +18,12 @@ $(document).ready(function(){
         slidesToScroll: 1,
         asNavFor: '.slider-for',
         dots: true,
-        centerMode: true,
-        focusOnSelect: true
+        // centerMode: true,
+        focusOnSelect: true,
+        arrows: true, 
+        autoplay: true,
+        autoplaySpeed: 6000,
+        
     });
 });
 
