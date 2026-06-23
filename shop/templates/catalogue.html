@@ -46,6 +46,7 @@
                 {% else %}
                     <img src="/static/img/not_found1.jpg" class="img-fluid" style="max-height: 30rem;" alt="not_found">
                 {% endif %}
+                {% block reviews %}{% include "reviews.html" %}{% endblock reviews %}
 
             </div>
         </div>

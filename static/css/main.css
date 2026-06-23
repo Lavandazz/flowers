@@ -672,3 +672,7 @@ button.back-to-top:hover {
     transform: scale(1.1);  /* лучше 1.1, чтобы не расплывалось */
 }
 
+/* Инверсия цветов для отображения виджетов */
+iframe {
+  filter: invert(1) hue-rotate(180deg);
+}

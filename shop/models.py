@@ -90,7 +90,7 @@ class ImageProduct(models.Model):
 
 class SaleBanner(models.Model):
     title = models.CharField(max_length=100, verbose_name='Наименование акции')
-    description = models.CharField(max_length=400, verbose_name='Наименование акции')
+    description = models.CharField(max_length=400, verbose_name='Описание акции')
     image = models.ImageField(verbose_name='Изображение', upload_to='sale/')
     order = models.PositiveIntegerField('Порядок', default=0)
     is_active = models.BooleanField('Активен', default=True)
