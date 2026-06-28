@@ -14,8 +14,20 @@ def company_info(request):
         }
 
     else:
-        company = CompanyInfo.objects.first()  # Получаем первую запись с контактами компании
-        cache.set('company_info', company, 60*10)
+        company = CompanyInfo.objects.prefetch_related("phones", "emails").first()
+
+        company_data = {
+                'name': company.name,
+                'inn': company.inn,
+                'ogrn': company.ogrn,
+                'street': company.street,
+                'house': company.house,
+                'building': company.building,
+                'phones': [phone.telephone for phone in company.phones.all()],
+                'emails': [email.email for email in company.emails.all()],
+            }
+        cache.set('company_info', company_data, 60*10)
+
         return {
-            'company_info': company,
+            'company_info': company_data,
         }

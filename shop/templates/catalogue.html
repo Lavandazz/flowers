@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% load static %}
-{% load cache %}
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -10,7 +9,7 @@
     {% block search %} {% include "nav_primary.html" %} {% endblock %}
 
     <div class="container-fluid">
-{#    {% cache 60 sidebar %}#}
+    
         <div class="row">
             {# Кнопка для открытия offcanvas (только на мобильных) #}
             <div class="col-12 d-md-none mb-3">
@@ -64,6 +63,5 @@
         </div>
     </div>
 
-{#    {% endcache %}#}
     </div>
 {% endblock %}
