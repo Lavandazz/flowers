@@ -13,7 +13,7 @@
             <div class="col-12 col-md-7 col-lg-7">
                 <div class="slider-for">
                     {% for slide in product.images.all %}
-                        <div style="height: 530px; display: flex; align-items: center; justify-content: center; background: #f0f0f0;">
+                        <div style="max-height: 530px; display: flex; align-items: center; justify-content: center; background: #f0f0f0;">
                             <a href="{{ slide.image.url }}" data-lightbox="gallery" data-title="{{ product.name }}">
                                 <img src="{{ slide.image.url }}" style="max-width: 100%; max-height: 100%; object-fit: contain;" alt="{{ product.name }}">
                             </a>
@@ -36,7 +36,7 @@
             </div>
 
             <div class="col-12 col-md-5 col-lg-5">
-                <div class="container-fluid ps-5 text-white">
+                <div class="container-fluid ps-2 text-white">
                     <h3 class="pt-2 fs-5 fs-md-4 fs-lg-3">{{ product.name|capfirst }}</h3>
 
                     <div class="price pt-1 pt-md-2 fs-5 fs-md-4 fs-lg-3 text-white">
