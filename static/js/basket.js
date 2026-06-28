@@ -148,13 +148,18 @@ document.addEventListener('DOMContentLoaded', function () {
         // 1. Кнопка добавления в корзину
         const addBtn = event.target.closest('.add-to-cart');
         if (addBtn) {
-            event.preventDefault();
-            if (cartIcon) animateFlyToCart(addBtn, cartIcon);
-            const productId = addBtn.dataset.productId;
-            const url = addBtn.getAttribute('href');
-            addToCart(productId, url);
-            return;
+            event.preventDefault(); // предотвращаем переход по ссылке
+            showUnavailableMessage();
+            
         }
+        // if (addBtn) {
+        //     event.preventDefault();
+        //     if (cartIcon) animateFlyToCart(addBtn, cartIcon);
+        //     const productId = addBtn.dataset.productId;
+        //     const url = addBtn.getAttribute('href');
+        //     addToCart(productId, url);
+        //     return;
+        // }
 
         // 2. Кнопки изменения количества (+ и -)
         const quantityBtn = event.target.closest('.quantity-btn');
@@ -200,3 +205,9 @@ $(document).ready(function() {
     // Следим за изменением радио-кнопок
     $('input[name="requires_delivery"]').change(toggleDeliveryAddress);
 });
+
+// Функция для показа окна о невозможности делать заказы
+function showUnavailableMessage() {
+    const modal = new bootstrap.Modal(document.getElementById('unavailableModal'));
+    modal.show();
+}

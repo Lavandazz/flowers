@@ -23,4 +23,23 @@
             {% endfor %}
         {% endif %}
     </div>
+
+    <div class="modal fade" id="unavailableModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">🛠️ Онлайн-оформление заказа временно недоступно</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Вы можете оформить заказ следующими способами:</p>
+                    <ul>
+                        <li>📞 Позвоните нам: <a href="tel:9258348172">9258348172</a></li>
+                        <li>✍️ Напишите в Telegram: <a href="https://t.me/anastasia_lavander" target="_blank">@anastasia_lavander</a></li>
+                        <li>🏪 Посетите наш магазин: <a href="/contacts">Контакты</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
