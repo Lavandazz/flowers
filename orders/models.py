@@ -11,9 +11,18 @@ from users.models import User
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=True, verbose_name='Пользователь')
+    # user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, default=True, verbose_name='Пользователь')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Пользователь'
+    )
     created = models.DateTimeField(auto_now_add=True, verbose_name='Дата заказа')
     phone_number = models.CharField(max_length=20, verbose_name='Номер телефона')
+    customer_name = models.CharField(max_length=150, default='Аноним', verbose_name='Имя покупателя')
+    customer_email = models.EmailField(default="example@ya.ru",verbose_name='Email для чека')   
     request_delivery = models.BooleanField(default=False, verbose_name='Требуется доставка')
     delivery_address = models.TextField(null=True, blank=True, verbose_name='Адрес доставки')
     is_paid = models.BooleanField(default=False, verbose_name='Оплачено')
