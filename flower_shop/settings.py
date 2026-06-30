@@ -38,7 +38,7 @@ REDIS_HOST = "redis" if not DEBUG else "localhost"
 LOGGING = LOGGERS_DICT
 
 ALLOWED_HOSTS = [
-    '.ru.tuna.am',
+    # '.ru.tuna.am',
     '0.0.0.0',
     'floristka-msk.ru',
     '130.49.146.184',
