@@ -1,57 +1,55 @@
 {% load static %}
 
 
-{% block header %}
-    <nav class="navbar navbar-expand-sm fixed-top navbar-dark justify-content-center navbar-custom">
-        <div class="container-fluid">
-    
-        <!-- Кнопка-гамбургер для мобильных -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-        
-            <!-- Центральная часть со ссылками -->
-    
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav text-uppercase nav-menu gap-5 flex-grow-1 justify-content-center">
-                    <li class="nav-item"><a class="nav-link" href="/catalogue">Каталог</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'page:contacts' %}">Контакты</a></li>
-                </ul>
+<nav class="navbar navbar-expand-sm fixed-top navbar-dark justify-content-center navbar-custom">
+    <div class="container-fluid">
 
-                <ul class="navbar-nav text-uppercase nav-menu gap-5">
+    <!-- Кнопка-гамбургер для мобильных -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Центральная часть со ссылками -->
 
-                    <li><a href="https://t.me/anastasia_lavander" target="_blank"  class="icon-link">
-                        <i class="fa-brands fa-telegram fa-2x fa-beat-fade" 
-                           style="--fa-beat-fade-opacity:0.80;--fa-beat-fade-scale:1.075;" 
-                           aria-hidden="true"></i></a>
-                    </li>
-                    <li><a href="tel:{{ company_info.phones|first|default:'#' }}" class="icon-link">
-                        <span class="fa-stack fa-beat-fade" style="vertical-align: top; 
-                        --fa-beat-fade-opacity:0.80;--fa-beat-fade-scale:1.075">
-                          <i class="fa-regular fa-circle fa-stack-2x"></i>
-                          <i class="fa-solid fa-phone-flip fa-stack-1x"></i>
-                        </span>
-                        </a>
-                    </li>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav text-uppercase nav-menu gap-5 flex-grow-1 justify-content-center">
+                <li class="nav-item"><a class="nav-link" href="/catalogue">Каталог</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'page:contacts' %}">Контакты</a></li>
+            </ul>
+
+            <ul class="navbar-nav text-uppercase nav-menu gap-5">
+
+                <li><a href="https://t.me/anastasia_lavander" target="_blank"  class="icon-link">
+                    <i class="fa-brands fa-telegram fa-2x fa-beat-fade" 
+                        style="--fa-beat-fade-opacity:0.80;--fa-beat-fade-scale:1.075;" 
+                        aria-hidden="true"></i></a>
+                </li>
+                <li><a href="tel:{{ company_info.phones|first|default:'#' }}" class="icon-link">
+                    <span class="fa-stack fa-beat-fade" style="vertical-align: top; 
+                    --fa-beat-fade-opacity:0.80;--fa-beat-fade-scale:1.075">
+                        <i class="fa-regular fa-circle fa-stack-2x"></i>
+                        <i class="fa-solid fa-phone-flip fa-stack-1x"></i>
+                    </span>
+                    </a>
+                </li>
+            
+                {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'user:profile' %}">Личный кабинет</a></li> {% endcomment %}
                 
-                    {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'user:profile' %}">Личный кабинет</a></li> {% endcomment %}
-                    
-                    {% if user.is_authenticated %}
-                            <li class="nav-item">
-                                <form action="{% url 'user:logout' %}" method="post" class="d-inline">
-                                    {% csrf_token %}
-                                    <button type="submit" class="nav-link">Выйти</button>
-                                </form>
-                            </li>
-                    {% endif %}
-                    
-                    {% if user.is_admin or user.is_staff %}
-                        <li class="nav-item"><a class="nav-link" href="{% url "admin:index" %}">Админ панель</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-
-
+                {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <form action="{% url 'user:logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="nav-link">Выйти</button>
+                            </form>
+                        </li>
+                {% endif %}
+                
+                {% if user.is_admin or user.is_staff %}
+                    <li class="nav-item"><a class="nav-link" href="{% url "admin:index" %}">Админ панель</a></li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
-{% endblock %}
+
+
+    </div>
+</nav>

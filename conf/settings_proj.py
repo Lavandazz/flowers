@@ -6,4 +6,3 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_ROOT = PROJECT_ROOT / 'media'
 
-ENV_YOOKASSA = PROJECT_ROOT / '.yookassa'

@@ -13,7 +13,7 @@ import logging
 import re
 
 from common.loggers import LOGGERS_DICT
-from conf.settings_env import settings
+from conf.settings_env import settings, u_settings
 from conf.settings_proj import PROJECT_ROOT
 
 logger = logging.getLogger('main')
@@ -38,7 +38,7 @@ REDIS_HOST = "redis" if not DEBUG else "localhost"
 LOGGING = LOGGERS_DICT
 
 ALLOWED_HOSTS = [
-    # '.ru.tuna.am',
+    '.ru.tuna.am',
     '0.0.0.0',
     'floristka-msk.ru',
     '130.49.146.184',
@@ -229,3 +229,5 @@ LOGIN_URL = '/user/login/'
 LOGIN_REDIRECT_URL = '/catalogue'
 LOGOUT_REDIRECT_URL = '/catalogue'
 
+YOOKASSA_SHOP_ID = u_settings.YOOKASSA_SHOP_ID
+YOOKASSA_SECRET_KEY = u_settings.YOOKASSA_SECRET_KEY

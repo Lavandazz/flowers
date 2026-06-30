@@ -64,8 +64,8 @@
 
     <!-- Кнопка оформления заказа (только если есть товары и не в процессе заказа) and not order -->
     {% if baskets and not order %}
-        {% comment %} <a class="checkout-btn" href="{% url "orders:create_order" %}">Оформить заказ</a> {% endcomment %}
+        <a class="checkout-btn" href="{% url "orders:create_order" %}">Оформить заказ</a>
     <!-- Временное отключение заказа -->
-    <a class="checkout-btn" href="{% url "orders:order_message" %}">Оформить заказ</a>
+    {% comment %} <a class="checkout-btn" href="{% url "orders:order_message" %}">Оформить заказ</a> {% endcomment %}
     {% endif %}
 </div>

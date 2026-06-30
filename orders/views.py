@@ -1,31 +1,30 @@
+"""
+Для работы юкассы локально, необходимо пробросить туннель tuna http 8002
+Полученный туннель зарегистрировать в тестовом магазине юкассы.
+Настроить вебхук по ссылке https://yookassa.ru/my/merchant/integration/http-notifications
+Прописать url для получения вебхуков /orders/payment/yookassa-webhook/, например, https://axog62-80-251-231-77.ru.tuna.am/orders/payment/yookassa-webhook/
+ и совершать платежи.
+"""
+
+from datetime import datetime
 import json
 import logging
 
-from django.core.cache import cache
-
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django.views.generic import CreateView, FormView
-from yookassa import Payment
+from django.views.generic import FormView
 
 from basket.models import Basket
 from common.payment import pay_yookassa, check_payment
 from orders.forms import CreateOrderForm
 from orders.models import Order, OrderItem, PaymentOrder
-from users.models import User
 
-
-# Create your views here.
-logger = logging.getLogger('order')
 
 logger = logging.getLogger('order')
 
@@ -34,9 +33,9 @@ class CreateOrderView(FormView):
     """
     Предаставление для оформления заказа без регистрации
     """
-    template_name = "create_order.html"
+    template_name = "create_anonim_order.html"
     form_class = CreateOrderForm
-    success_url = reverse_lazy('user:profile')
+    success_url = reverse_lazy('shop:catalogue')
 
 
     def form_valid(self, form):
@@ -80,20 +79,26 @@ class CreateOrderView(FormView):
                             price=basket_item.product.price,
                         )
 
-                    basket_items.delete()
-                    
                     # Итоговая сумма корзины
                     total_price = sum(item.product.price * item.quantity for item in basket_items)
-
+                    # # После вычисления суммы платежа, удаляем корзину
+                    basket_items.delete()
                     # Строим абсолютный путь для возврата из оплаты в профиль http://localhost:8000/user/profile/
-                    return_url = self.request.build_absolute_uri(reverse('user:profile'))
+                    return_url = self.request.build_absolute_uri(reverse('shop:catalogue'))
                     try:
-                        payment = pay_yookassa(order.id, total_price,
-                                               return_url=return_url)
+                        order_name = f'Оплата заказа № {order.id} {datetime.now().isoformat()} в floristka-msk.ru'
+                        payment = pay_yookassa(
+                            order_id=order.id,
+                            order_name=order_name,
+                            total_price=total_price,
+                            return_url=return_url
+                            )
+                        
                     except Exception as e:
-                        print('Ошибка вышла', e)
-
-                    order_name = f'Заказ № {order.id}_{total_price}'
+                        logger.error('Ошибка при создании платежа: %s', e)
+                        messages.error(self.request, 'Не удалось создать платёж. Попробуйте позже.')
+                        # Откатываем транзакцию (она уже будет откачена автоматически из-за исключения)
+                        return redirect('orders:create_order')
 
                     PaymentOrder.objects.create(
                         order=order,
@@ -112,7 +117,7 @@ class CreateOrderView(FormView):
                     # имеет вид https://yoomoney.ru/checkout/payments/v2/contract?orderId=31449a57-000f-5000-b000-18fe245df32b
                     confirmation_url = payment.confirmation.confirmation_url
                     
-                    logger.info("сохранение пользователя после оформления заказа", user)
+                    logger.info("сохранение пользователя после оформления заказа")
 
                     messages.success(self.request, 'Заказ оформлен')
 
@@ -134,7 +139,42 @@ class CreateOrderView(FormView):
         context['order'] = True
         return context
     
+@csrf_exempt
+@require_POST
+def yookassa_webhook(request):
+    """
+    Проверка платежа
+    В лк Юкасса необходимо указать полностью путь к вебхуку: домен/orders/payment/yookassa-webhook/
+    """
+    logger.info('Получение yookassa_webhook')
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return HttpResponse(status=400)
 
+    # Извлекаем данные
+    payment_id = data['object']['id']
+    status = data['object']['status']
+    # metadata = data['object'].get('metadata', {})
+    # order_id = metadata.get('order_id')  # если передавали в metadata
+
+    logger.info('Получение yookassa_webhook payment_id - %s, status - %s', payment_id, status)
+
+    if status == 'succeeded':
+        check_payment(payment_id=payment_id)
+
+    return HttpResponse(status=200)
+
+
+def redirect_message(request):
+    return render(request, 'order_message.html')
+
+
+"""
+Ниже CreateOrderView используется для оформления заказов только зарегестрированными пользователями. 
+На данный момент реализация не используется и не является актуальной. 
+В дальнейшем, если в проект будет возвращены ЛК, необходимо будет подкорректировать.
+"""
 # class CreateOrderView(LoginRequiredMixin, FormView):
 #     """
 #     Представление для оформления заказа залогиненного пользователя.
@@ -236,33 +276,3 @@ class CreateOrderView(FormView):
 #         context['order'] = True
 #         return context
 
-
-@csrf_exempt
-@require_POST
-def yookassa_webhook(request):
-    """
-    Проверка платежа
-    В лк Юкасса необходимо указать полностью путь к вебхуку: домен/orders/payment/yookassa-webhook/
-    """
-    logger.info('Получение yookassa_webhook')
-    try:
-        data = json.loads(request.body)
-    except json.JSONDecodeError:
-        return HttpResponse(status=400)
-
-    # Извлекаем данные
-    payment_id = data['object']['id']
-    status = data['object']['status']
-    # metadata = data['object'].get('metadata', {})
-    # order_id = metadata.get('order_id')  # если передавали в metadata
-
-    logger.info('Получение yookassa_webhook payment_id - %s, status - %s', payment_id, status)
-
-    if status == 'succeeded':
-        check_payment(payment_id=payment_id)
-
-    return HttpResponse(status=200)
-
-
-def redirect_message(request):
-    return render(request, 'order_message.html')

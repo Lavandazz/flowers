@@ -1,11 +1,9 @@
-{% block cookie-banner %} 
-    {% if not request.COOKIES.cookie_notice_hidden %}
-        <div id="cookie-info" class="alert alert-warning  alert-dismissible fade show fixed-bottom mb-0 rounded-1" role="alert">
-            <div class="container text-center">
-                Мы используем файлы cookie и рекомендательные технологии. Пользуясь сайтом, вы соглашаетесь с Политикой обработки персональных данных.
-                <button class="btn-close" onclick="document.cookie='cookie_notice_hidden=true; path=/; max-age=2592000'; document.getElementById('cookie-info').style.display='none';"></button>
-            </div>
-        </div>
-    {% endif %}
 
-{% endblock %}
+{% if not request.COOKIES.cookie_notice_hidden %}
+    <div id="cookie-info" class="alert alert-warning  alert-dismissible fade show fixed-bottom mb-0 rounded-1" role="alert">
+        <div class="container text-center">
+            Мы используем файлы cookie и рекомендательные технологии. Пользуясь сайтом, вы соглашаетесь с Политикой обработки персональных данных.
+            <button class="btn-close" onclick="document.cookie='cookie_notice_hidden=true; path=/; max-age=2592000'; document.getElementById('cookie-info').style.display='none';"></button>
+        </div>
+    </div>
+{% endif %}

@@ -1,12 +1,15 @@
+import email
 import re
 
 from django import forms
 
 
 class CreateOrderForm(forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
+    # first_name = forms.CharField()
+    # last_name = forms.CharField()
+    customer_name = forms.CharField(max_length=50)
     phone_number = forms.CharField()
+    customer_email = forms.EmailField(required=False)
     requires_delivery = forms.ChoiceField(
         choices=[
             ("0", False),

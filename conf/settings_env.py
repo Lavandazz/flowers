@@ -3,8 +3,6 @@ from pydantic_settings import BaseSettings
 from conf.settings_proj import PROJECT_ROOT
 
 
-
-
 class Settings(BaseSettings):
     # POSTGRES
     POSTGRES_USER: str
@@ -25,8 +23,20 @@ class Settings(BaseSettings):
     REDIS_PASSWORD: str
 
 
+class YookassaSettings(BaseSettings):
+    YOOKASSA_SHOP_ID: str
+    YOOKASSA_SECRET_KEY: str
+
+
 def get_settings():
     return Settings(_env_file=PROJECT_ROOT / ".env", _env_file_encoding='utf-8')
 
 
+
+def get_u_settings():
+    return YookassaSettings(_env_file=PROJECT_ROOT / ".yookassa_env", _env_file_encoding='utf-8')
+
+
+
 settings = get_settings()
+u_settings = get_u_settings()

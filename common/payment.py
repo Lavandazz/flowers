@@ -1,36 +1,25 @@
 import logging
-import os
-from pathlib import Path
-
 from django.http import HttpResponse
 from django.utils import timezone
-from dotenv import load_dotenv
-
 from yookassa import Payment, Configuration, Refund
+from conf.settings_env import u_settings
+from orders.models import PaymentOrder
 
-from basket.models import Basket
-from conf.settings_proj import ENV_YOOKASSA
-from orders.models import Order, PaymentOrder
 
-env_path = ENV_YOOKASSA
-
-load_dotenv(dotenv_path=env_path)
-
-Configuration.configure(account_id=os.getenv('account_id'), secret_key=os.getenv('secret_key'))
+# Конфигурация подключения юкассы
+Configuration.configure(account_id=u_settings.YOOKASSA_SHOP_ID, secret_key=u_settings.YOOKASSA_SECRET_KEY)
 
 logger = logging.getLogger('pay')
 
 
-def pay_yookassa(order_id, total_price: int, return_url):
+def pay_yookassa(order_id, order_name, total_price: int, return_url):
     """
     Создание платежа
     :param order_id: Номер заказа
     :param total_price: Общая сумма платежа
     :param return_url: Возврат после оплаты (страница профиля)
-    :return:
+    :return: payment -в озвращается объект платежа с номером и статусом pending
     """
-    order_name = f'Заказ № {order_id}_{total_price}'
-
     try:
         payment = Payment.create(
             {
@@ -50,10 +39,11 @@ def pay_yookassa(order_id, total_price: int, return_url):
             },
         )
         logger.info('Оплата заказа %s прошла успешно', order_name)
-        # payment возвращается объект платежа с номером и статусом pending
+        
         return payment
+    
     except Exception as e:
-        logger.info('Ошибка при оплате заказа %s: %s', order_name, e)
+        logger.error('Ошибка при оплате заказа!!!! %s: %s', order_name, e)
 
 
 def check_payment(payment_id):
@@ -66,26 +56,19 @@ def check_payment(payment_id):
     # if payment.status == 'succeeded' and payment.paid:
 
     # Сохраняем статус платежа после подтверждения оплаты
+    logger.info('check_payment start for %s', payment_id)
     try:
         payment_obj = PaymentOrder.objects.get(payment_id=payment_id)
     except PaymentOrder.DoesNotExist:
         return HttpResponse(status=404)
 
-    order = payment_obj.order
-    logger.info('получил объект платежа, %s', payment_obj)
-    logger.info('получил объект order, %s', order)
     payment_obj.status = 'succeeded'
     # Сохраняем статус заказа после подтверждения оплаты
     payment_obj.order.status = 'paid'
     payment_obj.order.is_paid = True
     payment_obj.confirmed_at = timezone.now()
-
+    # Сохранение статуса заказа и платежа
     payment_obj.order.save()
-
-    # Удаляем корзину пользователя после сохранения статусов оплаты
-    payment_obj.order.user.basket.all().delete()
-    logger.info('КОРЗИНЫ УДАЛЕНЫ , %s', order)
-
     payment_obj.save()
 
 

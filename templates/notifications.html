@@ -1,45 +1,44 @@
 {% load static %}
 
-{% block messages %}
-    <!-- Контейнер для уведомлений -->
-    <div id="notifications-container" class="notifications-container">
-        <!-- Это блок для AJAX-сообщений – всегда присутствует, но скрыт -->
-        <div id="jq-notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-success fade show custom-shadow" style="display: none;" role="alert">
-        </div>
-    
-        {% if form.non_field_errors %}
-            <div class="notification notification-error">
-                {{ form.non_field_errors }}
-                <button class="notification-close">&times;</button>
-            </div>
-        {% endif %}
-    
-        {% if messages %}
-            {% for message in messages %}
-                <div class="notification {% if message.tags == 'success' %}notification-success{% elif message.tags == 'warning' %}notification-error{% endif %}">
-                    {{ message }}
-                    <button class="notification-close">&times;</button>
-                </div>
-            {% endfor %}
-        {% endif %}
+
+<!-- Контейнер для уведомлений -->
+<div id="notifications-container" class="notifications-container">
+    <!-- Это блок для AJAX-сообщений – всегда присутствует, но скрыт -->
+    <div id="jq-notification" class="position-fixed start-50 translate-middle-x z-3 alert alert-success fade show custom-shadow" style="display: none;" role="alert">
     </div>
 
-    <div class="modal fade" id="unavailableModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">🛠️ Онлайн-оформление заказа временно недоступно</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Вы можете оформить заказ следующими способами:</p>
-                    <ul>
-                        <li>📞 Позвоните нам: <a href="tel:9258348172">9258348172</a></li>
-                        <li>✍️ Напишите в Telegram: <a href="https://t.me/anastasia_lavander" target="_blank">@anastasia_lavander</a></li>
-                        <li>🏪 Посетите наш магазин: <a href="/contacts">Контакты</a></li>
-                    </ul>
-                </div>
+    {% if form.non_field_errors %}
+        <div class="notification notification-error">
+            {{ form.non_field_errors }}
+            <button class="notification-close">&times;</button>
+        </div>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="notification {% if message.tags == 'success' %}notification-success{% elif message.tags == 'warning' %}notification-error{% endif %}">
+                {{ message }}
+                <button class="notification-close">&times;</button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="modal fade" id="unavailableModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">🛠️ Онлайн-оформление заказа временно недоступно</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы можете оформить заказ следующими способами:</p>
+                <ul>
+                    <li>📞 Позвоните нам: <a href="tel:9258348172">9258348172</a></li>
+                    <li>✍️ Напишите в Telegram: <a href="https://t.me/anastasia_lavander" target="_blank">@anastasia_lavander</a></li>
+                    <li>🏪 Посетите наш магазин: <a href="/contacts">Контакты</a></li>
+                </ul>
             </div>
         </div>
     </div>
-{% endblock %}
+</div>
