@@ -13,7 +13,7 @@ import logging
 import re
 
 from common.loggers import LOGGERS_DICT
-from conf.settings_env import settings, u_settings
+from conf.settings_env import settings
 from conf.settings_proj import PROJECT_ROOT
 
 logger = logging.getLogger('main')
@@ -228,6 +228,3 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/user/login/'
 LOGIN_REDIRECT_URL = '/catalogue'
 LOGOUT_REDIRECT_URL = '/catalogue'
-
-YOOKASSA_SHOP_ID = u_settings.YOOKASSA_SHOP_ID
-YOOKASSA_SECRET_KEY = u_settings.YOOKASSA_SECRET_KEY

@@ -94,3 +94,8 @@ Docker compose
 #### Проверка автоматического обновления сертификата 
 `sudo certbot renew --dry-run`
 
+### Grafana локально доступна http://localhost:3000/
+#### Проверить работу и добавление Loki и Prometheus 
+в разделе Connections ->  Data sources
+#### Выбор дашборда 
+https://grafana.com/grafana/dashboards/

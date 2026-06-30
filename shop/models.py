@@ -56,6 +56,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
+        ordering: list[str] = ['id']
         db_table = 'products'
         verbose_name = 'Товар'
         verbose_name_plural = 'III Добавление товаров'

@@ -38,7 +38,6 @@ def pay_yookassa(order: Order, order_name: str, total_price: int, return_url):
             "payment_mode": "full_prepayment",
             "payment_subject": "commodity"
         })
-    print("receipt_items", receipt_items)
     receipt_data = {
         "customer": {
             "email": order.customer_email  # Email покупателя для отправки чека
@@ -46,7 +45,7 @@ def pay_yookassa(order: Order, order_name: str, total_price: int, return_url):
         "items": receipt_items,
         "tax_system_code": 1  # Ваша система налогообложения (1 — ОСН, 2 — УСН доходы и т.д.)
     }
-    print("receipt_data,", receipt_data)
+
     try:
         logger.info('Перехожу к созданию оплаты')
         payment = Payment.create(
@@ -99,6 +98,7 @@ def check_payment(payment_id):
     # Сохранение статуса заказа и платежа
     payment_obj.order.save()
     payment_obj.save()
+    logger.info('Успешная оплата %s: ', payment_id)
 
 
 def refund_payment(payment_obj, total_sum=None):
@@ -135,7 +135,7 @@ def refund_payment(payment_obj, total_sum=None):
     order.status = 'refunded'
     order.save()
 
-    logger.info(f'Возврат {refund_amount} по платежу {payment_obj.payment_id} успешно создан')
+    logger.info('Возврат %s: по платежу %s: успешно создан',{refund_amount}, {payment_obj.payment_id})
     return refund
 
 
