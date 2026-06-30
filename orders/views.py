@@ -88,7 +88,7 @@ class CreateOrderView(FormView):
                     try:
                         order_name = f'Оплата заказа № {order.id} {datetime.now().isoformat()} в floristka-msk.ru'
                         payment = pay_yookassa(
-                            order_id=order.id,
+                            order=order,
                             order_name=order_name,
                             total_price=total_price,
                             return_url=return_url

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from yookassa import Payment, Configuration, Refund
 from conf.settings_env import u_settings
-from orders.models import PaymentOrder
+from orders.models import Order, PaymentOrder
 
 
 # Конфигурация подключения юкассы
@@ -12,15 +12,43 @@ Configuration.configure(account_id=u_settings.YOOKASSA_SHOP_ID, secret_key=u_set
 logger = logging.getLogger('pay')
 
 
-def pay_yookassa(order_id, order_name, total_price: int, return_url):
+def pay_yookassa(order: Order, order_name: str, total_price: int, return_url):
     """
     Создание платежа
-    :param order_id: Номер заказа
+    :param order: объект модели Order
+    :param order_name: Наименование заказа для чека
     :param total_price: Общая сумма платежа
-    :param return_url: Возврат после оплаты (страница профиля)
+    :param return_url: Страница для возврата после оплаты
     :return: payment -в озвращается объект платежа с номером и статусом pending
     """
+    # Собираем данные для чека
+    # Формируем список товаров из OrderItem
+    logger.info('ОПЛАТА НАЧИНАЕТСЯ для %s', order_name)
+    logger.info('order %s', order)
+    receipt_items = []
+    for item in order.orderitem_set.all():  # Если related_name = 'orderitem_set' - получаем все товары
+        receipt_items.append({
+            "description": item.name[:128],
+            "quantity": str(item.quantity),
+            "amount": {
+                "value": f"{item.price:.2f}",
+                "currency": "RUB"
+            },
+            "vat_code": 1,          # Пример: ставка 20%
+            "payment_mode": "full_prepayment",
+            "payment_subject": "commodity"
+        })
+    print("receipt_items", receipt_items)
+    receipt_data = {
+        "customer": {
+            "email": order.customer_email  # Email покупателя для отправки чека
+        },
+        "items": receipt_items,
+        "tax_system_code": 1  # Ваша система налогообложения (1 — ОСН, 2 — УСН доходы и т.д.)
+    }
+    print("receipt_data,", receipt_data)
     try:
+        logger.info('Перехожу к созданию оплаты')
         payment = Payment.create(
             {
                 'amount': {
@@ -34,8 +62,9 @@ def pay_yookassa(order_id, order_name, total_price: int, return_url):
                 'capture': True,  # Сразу списать деньги
                 'description': order_name,
                 'metadata': {
-                    'order_id': order_id  # Чтобы в вебхуке понять, какой заказ оплачен
+                    'order_id': order.id  # Чтобы в вебхуке понять, какой заказ оплачен
                 },
+                'receipt': receipt_data  # Передаём чек
             },
         )
         logger.info('Оплата заказа %s прошла успешно', order_name)
