@@ -5,7 +5,7 @@
 .vscode/
 
 .env
-.yookassa
+.yookassa_env
 .env_cloud
 
 .pylintrc
