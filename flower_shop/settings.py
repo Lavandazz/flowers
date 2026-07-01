@@ -32,8 +32,8 @@ DJANGO_SUPERUSER_USERNAME = settings.DJANGO_SUPERUSER_USERNAME
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = settings.DEBUG
-DB_HOST = settings.POSTGRES_HOST if not DEBUG else "db"
-REDIS_HOST = "redis" if not DEBUG else "redis"
+DB_HOST = settings.POSTGRES_HOST if not DEBUG else "localhost"
+REDIS_HOST = "redis" if not DEBUG else "localhost"
 
 LOGGING = LOGGERS_DICT
 
