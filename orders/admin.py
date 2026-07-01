@@ -47,9 +47,9 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display = ("order", "display_user", "product", "price", "quantity", 'created')
     search_fields = ('name',)
 
-    def display_user(self, obj):
+    def display_user(self, obj: Order):
         """Отображение пользователя"""
-        return f'{obj.order.user.first_name} {obj.order.user.last_name}'
+        return f'{obj.order.user.first_name} {obj.order.user.last_name}' if obj.order.user else obj.order.customer_name
 
 
 class OrdersTab(admin.TabularInline):

@@ -2,7 +2,12 @@ global:
   scrape_interval: 3s
 
 scrape_configs:
-  - job_name: "litestar"
-    metrics_path: /metrics
+# необходима установка postgres_exporter,
+# пока не актуально
+  # - job_name: 'postgresql'
+  #   static_configs:
+  #     - targets: ['db:5432'] # db - имя контейнера в сети
+
+  - job_name: 'django'
     static_configs:
-      - targets: ["backend:8080"]
+      - targets: ['dj:8002'] # dj_container - имя контейнера в сети

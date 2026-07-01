@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.db.models.manager import BaseManager
 
-from shop.models import Product, Category
+from shop.models import Product
 
 
 def q_search(query) -> BaseManager | None:

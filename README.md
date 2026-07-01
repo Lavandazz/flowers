@@ -99,3 +99,13 @@ Docker compose
 в разделе Connections ->  Data sources
 #### Выбор дашборда 
 https://grafana.com/grafana/dashboards/
+#### Контейнеры по умолчанию отключены, для включения необходимо будет собрать их 
+'docker compose --profile monitoring up -d'
+#### Остановка
+'docker compose --profile monitoring down'
+
+#### Prometheus доступен по ссылке
+http://localhost:9090/targets
+
+#### Loki доступен по ссылке
+http://localhost:8002/metrics/

@@ -32,8 +32,8 @@ DJANGO_SUPERUSER_USERNAME = settings.DJANGO_SUPERUSER_USERNAME
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = settings.DEBUG
-DB_HOST = settings.POSTGRES_HOST if not DEBUG else "localhost"
-REDIS_HOST = "redis" if not DEBUG else "localhost"
+DB_HOST = settings.POSTGRES_HOST if not DEBUG else "db"
+REDIS_HOST = "redis" if not DEBUG else "redis"
 
 LOGGING = LOGGERS_DICT
 
@@ -44,6 +44,7 @@ ALLOWED_HOSTS = [
     '130.49.146.184',
     '127.0.0.1',
     'localhost',
+    'dj',  # хост для запросов prometheus
 ]
 
 # Application definition
@@ -63,6 +64,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     'image_uploader_widget',
     'adminsortable2',
+    'django_prometheus',
 
     'shop',
     'page',
@@ -77,6 +79,7 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
 
     "django.middleware.gzip.GZipMiddleware",
@@ -89,6 +92,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 if DEBUG:

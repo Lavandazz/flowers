@@ -107,6 +107,8 @@ services:
       - ./promtail-config.yaml:/etc/promtail/config.yml
     command: -config.file=/etc/promtail/config.yml
     privileged: true
+    networks:
+      - flowers_nt
 
   loki:
     image: grafana/loki:latest
@@ -116,6 +118,8 @@ services:
       - "3100:3100"
     volumes:
       - ./loki-config.yaml:/etc/loki/local-config.yaml
+    networks:
+      - flowers_nt
 
   prometheus:
     image: prom/prometheus:latest
@@ -126,6 +130,8 @@ services:
     volumes:
       - ./prometheus.yaml:/etc/prometheus/prometheus.yml
       - prometheusdata:/prometheus
+    networks:
+      - flowers_nt
 
   grafana:
     image: grafana/grafana:latest
@@ -139,6 +145,8 @@ services:
     volumes:
       - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
       - grafanadata:/var/lib/grafana
+    networks:
+      - flowers_nt
 
 
 volumes:
@@ -149,4 +157,6 @@ volumes:
 
 networks:
   flowers_nt:
+    name: flowers_nt
     driver: bridge
+    

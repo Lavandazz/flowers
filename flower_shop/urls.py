@@ -17,8 +17,15 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import path, include
 from django.views.generic import RedirectView
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
+
+
+def metrics_view(request):
+    return HttpResponse(generate_latest(), content_type=CONTENT_TYPE_LATEST)
+
 
 admin.site.site_header = 'Административная панель Flower Shop'
 admin.site.index_title = 'Добро пожаловать в панель управления'
@@ -26,6 +33,7 @@ admin.site.index_title = 'Добро пожаловать в панель упр
 
 urlpatterns = [
     path("flowers-dashboard/", admin.site.urls),
+    path('metrics/', metrics_view),
     path("page/", include("page.urls")),
     path("user/", include("users.urls")),
     path("basket/", include("basket.urls")),
