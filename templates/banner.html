@@ -2,32 +2,32 @@
 
 {% cache 60 banner %}
     {% if banners %}
-                <div class="py-2  text-white text-center">
-                    <div id="demo" class="carousel slide banner-carousel" data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                            {% for banner in banners %}
-                                <button type="button" data-bs-target="#demo" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></button>
-                            {% endfor %}
-                        </div>
-                        <div class="carousel-inner mt-2">
-                            {% for banner in banners %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                    <img src="{{ banner.image.url }}" class="img-fluid" style="width:90%" alt="{{ banner.title }}">
-                                    <div class="carousel-caption">
-                                        <h3>{{ banner.title|upper }}</h3>
-                                        <p>{{ banner.description|capfirst }}</p>
-                                    </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    
-                        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                        </button>
-                    </div>
+        <div class="py-2  text-white text-center">
+            <div id="demo" class="carousel slide banner-carousel" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    {% for banner in banners %}
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></button>
+                    {% endfor %}
                 </div>
+                <div class="carousel-inner mt-2">
+                    {% for banner in banners %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ banner.image.url }}" class="img-fluid" style="width:90%" alt="{{ banner.title }}">
+                            <div class="carousel-caption">
+                                <h3>{{ banner.title|upper }}</h3>
+                                <p>{{ banner.description|capfirst }}</p>
+                            </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            
+                <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
     {% endif %}
 {% endcache %} 
